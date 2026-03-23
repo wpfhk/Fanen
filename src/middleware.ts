@@ -14,11 +14,11 @@ export async function middleware(request: NextRequest) {
     request,
   });
 
-  // Supabase 환경변수 미설정 시 미들웨어 스킵 (로컬 개발 환경 대응)
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  // Supabase 환경변수 미설정 또는 플레이스홀더인 경우 미들웨어 스킵
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '';
 
-  if (!supabaseUrl || !supabaseAnonKey) {
+  if (!supabaseUrl.startsWith('http') || !supabaseAnonKey || supabaseAnonKey.includes('your-')) {
     return supabaseResponse;
   }
 

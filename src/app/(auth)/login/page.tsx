@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { createClient } from '@/lib/supabase/client';
+import { createClient, isSupabaseConfigured } from '@/lib/supabase/client';
 
 /**
  * 로그인 페이지
@@ -13,7 +13,23 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const supabase = createClient();
+  const configured = isSupabaseConfigured();
+  const supabase = configured ? createClient() : null;
+
+  // Supabase 미설정 시 안내 화면 표시
+  if (!configured || !supabase) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-gray-50">
+        <div className="w-full max-w-md rounded-xl bg-white p-8 shadow-lg text-center">
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">파낸</h1>
+          <div className="rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-700">
+            <p className="font-medium mb-1">Supabase 환경변수 미설정</p>
+            <p>.env.local 파일에 실제 Supabase URL과 Anon Key를 입력한 후 서버를 재시작하세요.</p>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   /** 카카오 OAuth 로그인 */
   const handleKakaoLogin = async () => {
