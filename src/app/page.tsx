@@ -1,31 +1,54 @@
 import Link from 'next/link';
+import { DisclaimerBanner } from '@/components/common';
+import { NewsImpactList } from '@/features/news-impact';
+import { SectorMapSection } from '@/features/sector-map';
 
 /**
- * 홈 페이지 — 서비스 준비 중 플레이스홀더
- * 서버 컴포넌트 (클라이언트 상호작용 없음)
+ * 홈 페이지 — 뉴스 임팩트 + 섹터 인과관계 통합 뷰
+ * 서버 컴포넌트 (NewsImpactList, SectorMapSection은 내부에서 'use client' 처리)
  */
 export default function HomePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-white to-gray-50">
-      <div className="text-center">
-        {/* 서비스명 */}
-        <h1 className="mb-4 text-5xl font-bold text-primary">파낸</h1>
+    <main className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 py-8 space-y-10">
+        {/* 서비스 헤더 */}
+        <header className="text-center">
+          <h1 className="text-4xl font-bold text-primary mb-2">파낸</h1>
+          <p className="text-lg text-gray-600">세상이 움직이면, 파낸이 먼저 압니다</p>
+        </header>
 
-        {/* 슬로건 */}
-        <p className="mb-8 text-xl text-gray-600">
-          세상이 움직이면, 파낸이 먼저 압니다
-        </p>
+        {/* 공통 면책 고지 */}
+        <DisclaimerBanner variant="default" />
 
-        {/* 서비스 준비 중 안내 */}
-        <p className="mb-8 text-gray-400">서비스 준비 중입니다</p>
+        {/* 뉴스 임팩트 섹션 */}
+        <section>
+          <NewsImpactList />
+          <div className="mt-4 text-right">
+            <Link href="/news" className="text-sm text-primary hover:underline">
+              뉴스 임팩트 전체 보기 →
+            </Link>
+          </div>
+        </section>
 
-        {/* 로그인 버튼 */}
-        <Link
-          href="/login"
-          className="inline-block rounded-lg bg-primary px-8 py-3 text-lg font-medium text-white transition-colors hover:bg-primary-600"
-        >
-          시작하기
-        </Link>
+        {/* 섹터 인과관계 섹션 */}
+        <section>
+          <SectorMapSection />
+          <div className="mt-4 text-right">
+            <Link href="/sector" className="text-sm text-primary hover:underline">
+              섹터 인과관계 전체 보기 →
+            </Link>
+          </div>
+        </section>
+
+        {/* 로그인 유도 */}
+        <div className="text-center">
+          <Link
+            href="/login"
+            className="inline-block rounded-lg bg-primary px-8 py-3 text-lg font-medium text-white transition-colors hover:bg-primary-600"
+          >
+            시작하기
+          </Link>
+        </div>
       </div>
     </main>
   );

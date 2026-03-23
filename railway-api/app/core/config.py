@@ -16,6 +16,13 @@ class Settings(BaseSettings):
     # Google Gemini API 키
     gemini_api_key: str = ""
 
+    # Upstash Redis REST API 연결 정보
+    upstash_redis_rest_url: str = ""
+    upstash_redis_rest_token: str = ""
+
+    # Cron 작업 인증 시크릿
+    cron_secret: str = ""
+
     # Railway 환경 (development / production)
     railway_environment: str = "development"
 

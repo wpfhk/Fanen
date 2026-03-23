@@ -38,6 +38,14 @@ fanen/
 └── public/
 ```
 
+## 스프린트 진행 현황
+
+| 스프린트 | 주제 | 상태 | 문서 |
+|---------|------|------|------|
+| Sprint 1 | FastAPI 서버, 인증 미들웨어, 헬스 엔드포인트 | ✅ 완료 | [docs/sprint1.md](docs/sprint1.md) |
+| Sprint 2 | 뉴스 분석 API, 섹터 인과관계 API, Gemini 통합, Redis 캐시 | ✅ 완료 | [docs/sprint2.md](docs/sprint2.md) |
+| Sprint 3 | NewsImpactList, SectorMapSection, SectorForceGraph(D3), SSR 버그 수정 | ✅ 완료 | [docs/sprint3.md](docs/sprint3.md) |
+
 ## 시작하기
 
 ### 사전 요구사항

@@ -1,0 +1,8 @@
+{
+  "jobs": [
+    {
+      "endpoint": "/api/cron/collect-news",
+      "schedule": "0 * * * *"
+    }
+  ]
+}

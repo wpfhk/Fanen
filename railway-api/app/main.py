@@ -11,6 +11,9 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
 from app.routes.health import router as health_router
+from app.routes.news import router as news_router
+from app.routes.sector import router as sector_router
+from app.routes.cron import router as cron_router
 
 
 @asynccontextmanager
@@ -42,6 +45,9 @@ app.add_middleware(
 
 # 라우터 등록
 app.include_router(health_router)
+app.include_router(news_router)
+app.include_router(sector_router)
+app.include_router(cron_router)
 
 
 if __name__ == "__main__":

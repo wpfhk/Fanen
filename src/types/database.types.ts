@@ -45,6 +45,7 @@ export interface Database {
           subscription_tier?: 'free' | 'pro' | 'premium';
           created_at?: string;
         };
+        Relationships: [];
       };
       /** 포트폴리오 */
       portfolios: {
@@ -75,6 +76,7 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
       };
       /** 배당 시뮬레이션 */
       dividend_simulations: {
@@ -102,6 +104,7 @@ export interface Database {
           result?: Json | null;
           created_at?: string;
         };
+        Relationships: [];
       };
       /** 뉴스 영향 분석 (공개) */
       news_impacts: {
@@ -138,6 +141,7 @@ export interface Database {
           ai_summary?: string | null;
           created_at?: string;
         };
+        Relationships: [];
       };
       /** 섹터 인과 관계 맵 (공개) */
       sector_causal_maps: {
@@ -165,6 +169,7 @@ export interface Database {
           description?: string | null;
           updated_at?: string;
         };
+        Relationships: [];
       };
       /** 모의투자 시즌 (공개) */
       mock_seasons: {
@@ -192,6 +197,7 @@ export interface Database {
           is_active?: boolean;
           created_at?: string;
         };
+        Relationships: [];
       };
       /** 모의투자 계좌 */
       mock_accounts: {
@@ -219,6 +225,7 @@ export interface Database {
           current_balance?: number;
           created_at?: string;
         };
+        Relationships: [];
       };
       /** 모의투자 거래 */
       mock_trades: {
@@ -255,6 +262,7 @@ export interface Database {
           price?: number;
           traded_at?: string;
         };
+        Relationships: [];
       };
       /** 모의투자 랭킹 (공개) */
       mock_rankings: {
@@ -285,6 +293,7 @@ export interface Database {
           profit_rate?: number | null;
           updated_at?: string;
         };
+        Relationships: [];
       };
       /** 매매 일지 */
       trade_journals: {
@@ -321,6 +330,7 @@ export interface Database {
           ai_feedback?: string | null;
           created_at?: string;
         };
+        Relationships: [];
       };
       /** 배당 캘린더 (공개) */
       dividend_calendar: {
@@ -354,6 +364,7 @@ export interface Database {
           dividend_yield?: number | null;
           created_at?: string;
         };
+        Relationships: [];
       };
     };
     Views: Record<string, never>;
