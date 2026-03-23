@@ -144,4 +144,10 @@ UPSTASH_REDIS_TOKEN=your_redis_token
 
 ## 라이선스
 
-Private
+이 프로젝트는 [GNU Affero General Public License v3.0 (AGPL-3.0)](LICENSE) 하에 배포됩니다.
+
+- 소스 코드를 자유롭게 사용·수정·배포할 수 있습니다.
+- 이 소프트웨어를 네트워크 서비스(SaaS)로 운영하는 경우, 수정된 소스 코드를 동일 라이선스로 공개해야 합니다.
+- 상용 라이선스가 필요한 경우 별도 문의하세요.
+
+Copyright (c) 2026 Fanen Team
