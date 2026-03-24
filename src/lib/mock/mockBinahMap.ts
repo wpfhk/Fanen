@@ -1,0 +1,53 @@
+import type { GeoEvent } from '@/features/binah-map/types';
+
+/** 비나 맵 지정학적 이벤트 Mock 데이터 */
+export const MOCK_GEO_EVENTS: GeoEvent[] = [
+  {
+    id: 'ev1',
+    title: '미중 반도체 수출 규제 강화',
+    region: '미국 / 중국',
+    lat: 35,
+    lon: -100,
+    riskScore: 82,
+    affectedSectors: ['반도체', '전자', 'IT'],
+    eventType: 'trade',
+    summary: '미국이 HBM·AI칩 대중 수출 규제를 추가 강화. 국내 반도체 기업 반사 수혜 기대.',
+    sourceUrl: '#',
+  },
+  {
+    id: 'ev2',
+    title: '중동 긴장 고조 — 이란-이스라엘 갈등',
+    region: '중동',
+    lat: 32,
+    lon: 35,
+    riskScore: 74,
+    affectedSectors: ['에너지', '방산', '조선'],
+    eventType: 'conflict',
+    summary: '호르무즈 해협 긴장으로 유가 상승 압력. 국내 방산·조선주 관심 필요.',
+    sourceUrl: '#',
+  },
+  {
+    id: 'ev3',
+    title: '유럽 그린딜 2.0 — 배터리 탄소발자국 규제',
+    region: '유럽',
+    lat: 50,
+    lon: 10,
+    riskScore: 55,
+    affectedSectors: ['2차전지', '자동차', '소재'],
+    eventType: 'policy',
+    summary: 'EU 배터리 규정 강화로 탄소 추적 의무화. K-배터리 밸류체인 대응 전략 필요.',
+    sourceUrl: '#',
+  },
+  {
+    id: 'ev4',
+    title: '일본 반도체 소재 수출 재개 논의',
+    region: '일본',
+    lat: 36,
+    lon: 138,
+    riskScore: 40,
+    affectedSectors: ['반도체', '디스플레이', 'IT'],
+    eventType: 'trade',
+    summary: '일본 산업부, 불화수소 등 핵심 소재 수출 규제 완화 검토 중. 국내 소재株 주목.',
+    sourceUrl: '#',
+  },
+];
