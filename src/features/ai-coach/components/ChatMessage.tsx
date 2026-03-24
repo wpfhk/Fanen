@@ -6,6 +6,7 @@
  * - assistant: 왼쪽 정렬 흰색 말풍선 + 핀이 아이콘
  */
 import AiBadge from '@/components/common/AiBadge';
+import { FinniAvatar } from './FinniAvatar';
 import type { ChatMessage as ChatMessageType } from '../types';
 
 /** ChatMessage Props */
@@ -32,9 +33,9 @@ export default function ChatMessage({ message, isLoading = false }: ChatMessageP
 
   return (
     <div className="flex items-start gap-2">
-      {/* 핀이 아이콘 */}
-      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white">
-        핀
+      {/* 핀이 SVG 아바타 */}
+      <div className="shrink-0">
+        <FinniAvatar size={32} />
       </div>
 
       {/* 말풍선 */}

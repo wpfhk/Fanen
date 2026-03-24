@@ -5,6 +5,8 @@
  */
 import { useState, useEffect, useCallback } from 'react';
 import { createClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { USE_MOCK } from '@/lib/mock';
+import { MOCK_PORTFOLIOS } from '@/lib/mock/mockPortfolio';
 import type { PortfolioRow } from '../types';
 
 interface UsePortfoliosReturn {
@@ -23,7 +25,21 @@ interface UsePortfoliosReturn {
   deletePortfolio: (id: string) => Promise<void>;
 }
 
+/** Mock 모드 noop 함수 */
+const noop = async () => {};
+
 export function usePortfolios(): UsePortfoliosReturn {
+  // Mock 모드: 즉시 Mock 데이터 반환
+  if (USE_MOCK) {
+    return {
+      portfolios: MOCK_PORTFOLIOS,
+      loading: false,
+      error: null,
+      createPortfolio: noop,
+      updatePortfolio: noop,
+      deletePortfolio: noop,
+    };
+  }
   const [portfolios, setPortfolios] = useState<PortfolioRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

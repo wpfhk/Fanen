@@ -7,5 +7,7 @@ export { default as LanguageToggle } from './LanguageToggle';
 export { default as UiModeSwitch } from './UiModeSwitch';
 export { default as TrafficLightSignal } from './TrafficLightSignal';
 export { default as SubscriptionGate } from './SubscriptionGate';
+export { default as PlanBadge } from './PlanBadge';
 export { default as StockChart } from './StockChart';
 export type { StockChartProps } from './StockChart';
+export { default as BottomNav } from './BottomNav';

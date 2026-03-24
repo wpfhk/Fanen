@@ -1,9 +1,12 @@
 /**
  * useSectorCausalMap 훅
  * Supabase sector_causal_maps 테이블에서 섹터 인과관계 데이터 조회
+ * USE_MOCK=true 시 mockSector 데이터 사용
  */
 import { useState, useEffect } from 'react';
 import { createClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { USE_MOCK } from '@/lib/mock';
+import { MOCK_SECTOR_NODES, MOCK_SECTOR_LINKS } from '@/lib/mock/mockSector';
 import type { Database } from '@/types/database.types';
 import type { SectorNode, SectorLink } from '../types';
 
@@ -19,18 +22,21 @@ interface UseSectorCausalMapReturn {
 }
 
 export function useSectorCausalMap(): UseSectorCausalMapReturn {
-  const [nodes, setNodes] = useState<SectorNode[]>([]);
-  const [links, setLinks] = useState<SectorLink[]>([]);
+  const [nodes, setNodes] = useState<SectorNode[]>(USE_MOCK ? MOCK_SECTOR_NODES : []);
+  const [links, setLinks] = useState<SectorLink[]>(USE_MOCK ? MOCK_SECTOR_LINKS : []);
   const [selectedSector, setSelectedSector] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!USE_MOCK);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // Mock 모드 — Supabase 없이 mock 데이터 사용
+    if (USE_MOCK) return;
+
     async function fetchData() {
       // Supabase 설정 여부 확인
       if (!isSupabaseConfigured()) {
-        setNodes([]);
-        setLinks([]);
+        setNodes(MOCK_SECTOR_NODES);
+        setLinks(MOCK_SECTOR_LINKS);
         setLoading(false);
         return;
       }
@@ -38,8 +44,8 @@ export function useSectorCausalMap(): UseSectorCausalMapReturn {
       // Supabase 클라이언트 생성
       const supabase = createClient();
       if (!supabase) {
-        setNodes([]);
-        setLinks([]);
+        setNodes(MOCK_SECTOR_NODES);
+        setLinks(MOCK_SECTOR_LINKS);
         setLoading(false);
         return;
       }

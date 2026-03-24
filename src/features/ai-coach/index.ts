@@ -2,6 +2,7 @@
 export { default as AiCoachChat } from './components/AiCoachChat';
 export { default as ChatMessage } from './components/ChatMessage';
 export { default as ChatInput } from './components/ChatInput';
+export { FinniAvatar } from './components/FinniAvatar';
 // useAiCoach — 배럴 제외. 컴포넌트 내부에서 직접 import
 export type { ChatMessage as ChatMessageType } from './types';
 export { QUICK_QUESTIONS } from './types';

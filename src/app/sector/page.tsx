@@ -1,17 +1,18 @@
-import type { Metadata } from 'next';
-import { DisclaimerBanner } from '@/components/common';
-import { SectorMapSection } from '@/features/sector-map';
+'use client';
 
-export const metadata: Metadata = {
-  title: '섹터 인과관계 — 파낸',
-  description: '섹터 간 인과관계 맵으로 시장 구조를 시각화합니다.',
-};
+import { useRouter } from 'next/navigation';
+import { DisclaimerBanner, SubscriptionGate } from '@/components/common';
+import { SectorMapSection } from '@/features/sector-map';
+import { useSubscription } from '@/hooks/useSubscription';
 
 /**
  * 섹터 인과관계 전용 페이지
- * 서버 컴포넌트
+ * Pro 플랜 이상 필요
  */
 export default function SectorPage() {
+  const { plan } = useSubscription();
+  const router = useRouter();
+
   return (
     <main className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -28,8 +29,14 @@ export default function SectorPage() {
           <DisclaimerBanner variant="default" />
         </div>
 
-        {/* 섹터 인과관계 맵 */}
-        <SectorMapSection />
+        {/* 섹터 인과관계 맵 — Pro 플랜 이상 */}
+        <SubscriptionGate
+          requiredPlan="pro"
+          currentPlan={plan}
+          onUpgradeClick={() => router.push('/pricing')}
+        >
+          <SectorMapSection />
+        </SubscriptionGate>
       </div>
     </main>
   );

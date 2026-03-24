@@ -5,6 +5,8 @@
  */
 import { useState, useEffect, useCallback } from 'react';
 import { createClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { USE_MOCK } from '@/lib/mock';
+import { MOCK_TRADES } from '@/lib/mock/mockTrading';
 import type { MockTradeRow } from '../types';
 
 /** 거래 실행 파라미터 */
@@ -26,7 +28,22 @@ interface UseMockTradesReturn {
   refetchTrades: () => Promise<void>;
 }
 
+/** Mock 모드 noop 함수 */
+const noopTrade = async () => false;
+const noopRefetch = async () => {};
+
 export function useMockTrades(): UseMockTradesReturn {
+  // Mock 모드: 즉시 Mock 데이터 반환
+  if (USE_MOCK) {
+    return {
+      trades: MOCK_TRADES,
+      loading: false,
+      error: null,
+      executing: false,
+      executeTrade: noopTrade,
+      refetchTrades: noopRefetch,
+    };
+  }
   const [trades, setTrades] = useState<MockTradeRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

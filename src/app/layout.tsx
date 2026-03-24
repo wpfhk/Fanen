@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/common/Header';
+import BottomNav from '@/components/common/BottomNav';
+import { ToastProvider } from '@/components/ui/Toast';
 
 /** Inter 폰트 로드 — 라틴 + 한국어 지원 */
 const inter = Inter({ subsets: ['latin'] });
@@ -20,9 +22,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body className={`${inter.className} antialiased`}>
-        <Header />
-        <main>{children}</main>
+      <body className={`${inter.className} antialiased pb-16 md:pb-0`}>
+        <ToastProvider>
+          <Header />
+          <main>{children}</main>
+          <BottomNav />
+        </ToastProvider>
       </body>
     </html>
   );

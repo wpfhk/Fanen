@@ -2,103 +2,61 @@
 
 /**
  * NewsImpactList 컴포넌트
- * 뉴스 임팩트 카드 목록 및 구독 게이트, 언어 토글 통합
- * 종목 코드가 있는 뉴스 항목에는 "차트 보기" 토글 기능 포함
+ * 뉴스 임팩트 카드 목록 — 필터 바, 구독 게이트, 언어 토글 통합
  */
-import { useState, useEffect } from 'react';
-import { DisclaimerBanner, LanguageToggle, SubscriptionGate, StockChart } from '@/components/common';
+import { useState, useMemo } from 'react';
+import { LanguageToggle, SubscriptionGate } from '@/components/common';
 import { useNewsImpacts } from '../hooks/useNewsImpacts';
 import NewsImpactCard from './NewsImpactCard';
-import type { StockPriceResponse } from '@/types/market.types';
 import type { NewsImpactCardData } from '../types';
+
+/** 섹터 필터 옵션 */
+const SECTOR_OPTIONS = [
+  '전체', 'IT', '반도체', '바이오', '금융', '제조', '자동차',
+  '철강', '소재', '방산', '에너지', '플랫폼', '헬스케어', '2차전지', '전력', '항공', '은행',
+] as const;
+
+/** 영향도 필터 레벨 */
+type ImpactLevel = '전체' | '높음' | '중간' | '낮음';
 
 interface NewsImpactListProps {
   currentPlan?: 'free' | 'pro' | 'premium';
-}
-
-// Railway API URL (클라이언트에서 직접 호출)
-const RAILWAY_API_URL =
-  process.env.NEXT_PUBLIC_RAILWAY_API_URL || 'http://localhost:8000';
-
-/**
- * 개별 뉴스 아이템 래퍼 — 종목 차트 토글 포함
- */
-function NewsItemWithChart({
-  item,
-  languageLevel,
-}: {
-  item: NewsImpactCardData;
-  languageLevel: 'general' | 'expert';
-}) {
-  const [chartOpen, setChartOpen] = useState(false);
-  const [chartData, setChartData] = useState<StockPriceResponse | null>(null);
-  const [chartLoading, setChartLoading] = useState(false);
-
-  // 차트 펼칠 때 종목 데이터 fetch (클라이언트에서 Railway 직접 호출)
-  useEffect(() => {
-    if (!chartOpen || !item.stock_code || chartData) return;
-
-    setChartLoading(true);
-    fetch(`${RAILWAY_API_URL}/api/krx/stock?code=${item.stock_code}`)
-      .then((res) => {
-        if (!res.ok) throw new Error('종목 데이터 조회 실패');
-        return res.json() as Promise<StockPriceResponse>;
-      })
-      .then((data) => setChartData(data))
-      .catch(() => {
-        // Railway 미실행 시 에러 무시 — 차트 숨김 유지
-      })
-      .finally(() => setChartLoading(false));
-  }, [chartOpen, item.stock_code, chartData]);
-
-  return (
-    <div>
-      {/* 기존 뉴스 카드 */}
-      <NewsImpactCard item={item} languageLevel={languageLevel} />
-
-      {/* 종목 코드가 있을 때만 차트 토글 버튼 표시 */}
-      {item.stock_code && (
-        <div className="mt-1 mb-2 px-1">
-          <button
-            type="button"
-            onClick={() => setChartOpen((prev) => !prev)}
-            className="text-xs text-blue-600 hover:text-blue-800 hover:underline focus:outline-none"
-            aria-expanded={chartOpen}
-          >
-            {chartOpen ? '차트 닫기 ▲' : `차트 보기 (${item.stock_code}) ▼`}
-          </button>
-
-          {/* 차트 확장 영역 */}
-          {chartOpen && (
-            <div className="mt-2">
-              {chartLoading && (
-                <div className="rounded-lg border border-gray-200 bg-gray-100 animate-pulse h-32" />
-              )}
-              {!chartLoading && chartData && (
-                <StockChart
-                  data={chartData.chart_data}
-                  title={chartData.name || item.stock_code}
-                  type="line"
-                  isMock={chartData.mock}
-                />
-              )}
-              {!chartLoading && !chartData && (
-                <div className="rounded-lg border border-gray-200 bg-gray-50 p-3 text-xs text-gray-400 text-center">
-                  차트 데이터를 불러올 수 없습니다
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  );
 }
 
 export default function NewsImpactList({ currentPlan }: NewsImpactListProps) {
   // 언어 레벨 상태 (일반인/전문가 모드)
   const [languageLevel, setLanguageLevel] = useState<'general' | 'expert'>('general');
   const { data, loading, error } = useNewsImpacts();
+
+  // 필터 상태
+  const [sectorFilter, setSectorFilter] = useState<string>('전체');
+  const [impactFilter, setImpactFilter] = useState<ImpactLevel>('전체');
+
+  // 필터링된 데이터
+  const filteredData = useMemo(() => {
+    return data.filter((item: NewsImpactCardData) => {
+      // 섹터 필터
+      if (sectorFilter !== '전체') {
+        const matchesSector = item.affected_sectors.some(
+          (s) => s.includes(sectorFilter) || sectorFilter.includes(s)
+        );
+        if (!matchesSector) return false;
+      }
+      // 영향도 필터
+      if (impactFilter === '높음' && item.impact_score < 67) return false;
+      if (impactFilter === '중간' && (item.impact_score < 34 || item.impact_score >= 67)) return false;
+      if (impactFilter === '낮음' && item.impact_score >= 34) return false;
+      return true;
+    });
+  }, [data, sectorFilter, impactFilter]);
+
+  // 필터 초기화
+  const resetFilters = () => {
+    setSectorFilter('전체');
+    setImpactFilter('전체');
+  };
+
+  const hasActiveFilter = sectorFilter !== '전체' || impactFilter !== '전체';
 
   return (
     <section className="space-y-4">
@@ -111,8 +69,55 @@ export default function NewsImpactList({ currentPlan }: NewsImpactListProps) {
         />
       </div>
 
-      {/* 면책 고지 — 분석 화면 필수 */}
-      <DisclaimerBanner variant="signal" />
+      {/* 필터 바 */}
+      <div className="flex flex-wrap items-center gap-3 rounded-lg border border-gray-200 bg-white p-3">
+        {/* 섹터 필터 */}
+        <div className="flex items-center gap-2">
+          <label htmlFor="sector-filter" className="text-xs font-medium text-gray-600">
+            섹터
+          </label>
+          <select
+            id="sector-filter"
+            value={sectorFilter}
+            onChange={(e) => setSectorFilter(e.target.value)}
+            className="rounded-md border border-gray-300 bg-white px-2 py-1 text-sm text-gray-700 focus:border-blue-500 focus:outline-none"
+          >
+            {SECTOR_OPTIONS.map((s) => (
+              <option key={s} value={s}>{s}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* 영향도 필터 */}
+        <div className="flex items-center gap-1">
+          <span className="text-xs font-medium text-gray-600 mr-1">영향도</span>
+          {(['전체', '높음', '중간', '낮음'] as ImpactLevel[]).map((level) => (
+            <button
+              key={level}
+              type="button"
+              onClick={() => setImpactFilter(level)}
+              className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                impactFilter === level
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
+              {level === '높음' ? '높음(7+)' : level === '중간' ? '중간(4~7)' : level === '낮음' ? '낮음(~4)' : level}
+            </button>
+          ))}
+        </div>
+
+        {/* 필터 초기화 */}
+        {hasActiveFilter && (
+          <button
+            type="button"
+            onClick={resetFilters}
+            className="ml-auto text-xs text-gray-500 hover:text-gray-700 underline"
+          >
+            필터 초기화
+          </button>
+        )}
+      </div>
 
       {/* 구독 게이트 — Pro 이상 필요 */}
       <SubscriptionGate requiredPlan="pro" currentPlan={currentPlan ?? 'free'}>
@@ -133,17 +138,19 @@ export default function NewsImpactList({ currentPlan }: NewsImpactListProps) {
         )}
 
         {/* 빈 데이터 안내 */}
-        {!loading && !error && data.length === 0 && (
+        {!loading && !error && filteredData.length === 0 && (
           <div className="rounded-lg border border-gray-200 bg-gray-50 p-8 text-center text-sm text-gray-500">
-            표시할 뉴스 임팩트 정보가 없습니다.
+            {hasActiveFilter
+              ? '필터 조건에 맞는 뉴스가 없습니다. 필터를 조정해보세요.'
+              : '표시할 뉴스 임팩트 정보가 없습니다.'}
           </div>
         )}
 
-        {/* 카드 목록 — 종목 차트 토글 래퍼 사용 */}
-        {!loading && data.length > 0 && (
+        {/* 카드 목록 */}
+        {!loading && filteredData.length > 0 && (
           <div className="space-y-3">
-            {data.map((item) => (
-              <NewsItemWithChart
+            {filteredData.map((item) => (
+              <NewsImpactCard
                 key={item.id}
                 item={item}
                 languageLevel={languageLevel}

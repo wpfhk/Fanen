@@ -17,8 +17,10 @@ export async function GET(request: NextRequest) {
 
     if (!error) {
       // 인증 성공 → next 파라미터 경로 또는 홈으로 리다이렉트
+      // 오픈 리다이렉트 방지: 상대 경로만 허용 (외부 URL 차단)
       const next = searchParams.get('next') ?? '/';
-      return NextResponse.redirect(`${origin}${next}`);
+      const safePath = next.startsWith('/') && !next.startsWith('//') ? next : '/';
+      return NextResponse.redirect(`${origin}${safePath}`);
     }
   }
 

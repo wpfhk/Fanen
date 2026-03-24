@@ -79,15 +79,23 @@ export default function MockTradingDashboard() {
         </div>
       </div>
 
-      {/* 수익률 */}
-      <div className="flex items-center gap-2">
-        <span className="text-sm font-medium text-gray-600">수익률</span>
-        <span
-          className={`text-xl font-bold ${isPositive ? 'text-green-600' : 'text-red-600'}`}
-        >
-          {isPositive ? '+' : ''}
-          {profitRate.toFixed(2)}%
-        </span>
+      {/* 수익률 비교 카드 */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="rounded-lg bg-gray-50 p-4">
+          <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">내 수익률</p>
+          <p className={`mt-1 text-2xl font-bold ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
+            {isPositive ? '+' : ''}{profitRate.toFixed(2)}%
+          </p>
+        </div>
+        <div className="rounded-lg bg-gray-50 p-4">
+          <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">코스피 수익률</p>
+          <p className="mt-1 text-2xl font-bold text-green-600">+2.10%</p>
+          <p className="mt-1 text-xs text-gray-400">
+            {isPositive && profitRate > 2.1
+              ? `코스피 대비 +${(profitRate - 2.1).toFixed(2)}%p 초과 수익`
+              : '코스피 대비 수익률을 비교해보세요'}
+          </p>
+        </div>
       </div>
 
       {/* 모의투자 안내 */}

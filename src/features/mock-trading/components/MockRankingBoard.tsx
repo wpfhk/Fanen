@@ -17,6 +17,21 @@ function getMedalEmoji(rank: number | null): string {
   return '';
 }
 
+/** 랭킹 변동 표시 컴포넌트 (Mock: 순위 기반 시뮬레이션) */
+function RankChangeIndicator({ rank }: { rank: number | null }) {
+  if (rank === null) return null;
+  // Mock 변동값: 짝수 순위는 상승, 3의 배수는 하락, 나머지는 변동 없음
+  const mockChange = rank % 3 === 0 ? -(Math.floor(rank / 3)) : rank % 2 === 0 ? Math.ceil(rank / 4) : 0;
+
+  if (mockChange > 0) {
+    return <span className="text-xs font-medium text-green-600 ml-1">▲{mockChange}</span>;
+  }
+  if (mockChange < 0) {
+    return <span className="text-xs font-medium text-red-600 ml-1">▼{Math.abs(mockChange)}</span>;
+  }
+  return <span className="text-xs font-medium text-gray-400 ml-1">-</span>;
+}
+
 export default function MockRankingBoard() {
   const { season } = useMockAccount();
   const { rankings, loading, error, currentUserRank } = useMockRanking(season?.id);
@@ -75,6 +90,7 @@ export default function MockRankingBoard() {
           <thead>
             <tr className="border-b border-gray-200">
               <th className="pb-2 text-center font-medium text-gray-500 w-16">순위</th>
+              <th className="pb-2 text-center font-medium text-gray-500 w-16">변동</th>
               <th className="pb-2 text-left font-medium text-gray-500">닉네임</th>
               <th className="pb-2 text-right font-medium text-gray-500">수익률</th>
             </tr>
@@ -101,6 +117,9 @@ export default function MockRankingBoard() {
                         <span>{item.rank ?? '-'}</span>
                       )}
                     </span>
+                  </td>
+                  <td className="py-3 text-center">
+                    <RankChangeIndicator rank={item.rank} />
                   </td>
                   <td className="py-3">
                     <span className={`font-medium ${isMe ? 'text-blue-700' : 'text-gray-900'}`}>

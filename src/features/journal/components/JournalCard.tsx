@@ -4,7 +4,9 @@
  * 투자 일지 카드 컴포넌트
  * 개별 일지 항목을 카드 형태로 표시
  */
-import { AiBadge } from '@/components/common';
+import { AiBadge, SubscriptionGate } from '@/components/common';
+import { useSubscription } from '@/hooks/useSubscription';
+import { useRouter } from 'next/navigation';
 import { getEmotionConfig } from '../types';
 import type { TradeJournalRow } from '../types';
 
@@ -28,6 +30,8 @@ function formatDate(dateString: string): string {
 /** 투자 일지 카드 */
 export default function JournalCard({ journal, onEdit, onDelete }: JournalCardProps) {
   const emotionConfig = getEmotionConfig(journal.emotion);
+  const { plan } = useSubscription();
+  const router = useRouter();
 
   const handleDelete = () => {
     if (window.confirm('이 일지를 삭제하시겠습니까?')) {
@@ -93,14 +97,20 @@ export default function JournalCard({ journal, onEdit, onDelete }: JournalCardPr
         </p>
       )}
 
-      {/* AI 피드백 (있는 경우만 표시) */}
+      {/* AI 피드백 — Pro 플랜 이상 필요 */}
       {journal.ai_feedback && (
-        <div className="mt-3 rounded-md border border-blue-100 bg-blue-50 p-3">
-          <div className="mb-1.5">
-            <AiBadge label="핀이 분석" />
+        <SubscriptionGate
+          requiredPlan="pro"
+          currentPlan={plan}
+          onUpgradeClick={() => router.push('/pricing')}
+        >
+          <div className="mt-3 rounded-md border border-blue-100 bg-blue-50 p-3">
+            <div className="mb-1.5">
+              <AiBadge label="핀이 분석" />
+            </div>
+            <p className="text-sm text-blue-800">{journal.ai_feedback}</p>
           </div>
-          <p className="text-sm text-blue-800">{journal.ai_feedback}</p>
-        </div>
+        </SubscriptionGate>
       )}
     </article>
   );

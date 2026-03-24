@@ -7,7 +7,10 @@ import type { NextRequest } from 'next/server';
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 
 /** 인증이 필요한 보호 경로 목록 */
-const PROTECTED_ROUTES = ['/profile', '/portfolio', '/dividend', '/mock-trading', '/journal'];
+const PROTECTED_ROUTES = ['/profile', '/portfolio', '/coach', '/journal', '/mock-trading', '/dividend', '/sector', '/signal', '/report', '/tax'];
+
+/** 인증된 사용자가 접근할 필요 없는 Auth 전용 경로 */
+const AUTH_ONLY_ROUTES = ['/login', '/signup', '/forgot-password', '/reset-password'];
 
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -60,6 +63,17 @@ export async function middleware(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname = '/login';
     url.searchParams.set('next', request.nextUrl.pathname);
+    return NextResponse.redirect(url);
+  }
+
+  // 이미 로그인한 사용자가 Auth 전용 경로 접근 시 홈으로 리다이렉트
+  const isAuthOnlyRoute = AUTH_ONLY_ROUTES.some((route) =>
+    request.nextUrl.pathname.startsWith(route)
+  );
+
+  if (isAuthOnlyRoute && user) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/';
     return NextResponse.redirect(url);
   }
 

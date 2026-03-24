@@ -10,6 +10,16 @@ import { useJournals } from '../hooks/useJournals';
 import JournalCard from './JournalCard';
 import JournalForm from './JournalForm';
 import type { TradeJournalRow, EmotionType } from '../types';
+import { EMOTION_CONFIG } from '../types';
+
+/** 감정 필터 옵션 */
+const EMOTION_FILTERS: { key: EmotionType | 'all'; label: string }[] = [
+  { key: 'all', label: '전체' },
+  { key: 'excited', label: `낙관 ${EMOTION_CONFIG.excited.emoji}` },
+  { key: 'neutral', label: `중립 ${EMOTION_CONFIG.neutral.emoji}` },
+  { key: 'anxious', label: `불안 ${EMOTION_CONFIG.anxious.emoji}` },
+  { key: 'regret', label: `후회 ${EMOTION_CONFIG.regret.emoji}` },
+];
 
 /** 스켈레톤 로딩 카드 */
 function SkeletonCard() {
@@ -20,6 +30,7 @@ function SkeletonCard() {
 export default function JournalList() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingJournal, setEditingJournal] = useState<TradeJournalRow | null>(null);
+  const [emotionFilter, setEmotionFilter] = useState<EmotionType | 'all'>('all');
 
   const { journals, loading, error, createJournal, updateJournal, deleteJournal } = useJournals();
 
@@ -86,6 +97,24 @@ export default function JournalList() {
         </button>
       </div>
 
+      {/* 감정 태그 필터 */}
+      <div className="mb-4 flex flex-wrap gap-2">
+        {EMOTION_FILTERS.map((filter) => (
+          <button
+            key={filter.key}
+            type="button"
+            onClick={() => setEmotionFilter(filter.key)}
+            className={`rounded-full px-3 py-1.5 text-sm font-medium transition-colors ${
+              emotionFilter === filter.key
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            {filter.label}
+          </button>
+        ))}
+      </div>
+
       {/* 로딩 상태 */}
       {loading && (
         <div className="space-y-4" aria-label="일지 로딩 중">
@@ -123,19 +152,28 @@ export default function JournalList() {
       )}
 
       {/* 일지 목록 */}
-      {!loading && !error && journals.length > 0 && (
-        <ul className="space-y-4" aria-label="투자 일지 목록">
-          {journals.map((journal) => (
-            <li key={journal.id}>
-              <JournalCard
-                journal={journal}
-                onEdit={handleEdit}
-                onDelete={deleteJournal}
-              />
-            </li>
-          ))}
-        </ul>
-      )}
+      {!loading && !error && journals.length > 0 && (() => {
+        const filtered = emotionFilter === 'all'
+          ? journals
+          : journals.filter((j) => j.emotion === emotionFilter);
+        return filtered.length > 0 ? (
+          <ul className="space-y-4" aria-label="투자 일지 목록">
+            {filtered.map((journal) => (
+              <li key={journal.id}>
+                <JournalCard
+                  journal={journal}
+                  onEdit={handleEdit}
+                  onDelete={deleteJournal}
+                />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className="rounded-lg border border-gray-200 bg-white p-8 text-center shadow-sm">
+            <p className="text-gray-500">해당 감정의 일지가 없습니다.</p>
+          </div>
+        );
+      })()}
 
       {/* 생성/수정 폼 모달 */}
       {isFormOpen && (

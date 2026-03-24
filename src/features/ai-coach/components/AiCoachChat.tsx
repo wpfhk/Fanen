@@ -13,6 +13,7 @@ import { useAiCoach } from '../hooks/useAiCoach';
 import { QUICK_QUESTIONS } from '../types';
 import ChatMessageComponent from './ChatMessage';
 import ChatInput from './ChatInput';
+import { FinniAvatar } from './FinniAvatar';
 
 /** AI 코치 핀이 채팅 통합 컴포넌트 */
 export default function AiCoachChat() {
@@ -32,10 +33,8 @@ export default function AiCoachChat() {
       {/* 헤더 */}
       <div className="flex items-center justify-between border-b border-gray-200 bg-white px-4 py-3">
         <div className="flex items-center gap-3">
-          {/* 핀이 아이콘 */}
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white shadow">
-            핀
-          </div>
+          {/* 핀이 SVG 아바타 */}
+          <FinniAvatar size={40} />
           <div>
             <p className="text-sm font-semibold text-gray-900">핀이 (FinAI)</p>
             <p className="text-xs text-gray-500">AI 투자 코치</p>

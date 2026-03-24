@@ -6,6 +6,8 @@
  */
 import { useState, useEffect, useCallback } from 'react';
 import { createClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { USE_MOCK } from '@/lib/mock';
+import { MOCK_ACCOUNT, MOCK_SEASON } from '@/lib/mock/mockTrading';
 import type { MockAccountRow, MockSeasonRow } from '../types';
 
 /** 초기 시드머니 1,000만원 */
@@ -19,7 +21,14 @@ interface UseMockAccountReturn {
   refetch: () => Promise<void>;
 }
 
+/** Mock 모드 noop 함수 */
+const noopRefetch = async () => {};
+
 export function useMockAccount(): UseMockAccountReturn {
+  // Mock 모드: 즉시 Mock 데이터 반환
+  if (USE_MOCK) {
+    return { account: MOCK_ACCOUNT, season: MOCK_SEASON, loading: false, error: null, refetch: noopRefetch };
+  }
   const [account, setAccount] = useState<MockAccountRow | null>(null);
   const [season, setSeason] = useState<MockSeasonRow | null>(null);
   const [loading, setLoading] = useState(true);

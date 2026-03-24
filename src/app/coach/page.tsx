@@ -1,19 +1,15 @@
-/**
- * AI 코치 "핀이" 페이지 (서버 컴포넌트)
- * - /coach 경로
- * - AiCoachChat 클라이언트 컴포넌트 렌더링
- */
-import type { Metadata } from 'next';
+'use client';
+
+import { useRouter } from 'next/navigation';
 import { AiCoachChat } from '@/features/ai-coach';
-import DisclaimerBanner from '@/components/common/DisclaimerBanner';
+import { DisclaimerBanner, SubscriptionGate } from '@/components/common';
+import { useSubscription } from '@/hooks/useSubscription';
 
-export const metadata: Metadata = {
-  title: 'AI 코치 핀이 | 파낸',
-  description: '개인 AI 투자 코치 핀이에게 투자 궁금증을 물어보세요.',
-};
-
-/** AI 코치 핀이 페이지 */
+/** AI 코치 핀이 페이지 — Pro 플랜 이상 필요 */
 export default function CoachPage() {
+  const { plan } = useSubscription();
+  const router = useRouter();
+
   return (
     <main className="mx-auto max-w-2xl px-4 py-8">
       <div className="mb-6">
@@ -26,7 +22,13 @@ export default function CoachPage() {
       <DisclaimerBanner variant="default" />
 
       <div className="mt-4">
-        <AiCoachChat />
+        <SubscriptionGate
+          requiredPlan="pro"
+          currentPlan={plan}
+          onUpgradeClick={() => router.push('/pricing')}
+        >
+          <AiCoachChat />
+        </SubscriptionGate>
       </div>
     </main>
   );

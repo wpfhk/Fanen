@@ -6,7 +6,7 @@
  */
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
-import { DisclaimerBanner, UiModeSwitch, SubscriptionGate } from '@/components/common';
+import { UiModeSwitch, SubscriptionGate } from '@/components/common';
 import { useSectorCausalMap } from '../hooks/useSectorCausalMap';
 import SectorDrilldownPanel from './SectorDrilldownPanel';
 
@@ -31,8 +31,7 @@ export default function SectorMapSection({ currentPlan }: SectorMapSectionProps)
         <UiModeSwitch onToggle={(mode) => setUiMode(mode)} />
       </div>
 
-      {/* 면책 고지 — 분석 화면 필수 */}
-      <DisclaimerBanner variant="default" />
+      {/* 면책 고지는 페이지 레벨(app/sector/page.tsx)에서 렌더 — 중복 방지 */}
 
       {/* 구독 게이트 — Pro 이상 필요 */}
       <SubscriptionGate requiredPlan="pro" currentPlan={currentPlan ?? 'free'}>

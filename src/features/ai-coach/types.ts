@@ -7,6 +7,8 @@ export interface ChatMessage {
   content: string;
   source_urls?: string[];
   disclaimer?: string;
+  /** AI 응답 여부 플래그 — AiBadge 표시에 사용 */
+  isAi?: boolean;
   timestamp: Date;
 }
 

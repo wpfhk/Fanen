@@ -39,6 +39,27 @@ export default function PortfolioCard({ portfolio, onEdit, onDelete }: Portfolio
         {formatKRW(portfolio.total_value)}
       </p>
 
+      {/* 종목별 비중 (Mock 데이터) */}
+      <div className="mt-3 space-y-2">
+        {[
+          { name: '삼성전자', weight: 40, color: 'bg-blue-500' },
+          { name: 'SK하이닉스', weight: 25, color: 'bg-green-500' },
+          { name: 'NAVER', weight: 20, color: 'bg-purple-500' },
+          { name: '카카오', weight: 15, color: 'bg-yellow-500' },
+        ].map((stock) => (
+          <div key={stock.name} className="flex items-center gap-2 text-sm">
+            <span className="w-20 text-gray-600 truncate">{stock.name}</span>
+            <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
+              <div
+                className={`h-full rounded-full ${stock.color}`}
+                style={{ width: `${stock.weight}%` }}
+              />
+            </div>
+            <span className="w-10 text-right text-gray-500">{stock.weight}%</span>
+          </div>
+        ))}
+      </div>
+
       {/* 생성일 */}
       <p className="mt-1 text-xs text-gray-400">
         생성일: {formatDate(portfolio.created_at)}

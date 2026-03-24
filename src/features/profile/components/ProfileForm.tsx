@@ -5,13 +5,14 @@
  * UI 모드, 언어 수준, 투자 성향 설정
  */
 import { useState } from 'react';
+import { useToast } from '@/components/ui';
 import { useProfile } from '../hooks/useProfile';
 import type { Profile } from '../hooks/useProfile';
 
 export function ProfileForm() {
   const { profile, loading, error, updateProfile } = useProfile();
+  const { toast } = useToast();
   const [saving, setSaving] = useState(false);
-  const [saved, setSaved] = useState(false);
 
   if (loading) {
     return (
@@ -39,11 +40,14 @@ export function ProfileForm() {
 
   const handleSave = async (updates: Omit<Parameters<typeof updateProfile>[0], never>) => {
     setSaving(true);
-    setSaved(false);
-    await updateProfile(updates);
-    setSaving(false);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+    try {
+      await updateProfile(updates);
+      toast.success('프로필이 저장됐습니다');
+    } catch {
+      toast.error('저장에 실패했습니다');
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -121,28 +125,8 @@ export function ProfileForm() {
         </div>
       </section>
 
-      {/* 현재 플랜 */}
-      <section>
-        <h2 className="text-base font-semibold text-gray-900 mb-3">현재 플랜</h2>
-        <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
-          <div className="flex items-center justify-between">
-            <span className="font-medium text-gray-900">
-              {profile.subscription_tier === 'free'
-                ? 'Free'
-                : profile.subscription_tier === 'pro'
-                ? 'Pro'
-                : 'Premium'}
-            </span>
-            {profile.subscription_tier === 'free' && (
-              <span className="text-xs text-blue-600 font-medium">Pro로 업그레이드 →</span>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* 저장 피드백 */}
+      {/* 저장 중 표시 */}
       {saving && <p className="text-sm text-gray-500">저장 중...</p>}
-      {saved && <p className="text-sm text-green-600">저장되었습니다.</p>}
     </div>
   );
 }

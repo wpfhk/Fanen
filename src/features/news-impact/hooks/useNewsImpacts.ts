@@ -1,10 +1,13 @@
 /**
  * useNewsImpacts 훅
  * Supabase에서 뉴스 임팩트 데이터를 조회하고 Railway AI 분석 결과를 병합
+ * USE_MOCK=true 시 mockNews 데이터 사용
  */
 import { useState, useEffect } from 'react';
 import { createClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { analyzeNews } from '@/lib/railway';
+import { USE_MOCK } from '@/lib/mock';
+import { MOCK_NEWS_IMPACTS } from '@/lib/mock/mockNews';
 import type { Database } from '@/types/database.types';
 import type { NewsImpactCardData } from '../types';
 import { scoreToSignal, splitSummary } from '../types';
@@ -18,15 +21,18 @@ interface UseNewsImpactsReturn {
 }
 
 export function useNewsImpacts(): UseNewsImpactsReturn {
-  const [data, setData] = useState<NewsImpactCardData[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<NewsImpactCardData[]>(USE_MOCK ? MOCK_NEWS_IMPACTS : []);
+  const [loading, setLoading] = useState(!USE_MOCK);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // Mock 모드 — Supabase 없이 mock 데이터 사용
+    if (USE_MOCK) return;
+
     async function fetchData() {
       // Supabase 설정 여부 확인
       if (!isSupabaseConfigured()) {
-        setData([]);
+        setData(MOCK_NEWS_IMPACTS);
         setLoading(false);
         return;
       }
@@ -34,7 +40,7 @@ export function useNewsImpacts(): UseNewsImpactsReturn {
       // Supabase 클라이언트 생성
       const supabase = createClient();
       if (!supabase) {
-        setData([]);
+        setData(MOCK_NEWS_IMPACTS);
         setLoading(false);
         return;
       }

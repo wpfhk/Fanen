@@ -1,11 +1,16 @@
 /**
  * AI 코치 "핀이" 채팅 훅
- * 메시지 상태 관리 및 Railway API 연동
+ * 메시지 상태 관리, localStorage 히스토리 저장, Railway API / Mock 분기
  * 주의: 'use client' 지시어 없음 — 훅은 클라이언트 컴포넌트 내부에서 import
  */
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { askCoach } from '@/lib/railway';
+import { USE_MOCK } from '@/lib/mock';
+import { mockAskCoach } from './mockCoach';
 import type { ChatMessage } from '../types';
+
+/** localStorage 키 */
+const STORAGE_KEY = 'fanen-coach-history';
 
 /** 환영 메시지 (초기 상태) */
 const WELCOME_MESSAGE: ChatMessage = {
@@ -32,11 +37,36 @@ export function useAiCoach(): UseAiCoachReturn {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  /** localStorage에서 히스토리 복원 */
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed: ChatMessage[] = JSON.parse(saved);
+        if (parsed.length > 0) {
+          setMessages(parsed);
+        }
+      }
+    } catch {
+      // localStorage 파싱 오류 시 기본 상태 유지
+    }
+  }, []);
+
+  /** 메시지 변경 시 localStorage에 저장 */
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+    } catch {
+      // localStorage 쓰기 실패 시 무시
+    }
+  }, [messages]);
+
   /**
    * 사용자 질문을 전송하고 핀이 응답을 메시지 목록에 추가
-   * @param question 사용자 질문 텍스트
+   * Mock 모드: mockAskCoach로 1.5초 지연 후 랜덤 응답
+   * 실 환경: Railway API 호출
    */
-  const sendMessage = async (question: string): Promise<void> => {
+  const sendMessage = useCallback(async (question: string): Promise<void> => {
     if (!question.trim()) return;
 
     // 1. 사용자 메시지 즉시 추가
@@ -51,16 +81,19 @@ export function useAiCoach(): UseAiCoachReturn {
     setError(null);
 
     try {
-      // 2. Railway API 호출 (금융 수치는 Railway에서만 생성)
-      const result = await askCoach({ question: question.trim(), language_level: 'general' });
+      // 2. Mock / Railway API 분기
+      const result = USE_MOCK
+        ? await mockAskCoach({ question: question.trim() })
+        : await askCoach({ question: question.trim(), language_level: 'general' });
 
-      // 3. 어시스턴트 응답 메시지 추가
+      // 3. 어시스턴트 응답 메시지 추가 (isAi 플래그 포함)
       const assistantMessage: ChatMessage = {
         id: String(Date.now() + Math.random()),
         role: 'assistant',
         content: result.answer,
         source_urls: result.source_urls,
         disclaimer: result.disclaimer,
+        isAi: true,
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, assistantMessage]);
@@ -71,18 +104,22 @@ export function useAiCoach(): UseAiCoachReturn {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   /** 대화 기록을 초기화하고 환영 메시지로 리셋 */
-  const clearHistory = (): void => {
-    setMessages([
-      {
-        ...WELCOME_MESSAGE,
-        timestamp: new Date(),
-      },
-    ]);
+  const clearHistory = useCallback((): void => {
+    const freshWelcome = {
+      ...WELCOME_MESSAGE,
+      timestamp: new Date(),
+    };
+    setMessages([freshWelcome]);
     setError(null);
-  };
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      // localStorage 삭제 실패 시 무시
+    }
+  }, []);
 
   return { messages, loading, error, sendMessage, clearHistory };
 }

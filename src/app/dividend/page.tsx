@@ -1,13 +1,15 @@
-import type { Metadata } from 'next';
-import { DisclaimerBanner } from '@/components/common';
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { DisclaimerBanner, SubscriptionGate } from '@/components/common';
 import { DividendCalendar, DividendSimulator } from '@/features/dividend';
+import { useSubscription } from '@/hooks/useSubscription';
 
-export const metadata: Metadata = {
-  title: '배당 캘린더 — 파낸',
-  description: '배당 일정 확인과 배당 수익 시뮬레이션으로 현금흐름을 계획하세요.',
-};
-
+/** 배당 캘린더 페이지 — 시뮬레이터는 Pro 플랜 이상 필요 */
 export default function DividendPage() {
+  const { plan } = useSubscription();
+  const router = useRouter();
+
   return (
     <main className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-10">
@@ -18,15 +20,21 @@ export default function DividendPage() {
 
         <DisclaimerBanner variant="default" />
 
-        {/* 배당 캘린더 섹션 */}
+        {/* 배당 캘린더 섹션 — 무료 */}
         <section>
           <DividendCalendar />
         </section>
 
-        {/* 배당 시뮬레이터 섹션 */}
+        {/* 배당 시뮬레이터 섹션 — Pro 플랜 이상 */}
         <section>
           <h2 className="text-2xl font-bold text-gray-900 mb-6">배당 시뮬레이터</h2>
-          <DividendSimulator />
+          <SubscriptionGate
+            requiredPlan="pro"
+            currentPlan={plan}
+            onUpgradeClick={() => router.push('/pricing')}
+          >
+            <DividendSimulator />
+          </SubscriptionGate>
         </section>
       </div>
     </main>

@@ -1,0 +1,188 @@
+/**
+ * Mock 모의투자 데이터 — 계좌, 거래내역, 랭킹
+ * 수치는 참고용 Mock 데이터이며, 실제 거래 정보가 아닙니다.
+ */
+import type { MockAccountRow, MockSeasonRow, MockTradeRow, MockRankingRow } from '@/features/mock-trading/types';
+
+/** 활성 시즌 Mock */
+export const MOCK_SEASON: MockSeasonRow = {
+  id: 'mock-season-1',
+  name: '2026년 1분기 시즌',
+  start_date: '2026-01-01',
+  end_date: '2026-03-31',
+  is_active: true,
+  created_at: '2025-12-20T00:00:00Z',
+};
+
+/** 모의투자 계좌 Mock */
+export const MOCK_ACCOUNT: MockAccountRow = {
+  id: 'mock-account-1',
+  user_id: 'mock-user-1',
+  season_id: 'mock-season-1',
+  initial_balance: 10_000_000,
+  current_balance: 11_250_000,
+  created_at: '2026-01-02T09:00:00Z',
+};
+
+/** 거래내역 Mock 10건 */
+export const MOCK_TRADES: MockTradeRow[] = [
+  {
+    id: 'mock-trade-1',
+    account_id: 'mock-account-1',
+    user_id: 'mock-user-1',
+    stock_code: '005930',
+    stock_name: '삼성전자',
+    trade_type: 'buy',
+    quantity: 50,
+    price: 72000,
+    traded_at: '2026-01-05T09:30:00Z',
+  },
+  {
+    id: 'mock-trade-2',
+    account_id: 'mock-account-1',
+    user_id: 'mock-user-1',
+    stock_code: '000660',
+    stock_name: 'SK하이닉스',
+    trade_type: 'buy',
+    quantity: 10,
+    price: 185000,
+    traded_at: '2026-01-10T10:15:00Z',
+  },
+  {
+    id: 'mock-trade-3',
+    account_id: 'mock-account-1',
+    user_id: 'mock-user-1',
+    stock_code: '005930',
+    stock_name: '삼성전자',
+    trade_type: 'sell',
+    quantity: 20,
+    price: 74500,
+    traded_at: '2026-01-20T14:00:00Z',
+  },
+  {
+    id: 'mock-trade-4',
+    account_id: 'mock-account-1',
+    user_id: 'mock-user-1',
+    stock_code: '068270',
+    stock_name: '셀트리온',
+    trade_type: 'buy',
+    quantity: 15,
+    price: 195000,
+    traded_at: '2026-02-03T09:45:00Z',
+  },
+  {
+    id: 'mock-trade-5',
+    account_id: 'mock-account-1',
+    user_id: 'mock-user-1',
+    stock_code: '012450',
+    stock_name: '한화에어로스페이스',
+    trade_type: 'buy',
+    quantity: 5,
+    price: 320000,
+    traded_at: '2026-02-10T11:00:00Z',
+  },
+  {
+    id: 'mock-trade-6',
+    account_id: 'mock-account-1',
+    user_id: 'mock-user-1',
+    stock_code: '000660',
+    stock_name: 'SK하이닉스',
+    trade_type: 'sell',
+    quantity: 5,
+    price: 192000,
+    traded_at: '2026-02-18T13:30:00Z',
+  },
+  {
+    id: 'mock-trade-7',
+    account_id: 'mock-account-1',
+    user_id: 'mock-user-1',
+    stock_code: '105560',
+    stock_name: 'KB금융',
+    trade_type: 'buy',
+    quantity: 30,
+    price: 65000,
+    traded_at: '2026-02-25T10:00:00Z',
+  },
+  {
+    id: 'mock-trade-8',
+    account_id: 'mock-account-1',
+    user_id: 'mock-user-1',
+    stock_code: '068270',
+    stock_name: '셀트리온',
+    trade_type: 'sell',
+    quantity: 10,
+    price: 205000,
+    traded_at: '2026-03-05T14:20:00Z',
+  },
+  {
+    id: 'mock-trade-9',
+    account_id: 'mock-account-1',
+    user_id: 'mock-user-1',
+    stock_code: '035420',
+    stock_name: '네이버',
+    trade_type: 'buy',
+    quantity: 20,
+    price: 210000,
+    traded_at: '2026-03-12T09:30:00Z',
+  },
+  {
+    id: 'mock-trade-10',
+    account_id: 'mock-account-1',
+    user_id: 'mock-user-1',
+    stock_code: '012450',
+    stock_name: '한화에어로스페이스',
+    trade_type: 'sell',
+    quantity: 3,
+    price: 345000,
+    traded_at: '2026-03-20T15:00:00Z',
+  },
+];
+
+/** 랭킹 Mock 5명 */
+export const MOCK_RANKINGS: MockRankingRow[] = [
+  {
+    id: 'mock-rank-1',
+    season_id: 'mock-season-1',
+    user_id: 'mock-user-2',
+    nickname: '주식왕김투자',
+    rank: 1,
+    profit_rate: 18.5,
+    updated_at: '2026-03-24T00:00:00Z',
+  },
+  {
+    id: 'mock-rank-2',
+    season_id: 'mock-season-1',
+    user_id: 'mock-user-1',
+    nickname: '파낸유저',
+    rank: 2,
+    profit_rate: 12.5,
+    updated_at: '2026-03-24T00:00:00Z',
+  },
+  {
+    id: 'mock-rank-3',
+    season_id: 'mock-season-1',
+    user_id: 'mock-user-3',
+    nickname: '배당사냥꾼',
+    rank: 3,
+    profit_rate: 9.2,
+    updated_at: '2026-03-24T00:00:00Z',
+  },
+  {
+    id: 'mock-rank-4',
+    season_id: 'mock-season-1',
+    user_id: 'mock-user-4',
+    nickname: '바이오마스터',
+    rank: 4,
+    profit_rate: 6.8,
+    updated_at: '2026-03-24T00:00:00Z',
+  },
+  {
+    id: 'mock-rank-5',
+    season_id: 'mock-season-1',
+    user_id: 'mock-user-5',
+    nickname: '안전제일',
+    rank: 5,
+    profit_rate: 3.1,
+    updated_at: '2026-03-24T00:00:00Z',
+  },
+];

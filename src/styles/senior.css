@@ -1,0 +1,42 @@
+/* 시니어 모드 override — UiModeSwitch에서 .senior 클래스 토글 */
+.senior {
+  font-size: 120%;
+  line-height: 1.8;
+}
+
+.senior button,
+.senior [role="button"] {
+  min-height: 52px;
+  font-size: 1.1rem;
+  padding: 0.75rem 1.5rem;
+}
+
+.senior input,
+.senior select,
+.senior textarea {
+  min-height: 52px;
+  font-size: 1.1rem;
+}
+
+.senior .card,
+.senior [class*="rounded"] {
+  padding: 1.5rem;
+}
+
+.senior h1 {
+  font-size: 2rem;
+}
+
+.senior h2 {
+  font-size: 1.75rem;
+}
+
+.senior h3 {
+  font-size: 1.5rem;
+}
+
+.senior p,
+.senior li {
+  font-size: 1.1rem;
+  line-height: 1.9;
+}

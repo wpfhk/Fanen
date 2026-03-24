@@ -4,6 +4,8 @@
  */
 import { useState, useEffect } from 'react';
 import { createClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import { USE_MOCK } from '@/lib/mock';
+import { MOCK_DIVIDEND_CALENDAR } from '@/lib/mock/mockDividend';
 import type { DividendCalendarRow } from '../types';
 
 interface UseDividendCalendarReturn {
@@ -21,6 +23,16 @@ function getCurrentMonth(): string {
 }
 
 export function useDividendCalendar(): UseDividendCalendarReturn {
+  // Mock 모드: 전체 캘린더 데이터 반환 (월 필터 없이)
+  if (USE_MOCK) {
+    return {
+      data: MOCK_DIVIDEND_CALENDAR,
+      selectedMonth: getCurrentMonth(),
+      setSelectedMonth: () => {},
+      loading: false,
+      error: null,
+    };
+  }
   const [selectedMonth, setSelectedMonth] = useState<string>(getCurrentMonth());
   const [data, setData] = useState<DividendCalendarRow[]>([]);
   const [loading, setLoading] = useState(true);
