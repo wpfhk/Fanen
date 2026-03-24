@@ -1,6 +1,6 @@
 import type { Config } from 'tailwindcss';
 
-/** TailwindCSS 설정 — 파낸 브랜드 컬러 및 Senior 모드 포함 */
+/** TailwindCSS 설정 — BINAH 브랜드 컬러 및 Senior 모드 포함 */
 const config: Config = {
   darkMode: 'class',
   content: [
@@ -11,30 +11,36 @@ const config: Config = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#1A56DB',
-          50: '#EBF0FE',
-          100: '#D6E0FD',
-          200: '#ADC1FB',
-          300: '#84A2F9',
-          400: '#5B83F7',
-          500: '#1A56DB',
-          600: '#1545AF',
-          700: '#103483',
-          800: '#0B2358',
-          900: '#05112C',
+          DEFAULT: '#0D9488',
+          50:  '#F0FDFA',
+          100: '#CCFBF1',
+          200: '#99F6E4',
+          300: '#5EEAD4',
+          400: '#2DD4BF',
+          500: '#0D9488',
+          600: '#0F766E',
+          700: '#115E59',
+          800: '#134E4A',
+          900: '#042F2E',
         },
         secondary: {
-          DEFAULT: '#0E9F6E',
-          50: '#ECFDF5',
-          100: '#D1FAE5',
-          200: '#A7F3D0',
-          300: '#6EE7B7',
-          400: '#34D399',
-          500: '#0E9F6E',
-          600: '#0B7F58',
-          700: '#085F42',
-          800: '#05402C',
-          900: '#032016',
+          DEFAULT: '#A3E635',
+          50: '#F7FEE7',
+          100: '#ECFCCB',
+          200: '#D9F99D',
+          300: '#BEF264',
+          400: '#A3E635',
+          500: '#84CC16',
+          600: '#65A30D',
+          700: '#4D7C0F',
+          800: '#3F6212',
+          900: '#365314',
+        },
+        bandi: {
+          glow: '#FDE68A',
+          body: '#FCD34D',
+          lime: '#A3E635',
+          aura: '#FEF3C7',
         },
         danger: {
           DEFAULT: '#E02424',

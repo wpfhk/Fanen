@@ -2,13 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 파낸 브랜드 CSS 변수 */
+/* BINAH 브랜드 CSS 변수 */
 :root {
-  --color-primary: #1A56DB;
-  --color-secondary: #0E9F6E;
+  --color-primary: #0D9488;
+  --color-secondary: #A3E635;
   --color-danger: #E02424;
   --color-background: #ffffff;
   --color-foreground: #171717;
+
+  /* 반디 캐릭터 색상 */
+  --bandi-glow: #FDE68A;
+  --bandi-body: #FCD34D;
+  --bandi-lime: #A3E635;
+  --bandi-aura: rgba(253, 230, 138, 0.3);
 }
 
 /* 다크 모드 기본 지원 */
@@ -32,17 +38,17 @@ body {
   --text-primary: #111827;
   --text-secondary: #6B7280;
   --border-color: #E5E7EB;
-  --accent: #2563EB;
+  --accent: #0D9488;
 }
 
 .dark {
-  --bg-primary: #0F172A;
-  --bg-card: #1E293B;
-  --bg-nav: #1E293B;
+  --bg-primary: #0F1923;
+  --bg-card: #162032;
+  --bg-nav: #162032;
   --text-primary: #F1F5F9;
   --text-secondary: #94A3B8;
-  --border-color: #334155;
-  --accent: #60A5FA;
+  --border-color: #1E3448;
+  --accent: #2DD4BF;
 }
 
 /* 시니어 모드 — 별도 파일로 분리 */

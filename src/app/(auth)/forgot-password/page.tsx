@@ -23,7 +23,7 @@ export default function ForgotPasswordPage() {
     return (
       <AuthLayout>
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">파낸</h1>
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">BINAH</h1>
           <div className="rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-700">
             <p className="font-medium mb-1">Supabase 환경변수 미설정</p>
             <p>.env.local 파일에 실제 Supabase URL과 Anon Key를 입력한 후 서버를 재시작하세요.</p>
@@ -38,7 +38,7 @@ export default function ForgotPasswordPage() {
     return (
       <AuthLayout>
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-primary mb-4">파낸</h1>
+          <h1 className="text-3xl font-bold text-primary mb-4">BINAH</h1>
           <div className="rounded-lg border border-green-300 bg-green-50 px-4 py-6 text-sm text-green-700">
             <p className="font-medium text-lg mb-2">비밀번호 재설정 이메일을 발송했습니다</p>
             <p>입력하신 이메일로 비밀번호 재설정 링크를 보냈습니다.</p>
@@ -76,7 +76,7 @@ export default function ForgotPasswordPage() {
     <AuthLayout>
       {/* 헤더 */}
       <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold text-primary">파낸</h1>
+        <h1 className="text-3xl font-bold text-primary">BINAH</h1>
         <p className="mt-2 text-sm text-gray-500">비밀번호를 재설정합니다</p>
       </div>
 

@@ -153,7 +153,7 @@ export const MOCK_RANKINGS: MockRankingRow[] = [
     id: 'mock-rank-2',
     season_id: 'mock-season-1',
     user_id: 'mock-user-1',
-    nickname: '파낸유저',
+    nickname: 'BINAH유저',
     rank: 2,
     profit_rate: 12.5,
     updated_at: '2026-03-24T00:00:00Z',

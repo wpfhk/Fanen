@@ -106,7 +106,7 @@ export default function JournalCard({ journal, onEdit, onDelete }: JournalCardPr
         >
           <div className="mt-3 rounded-md border border-blue-100 bg-blue-50 p-3">
             <div className="mb-1.5">
-              <AiBadge label="핀이 분석" />
+              <AiBadge label="반디 분석" />
             </div>
             <p className="text-sm text-blue-800">{journal.ai_feedback}</p>
           </div>

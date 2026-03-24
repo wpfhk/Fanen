@@ -184,7 +184,7 @@ export default function NewsImpactCard({ item, languageLevel }: NewsImpactCardPr
 
         {/* AI 뱃지 + 영향 섹터 태그 */}
         <div className="flex items-center justify-between">
-          <AiBadge label="핀이 분석" source={item.source_url ?? undefined} />
+          <AiBadge label="반디 분석" source={item.source_url ?? undefined} />
           {/* 관련 종목 태그 — 클릭 시 차트 팝업 */}
           <div className="flex flex-wrap gap-1">
             {item.affected_stocks.slice(0, 3).map((stock, idx) => (

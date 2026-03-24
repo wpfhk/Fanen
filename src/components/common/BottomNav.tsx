@@ -8,7 +8,7 @@ const NAV_ITEMS = [
   { href: '/', label: '홈', icon: HomeIcon },
   { href: '/news', label: '뉴스', icon: NewsIcon },
   { href: '/portfolio', label: '포트폴리오', icon: BriefcaseIcon },
-  { href: '/coach', label: '핀이', icon: BotIcon },
+  { href: '/coach', label: '반디', icon: BotIcon },
   { href: '/profile', label: '내 정보', icon: UserIcon },
 ] as const;
 

@@ -1,14 +1,10 @@
 'use client';
-import { DisclaimerBanner, SubscriptionGate } from '@/components/common';
-import { useSubscription } from '@/hooks/useSubscription';
+import { DisclaimerBanner } from '@/components/common';
 import { useGlobalNews } from '@/features/global-news';
 import GlobalNewsCard from '@/features/global-news/components/GlobalNewsCard';
 import GlobalNewsAnalysis from '@/features/global-news/components/GlobalNewsAnalysis';
-import { useRouter } from 'next/navigation';
 
 export default function GlobalNewsPage() {
-  const { plan } = useSubscription();
-  const router = useRouter();
   const { news, selectedNews, selectedId, selectNews, analyze, isAnalyzing, analyzed } = useGlobalNews();
 
   return (
@@ -23,11 +19,6 @@ export default function GlobalNewsPage() {
       <DisclaimerBanner variant="signal" />
 
       <div className="mt-6">
-        <SubscriptionGate
-          requiredPlan="pro"
-          currentPlan={plan}
-          onUpgradeClick={() => router.push('/pricing')}
-        >
           {/* 뉴스 목록 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
             {news.map((item) => (
@@ -49,7 +40,7 @@ export default function GlobalNewsPage() {
               <button
                 onClick={analyze}
                 disabled={isAnalyzing}
-                className="rounded-lg bg-blue-600 px-8 py-3 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-60 transition-colors"
+                className="rounded-lg bg-teal-600 px-8 py-3 text-sm font-semibold text-white hover:bg-teal-700 disabled:opacity-60 transition-colors"
               >
                 {isAnalyzing ? '분석 중...' : '수혜 섹터/종목 분석하기'}
               </button>
@@ -63,7 +54,7 @@ export default function GlobalNewsPage() {
                 <h2 className="text-lg font-bold text-gray-900 dark:text-slate-100">분석 결과</h2>
                 <button
                   onClick={() => selectNews(selectedId!)}
-                  className="text-sm text-blue-600 hover:underline"
+                  className="text-sm text-teal-600 hover:underline"
                 >
                   다시 선택
                 </button>
@@ -71,7 +62,6 @@ export default function GlobalNewsPage() {
               <GlobalNewsAnalysis news={selectedNews} />
             </>
           )}
-        </SubscriptionGate>
       </div>
     </main>
   );

@@ -6,7 +6,7 @@
  *
  * @example
  * <AiBadge label="AI 분석" />
- * <AiBadge label="핀이 분석" source="https://dart.fss.or.kr" variant="warning" />
+ * <AiBadge label="반디 분석" source="https://dart.fss.or.kr" variant="warning" />
  */
 
 /** AiBadge Props */

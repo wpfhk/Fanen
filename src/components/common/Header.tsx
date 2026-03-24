@@ -2,24 +2,24 @@
  * 공통 헤더 컴포넌트 (서버 컴포넌트)
  * 세션을 서버에서 읽어 로그인 상태에 따라 분기 렌더링
  * - 비로그인: [로그인] [회원가입] 버튼
- * - 로그인: [PlanBadge] [알림] [UserMenu 드롭다운]
+ * - 로그인: [알림] [UserMenu 드롭다운]
+ * BINAH: 완전 무료화 — PlanBadge 제거
  */
 import Link from 'next/link';
 import { unstable_noStore as noStore } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
 import { UserMenu } from './UserMenu';
-import PlanBadge from './PlanBadge';
 import DarkModeToggle from './DarkModeToggle';
-import type { PlanTier } from '@/lib/plans';
 
 /** 내비게이션 메뉴 항목 */
 const NAV_ITEMS = [
+  { href: '/binah-map', label: '비나 맵' },
   { href: '/news', label: '뉴스 분석' },
   { href: '/sector', label: '섹터 맵' },
   { href: '/portfolio', label: '포트폴리오' },
-  { href: '/dividend', label: '배당 캘린더' },
+  { href: '/dividend', label: '배당 허브' },
   { href: '/mock-trading', label: '모의투자' },
-  { href: '/coach', label: 'AI 코치' },
+  { href: '/coach', label: '반디 코치' },
 ] as const;
 
 export async function Header() {
@@ -28,33 +28,23 @@ export async function Header() {
 
   // 서버에서 세션 조회 — 쿠키 기반
   let user = null;
-  let plan: PlanTier = 'free';
   try {
     const supabase = await createClient();
     const { data } = await supabase.auth.getUser();
     user = data.user;
-
-    // 프로필에서 구독 플랜 조회
-    if (user) {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('subscription_tier')
-        .eq('id', user.id)
-        .single<{ subscription_tier: string }>();
-      if (profile?.subscription_tier) {
-        plan = profile.subscription_tier as PlanTier;
-      }
-    }
   } catch {
     // 환경변수 미설정 등 — 비로그인 상태로 렌더링
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+    <header className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-[#1E3448] bg-white dark:bg-[#162032]">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4">
         {/* 로고 */}
-        <Link href="/" className="text-xl font-bold text-blue-600 hover:text-blue-700">
-          파낸
+        <Link href="/" className="flex items-center gap-2">
+          <span className="text-xl font-black tracking-tight text-teal-600 dark:text-teal-400">
+            BINAH
+          </span>
+          <span className="text-xs text-gray-400 dark:text-slate-500 hidden sm:block">비나</span>
         </Link>
 
         {/* 데스크톱 내비게이션 */}
@@ -63,7 +53,7 @@ export async function Header() {
             <Link
               key={item.href}
               href={item.href}
-              className="text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              className="text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
             >
               {item.label}
             </Link>
@@ -74,9 +64,6 @@ export async function Header() {
         <div className="flex items-center gap-3">
           {user ? (
             <>
-              {/* 플랜 뱃지 */}
-              <PlanBadge plan={plan} size="sm" />
-
               {/* 다크모드 토글 */}
               <DarkModeToggle />
 
@@ -110,7 +97,7 @@ export async function Header() {
               </Link>
               <Link
                 href="/signup"
-                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition-colors"
+                className="rounded-lg bg-teal-600 px-4 py-2 text-sm font-medium text-white hover:bg-teal-700 transition-colors"
               >
                 회원가입
               </Link>
