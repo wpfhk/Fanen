@@ -4,7 +4,7 @@ import { DisclaimerBanner } from '@/components/common';
 import { NewsImpactList } from '@/features/news-impact';
 
 export const metadata: Metadata = {
-  title: '뉴스 임팩트 — 파낸',
+  title: '뉴스 임팩트 — BINAH',
   description: 'AI 기반 뉴스 임팩트 분석으로 시장 움직임을 먼저 파악하세요.',
 };
 
@@ -19,7 +19,7 @@ export default function NewsPage() {
         {/* 페이지 제목 */}
         <header className="mb-6">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-slate-100">뉴스 임팩트</h1>
-          <p className="mt-2 text-gray-600 dark:text-slate-400">AI 핀이가 분석한 실시간 뉴스 임팩트 시그널</p>
+          <p className="mt-2 text-gray-600 dark:text-slate-400">AI 반디가 분석한 실시간 뉴스 임팩트 시그널</p>
         </header>
 
         {/* 탭 네비게이션 */}

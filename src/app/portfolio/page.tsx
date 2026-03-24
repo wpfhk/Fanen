@@ -5,7 +5,7 @@ import { MOCK_PORTFOLIOS } from '@/lib/mock/mockPortfolio';
 import { formatKRW } from '@/features/portfolio/types';
 
 export const metadata: Metadata = {
-  title: '내 포트폴리오 — 파낸',
+  title: '내 포트폴리오 — BINAH',
   description: '보유 종목과 투자 현황을 관리하세요.',
 };
 

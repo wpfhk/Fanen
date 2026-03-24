@@ -3,7 +3,7 @@ import { DisclaimerBanner } from '@/components/common';
 import { JournalList } from '@/features/journal';
 
 export const metadata: Metadata = {
-  title: '투자 일지 — 파낸',
+  title: '투자 일지 — BINAH',
   description: '투자 기록과 감정을 기록하고 AI 분석으로 성장하세요.',
 };
 

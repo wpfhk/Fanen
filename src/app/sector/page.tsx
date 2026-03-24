@@ -1,17 +1,10 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { DisclaimerBanner, SubscriptionGate } from '@/components/common';
+import { DisclaimerBanner } from '@/components/common';
 import { SectorMapSection } from '@/features/sector-map';
-import { useSubscription } from '@/hooks/useSubscription';
 
-/**
- * 섹터 인과관계 전용 페이지
- * Pro 플랜 이상 필요
- */
+/** 섹터 인과관계 전용 페이지 */
 export default function SectorPage() {
-  const { plan } = useSubscription();
-  const router = useRouter();
 
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-slate-900">
@@ -29,14 +22,7 @@ export default function SectorPage() {
           <DisclaimerBanner variant="default" />
         </div>
 
-        {/* 섹터 인과관계 맵 — Pro 플랜 이상 */}
-        <SubscriptionGate
-          requiredPlan="pro"
-          currentPlan={plan}
-          onUpgradeClick={() => router.push('/pricing')}
-        >
-          <SectorMapSection />
-        </SubscriptionGate>
+        <SectorMapSection />
       </div>
     </main>
   );

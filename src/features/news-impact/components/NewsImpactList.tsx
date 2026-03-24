@@ -5,9 +5,8 @@
  * 뉴스 임팩트 카드 목록 — 필터 바, 구독 게이트, 언어 토글 통합
  */
 import { useState, useMemo } from 'react';
-import { LanguageToggle, SubscriptionGate } from '@/components/common';
+import { LanguageToggle } from '@/components/common';
 import { useNewsImpacts } from '../hooks/useNewsImpacts';
-import { useSubscription } from '@/hooks/useSubscription';
 import NewsImpactCard from './NewsImpactCard';
 import type { NewsImpactCardData } from '../types';
 
@@ -21,8 +20,6 @@ const SECTOR_OPTIONS = [
 type ImpactLevel = '전체' | '높음' | '중간' | '낮음';
 
 export default function NewsImpactList() {
-  // 플랜 조회 (prop 대신 훅 직접 사용)
-  const { plan } = useSubscription();
   // 언어 레벨 상태 (일반인/전문가 모드)
   const [languageLevel, setLanguageLevel] = useState<'general' | 'expert'>('general');
   const { data, loading, error } = useNewsImpacts();
@@ -129,46 +126,43 @@ export default function NewsImpactList() {
         </div>
       </div>
 
-      {/* 구독 게이트 — Pro 이상 필요 */}
-      <SubscriptionGate requiredPlan="pro" currentPlan={plan}>
-        {/* 로딩 스켈레톤 */}
-        {loading && (
-          <div className="space-y-3">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="h-36 rounded-lg bg-gray-100 animate-pulse" />
-            ))}
-          </div>
-        )}
+      {/* 로딩 스켈레톤 */}
+      {loading && (
+        <div className="space-y-3">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="h-36 rounded-lg bg-gray-100 animate-pulse" />
+          ))}
+        </div>
+      )}
 
-        {/* 에러 메시지 */}
-        {!loading && error && (
-          <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-            데이터를 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.
-          </div>
-        )}
+      {/* 에러 메시지 */}
+      {!loading && error && (
+        <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          데이터를 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.
+        </div>
+      )}
 
-        {/* 빈 데이터 안내 */}
-        {!loading && !error && filteredData.length === 0 && (
-          <div className="rounded-lg border border-gray-200 bg-gray-50 p-8 text-center text-sm text-gray-500">
-            {hasActiveFilter
-              ? '필터 조건에 맞는 뉴스가 없습니다. 필터를 조정해보세요.'
-              : '표시할 뉴스 임팩트 정보가 없습니다.'}
-          </div>
-        )}
+      {/* 빈 데이터 안내 */}
+      {!loading && !error && filteredData.length === 0 && (
+        <div className="rounded-lg border border-gray-200 bg-gray-50 p-8 text-center text-sm text-gray-500">
+          {hasActiveFilter
+            ? '필터 조건에 맞는 뉴스가 없습니다. 필터를 조정해보세요.'
+            : '표시할 뉴스 임팩트 정보가 없습니다.'}
+        </div>
+      )}
 
-        {/* 카드 목록 */}
-        {!loading && filteredData.length > 0 && (
-          <div className="space-y-3">
-            {filteredData.map((item) => (
-              <NewsImpactCard
-                key={item.id}
-                item={item}
-                languageLevel={languageLevel}
-              />
-            ))}
-          </div>
-        )}
-      </SubscriptionGate>
+      {/* 카드 목록 */}
+      {!loading && filteredData.length > 0 && (
+        <div className="space-y-3">
+          {filteredData.map((item) => (
+            <NewsImpactCard
+              key={item.id}
+              item={item}
+              languageLevel={languageLevel}
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 }
