@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import { Header } from '@/components/common/Header';
 
 /** Inter 폰트 로드 — 라틴 + 한국어 지원 */
 const inter = Inter({ subsets: ['latin'] });
@@ -20,7 +21,8 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={`${inter.className} antialiased`}>
-        {children}
+        <Header />
+        <main>{children}</main>
       </body>
     </html>
   );

@@ -7,7 +7,7 @@ import type { NextRequest } from 'next/server';
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 
 /** 인증이 필요한 보호 경로 목록 */
-const PROTECTED_ROUTES = ['/dashboard', '/portfolio', '/news', '/mock-trading', '/settings'];
+const PROTECTED_ROUTES = ['/profile', '/portfolio', '/dividend', '/mock-trading', '/journal'];
 
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -56,9 +56,10 @@ export async function middleware(request: NextRequest) {
   );
 
   if (isProtectedRoute && !user) {
-    // 미인증 → 로그인 페이지로 리다이렉트
+    // 미인증 → 로그인 후 원래 경로 복귀를 위해 next 파라미터 포함
     const url = request.nextUrl.clone();
     url.pathname = '/login';
+    url.searchParams.set('next', request.nextUrl.pathname);
     return NextResponse.redirect(url);
   }
 

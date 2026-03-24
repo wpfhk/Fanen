@@ -16,8 +16,9 @@ export async function GET(request: NextRequest) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {
-      // 인증 성공 → 대시보드로 리다이렉트
-      return NextResponse.redirect(`${origin}/dashboard`);
+      // 인증 성공 → next 파라미터 경로 또는 홈으로 리다이렉트
+      const next = searchParams.get('next') ?? '/';
+      return NextResponse.redirect(`${origin}${next}`);
     }
   }
 
