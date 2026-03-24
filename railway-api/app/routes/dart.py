@@ -8,7 +8,7 @@ from fastapi import APIRouter, HTTPException
 
 from app.models.market import DisclosureResponse
 from app.services.cache import get_cached, set_cached
-from app.services.dart_client import dart_client
+from app.services.dart_client import get_disclosure as fetch_disclosure
 
 logger = logging.getLogger(__name__)
 
@@ -49,7 +49,7 @@ async def get_disclosure(code: str, limit: int = 5) -> DisclosureResponse:
 
     # DART 클라이언트로 공시 데이터 조회
     try:
-        data = await dart_client.get_disclosure(code, limit)
+        data = await fetch_disclosure(code, limit)
     except Exception as e:
         logger.error("DART 공시 조회 실패 — code: %s, 오류: %s", code, e)
         raise HTTPException(
@@ -58,9 +58,9 @@ async def get_disclosure(code: str, limit: int = 5) -> DisclosureResponse:
         )
 
     # Redis에 캐시 저장
-    set_cached(cache_key, data.model_dump(), ttl=DART_DISCLOSURE_TTL)
+    set_cached(cache_key, data, ttl=DART_DISCLOSURE_TTL)
 
     logger.info(
-        "DART 공시 조회 완료 — code: %s, 공시 건수: %d", code, len(data.disclosures)
+        "DART 공시 조회 완료 — code: %s, 공시 건수: %d", code, len(data.get("disclosures", []))
     )
-    return DisclosureResponse(**data.model_dump(), cached=False)
+    return DisclosureResponse(**{**data, "cached": False})

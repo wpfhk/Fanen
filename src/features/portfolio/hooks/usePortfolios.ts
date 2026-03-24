@@ -59,7 +59,7 @@ export function usePortfolios(): UsePortfoliosReturn {
         return;
       }
 
-      const { data: rows, error: supabaseError } = await (supabase as any)
+      const { data: rows, error: supabaseError } = await supabase
         .from('portfolios')
         .select('*')
         .eq('user_id', user.id)
@@ -101,6 +101,7 @@ export function usePortfolios(): UsePortfoliosReturn {
 
       setError(null);
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase v2 insert 타입 추론 버그 workaround
       const { error: insertError } = await (supabase as any)
         .from('portfolios')
         .insert({
@@ -135,6 +136,7 @@ export function usePortfolios(): UsePortfoliosReturn {
 
       setError(null);
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase v2 update 타입 추론 버그 workaround
       const { error: updateError } = await (supabase as any)
         .from('portfolios')
         .update({
@@ -163,7 +165,7 @@ export function usePortfolios(): UsePortfoliosReturn {
 
       setError(null);
 
-      const { error: deleteError } = await (supabase as any)
+      const { error: deleteError } = await supabase
         .from('portfolios')
         .delete()
         .eq('id', id);

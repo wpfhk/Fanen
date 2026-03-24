@@ -46,8 +46,15 @@ export default function SectorMapSection({ currentPlan }: SectorMapSectionProps)
           </div>
         )}
 
+        {/* 빈 상태 처리 */}
+        {!loading && !error && nodes.length === 0 && (
+          <div className="rounded-lg border border-gray-200 bg-gray-50 p-8 text-center">
+            <p className="text-gray-500 text-sm">섹터 인과관계 데이터가 없습니다.</p>
+          </div>
+        )}
+
         {/* 그래프 + 드릴다운 레이아웃 */}
-        {!loading && !error && (
+        {!loading && !error && nodes.length > 0 && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             {/* 포스 그래프: 2/3 너비 */}
             <div className="lg:col-span-2">

@@ -16,6 +16,7 @@ from app.routes.sector import router as sector_router
 from app.routes.cron import router as cron_router
 from app.routes.krx import router as krx_router
 from app.routes.dart import router as dart_router
+from app.routes.coach import router as coach_router
 
 
 @asynccontextmanager
@@ -41,8 +42,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"],
 )
 
 # 라우터 등록
@@ -52,6 +53,7 @@ app.include_router(sector_router)
 app.include_router(cron_router)
 app.include_router(krx_router)
 app.include_router(dart_router)
+app.include_router(coach_router)
 
 
 if __name__ == "__main__":

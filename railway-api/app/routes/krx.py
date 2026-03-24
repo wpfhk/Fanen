@@ -9,7 +9,7 @@ from fastapi import APIRouter, HTTPException
 
 from app.models.market import StockIndexResponse, StockPriceResponse
 from app.services.cache import get_cached, set_cached
-from app.services.krx_client import krx_client
+from app.services.krx_client import get_index_data, get_stock_data
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +45,7 @@ async def get_index(market: str = "KOSPI") -> StockIndexResponse:
 
     # KRX 클라이언트로 실시간 데이터 조회
     try:
-        data = await krx_client.get_index_data(market)
+        data = await get_index_data(market)
     except Exception as e:
         logger.error("KRX 지수 조회 실패 — market: %s, 오류: %s", market, e)
         raise HTTPException(
@@ -54,10 +54,10 @@ async def get_index(market: str = "KOSPI") -> StockIndexResponse:
         )
 
     # Redis에 캐시 저장
-    set_cached(cache_key, data.model_dump(), ttl=KRX_INDEX_TTL)
+    set_cached(cache_key, data, ttl=KRX_INDEX_TTL)
 
-    logger.info("KRX 지수 조회 완료 — market: %s, 값: %s", market, data.value)
-    return StockIndexResponse(**data.model_dump(), cached=False)
+    logger.info("KRX 지수 조회 완료 — market: %s, 값: %s", market, data.get("value"))
+    return StockIndexResponse(**{**data, "cached": False})
 
 
 @router.get("/stock", response_model=StockPriceResponse)
@@ -87,7 +87,7 @@ async def get_stock(code: str) -> StockPriceResponse:
 
     # KRX 클라이언트로 실시간 데이터 조회
     try:
-        data = await krx_client.get_stock_data(code)
+        data = await get_stock_data(code)
     except Exception as e:
         logger.error("KRX 종목 조회 실패 — code: %s, 오류: %s", code, e)
         raise HTTPException(
@@ -96,7 +96,7 @@ async def get_stock(code: str) -> StockPriceResponse:
         )
 
     # Redis에 캐시 저장
-    set_cached(cache_key, data.model_dump(), ttl=KRX_STOCK_TTL)
+    set_cached(cache_key, data, ttl=KRX_STOCK_TTL)
 
-    logger.info("KRX 종목 조회 완료 — code: %s, 종목명: %s", code, data.name)
-    return StockPriceResponse(**data.model_dump(), cached=False)
+    logger.info("KRX 종목 조회 완료 — code: %s, 종목명: %s", code, data.get("name"))
+    return StockPriceResponse(**{**data, "cached": False})

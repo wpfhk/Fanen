@@ -4,6 +4,7 @@
  * SectorDrilldownPanel 컴포넌트
  * 선택된 섹터의 인과관계 상세 정보를 패널 형태로 표시
  */
+import { AiBadge } from '@/components/common';
 import type { SectorLink, SectorRelation, SectorNode } from '../types';
 
 interface SectorDrilldownPanelProps {
@@ -88,7 +89,10 @@ export default function SectorDrilldownPanel({
                     (강도: {rel.causal_strength.toFixed(2)})
                   </span>
                 </div>
-                <p className="text-gray-600">{rel.description}</p>
+                <div className="flex items-start gap-2">
+                  <AiBadge label="AI 분석" />
+                  <p className="text-gray-600">{rel.description}</p>
+                </div>
               </div>
             ))}
             {relations.length === 0 && (
