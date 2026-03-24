@@ -7,20 +7,7 @@
 import Link from 'next/link';
 import Card from '@/components/ui/Card';
 import { PLANS } from '@/lib/plans';
-
-/* ── 핀이 SVG 아바타 ── */
-function FinniAvatar({ size = 48 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 48 48" fill="none" aria-label="핀이 아바타">
-      <circle cx="24" cy="24" r="22" fill="#3B82F6" />
-      <circle cx="17" cy="20" r="4" fill="white" />
-      <circle cx="31" cy="20" r="4" fill="white" />
-      <rect x="16" y="29" width="16" height="4" rx="2" fill="white" />
-      <rect x="10" y="10" width="4" height="8" rx="2" fill="#60A5FA" />
-      <rect x="34" y="10" width="4" height="8" rx="2" fill="#60A5FA" />
-    </svg>
-  );
-}
+import { FinniAvatar } from '@/features/ai-coach/components/FinniAvatar';
 
 /* ── 기능 카드 데이터 ── */
 const FEATURE_CARDS = [
@@ -59,7 +46,7 @@ function HeroSection() {
         </div>
       </div>
       {/* 배경 장식 */}
-      <div className="absolute -bottom-4 left-0 right-0 h-8 bg-gray-50 rounded-t-[2rem]" />
+      <div className="absolute -bottom-4 left-0 right-0 h-8 bg-gray-50 dark:bg-slate-950 rounded-t-[2rem]" />
     </section>
   );
 }
@@ -68,7 +55,7 @@ function HeroSection() {
 function FeatureCards() {
   return (
     <section className="mx-auto max-w-7xl px-4 py-16">
-      <h2 className="mb-8 text-center text-2xl font-bold text-gray-900 sm:text-3xl">
+      <h2 className="mb-8 text-center text-2xl font-bold text-gray-900 dark:text-slate-100 sm:text-3xl">
         파낸이 제공하는 기능
       </h2>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -76,10 +63,10 @@ function FeatureCards() {
           <Link key={card.href} href={card.href} className="group">
             <Card variant="bordered" padding="lg" className="h-full transition-shadow group-hover:shadow-md">
               <div className="mb-3 text-3xl">{card.icon}</div>
-              <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-slate-100 group-hover:text-blue-600 transition-colors">
                 {card.title}
               </h3>
-              <p className="mt-2 text-sm text-gray-600">{card.desc}</p>
+              <p className="mt-2 text-sm text-gray-600 dark:text-slate-400">{card.desc}</p>
             </Card>
           </Link>
         ))}
@@ -91,11 +78,11 @@ function FeatureCards() {
 /* ── 핀이 소개 ── */
 function FiniIntro() {
   return (
-    <section className="bg-blue-50 py-16">
+    <section className="bg-blue-50 dark:bg-slate-800 py-16">
       <div className="mx-auto max-w-3xl px-4 text-center">
-        <FinniAvatar size={80} />
-        <h2 className="mt-4 text-2xl font-bold text-gray-900">AI 투자 코치, 핀이를 만나보세요</h2>
-        <p className="mt-2 text-gray-600">
+        <FinniAvatar size={80} mood="happy" />
+        <h2 className="mt-4 text-2xl font-bold text-gray-900 dark:text-slate-100">AI 투자 코치, 핀이를 만나보세요</h2>
+        <p className="mt-2 text-gray-600 dark:text-slate-400">
           궁금한 종목, 시장 동향, 투자 전략 — 무엇이든 핀이에게 물어보세요.
         </p>
         {/* 예시 대화 */}
@@ -109,7 +96,7 @@ function FiniIntro() {
             <div className="flex-shrink-0 mt-1">
               <FinniAvatar size={32} />
             </div>
-            <div className="max-w-sm rounded-2xl rounded-bl-md bg-white px-4 py-2.5 text-sm text-gray-800 shadow-sm">
+            <div className="max-w-sm rounded-2xl rounded-bl-md bg-white dark:bg-slate-700 px-4 py-2.5 text-sm text-gray-800 dark:text-slate-200 shadow-sm">
               삼성전자는 최근 HBM3E 양산 호재로 긍정적 흐름입니다. 반도체 섹터 전반의 상승 모멘텀도 확인되고 있어요.
             </div>
           </div>
@@ -124,7 +111,7 @@ function PricingPreview() {
   const plans = [PLANS.free, PLANS.pro, PLANS.premium];
   return (
     <section className="mx-auto max-w-7xl px-4 py-16">
-      <h2 className="mb-8 text-center text-2xl font-bold text-gray-900 sm:text-3xl">
+      <h2 className="mb-8 text-center text-2xl font-bold text-gray-900 dark:text-slate-100 sm:text-3xl">
         요금제
       </h2>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -135,14 +122,14 @@ function PricingPreview() {
             padding="lg"
             className="text-center"
           >
-            <h3 className="text-lg font-bold text-gray-900">{plan.name}</h3>
-            <p className="mt-2 text-3xl font-extrabold text-gray-900">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-slate-100">{plan.name}</h3>
+            <p className="mt-2 text-3xl font-extrabold text-gray-900 dark:text-slate-100">
               {plan.priceMonthly === 0 ? '무료' : `${plan.priceMonthly.toLocaleString()}원`}
               {plan.priceMonthly > 0 && (
-                <span className="text-base font-normal text-gray-500">/월</span>
+                <span className="text-base font-normal text-gray-500 dark:text-slate-400">/월</span>
               )}
             </p>
-            <ul className="mt-4 space-y-2 text-left text-sm text-gray-600">
+            <ul className="mt-4 space-y-2 text-left text-sm text-gray-600 dark:text-slate-400">
               {plan.features.map((f) => (
                 <li key={f} className="flex items-start gap-2">
                   <span className="mt-0.5 text-blue-500">&#10003;</span>
@@ -191,7 +178,7 @@ function CtaSection() {
 /* ── 메인 랜딩 페이지 ── */
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-950">
       <HeroSection />
       <FeatureCards />
       <FiniIntro />

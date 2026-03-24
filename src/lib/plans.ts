@@ -89,6 +89,7 @@ export const FEATURE_PLAN_MAP: PlanFeature[] = [
   { id: 'voice_coach', name: '음성 AI 코치', requiredPlan: 'premium' },
   { id: 'ai_report', name: 'AI 맞춤 리포트', requiredPlan: 'premium' },
   { id: 'tax_sim', name: '세금 시뮬레이션', requiredPlan: 'premium' },
+  { id: 'global_news', name: '글로벌 뉴스 수혜 분석', requiredPlan: 'pro' },
 ] as const;
 
 /**

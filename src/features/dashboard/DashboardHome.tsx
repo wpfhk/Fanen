@@ -7,20 +7,7 @@
 import Link from 'next/link';
 import { DisclaimerBanner } from '@/components/common';
 import Card from '@/components/ui/Card';
-
-/* ── 핀이 아바타 (소형) ── */
-function FinniSmall() {
-  return (
-    <svg width="40" height="40" viewBox="0 0 48 48" fill="none" aria-label="핀이">
-      <circle cx="24" cy="24" r="22" fill="#3B82F6" />
-      <circle cx="17" cy="20" r="4" fill="white" />
-      <circle cx="31" cy="20" r="4" fill="white" />
-      <rect x="16" y="29" width="16" height="4" rx="2" fill="white" />
-      <rect x="10" y="10" width="4" height="8" rx="2" fill="#60A5FA" />
-      <rect x="34" y="10" width="4" height="8" rx="2" fill="#60A5FA" />
-    </svg>
-  );
-}
+import { FinniAvatar } from '@/features/ai-coach/components/FinniAvatar';
 
 /* ── Mock 데이터 ── */
 const DAILY_TIP = '오늘 반도체 섹터 주목해보세요! HBM3E 양산 소식이 긍정적 흐름을 이끌고 있습니다.';
@@ -45,15 +32,15 @@ const QUICK_MENU = [
 
 export default function DashboardHome() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900">
       <div className="mx-auto max-w-7xl px-4 py-8 space-y-6">
         {/* 핀이 데일리 한마디 */}
         <Card variant="highlighted" padding="md">
           <div className="flex items-start gap-3">
-            <FinniSmall />
+            <FinniAvatar size={40} mood="default" />
             <div>
-              <p className="text-sm font-semibold text-blue-700">핀이의 데일리 한마디</p>
-              <p className="mt-1 text-sm text-gray-700">{DAILY_TIP}</p>
+              <p className="text-sm font-semibold text-blue-700 dark:text-blue-400">핀이의 데일리 한마디</p>
+              <p className="mt-1 text-sm text-gray-700 dark:text-slate-300">{DAILY_TIP}</p>
             </div>
           </div>
         </Card>
@@ -62,8 +49,8 @@ export default function DashboardHome() {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {/* 포트폴리오 요약 */}
           <Card variant="bordered" padding="lg">
-            <h2 className="text-sm font-semibold text-gray-500">내 포트폴리오</h2>
-            <p className="mt-2 text-2xl font-bold text-gray-900">
+            <h2 className="text-sm font-semibold text-gray-500 dark:text-slate-400">내 포트폴리오</h2>
+            <p className="mt-2 text-2xl font-bold text-gray-900 dark:text-slate-100">
               {MOCK_PORTFOLIO.totalValue.toLocaleString()}원
             </p>
             <p className={`mt-1 text-sm font-medium ${MOCK_PORTFOLIO.totalReturn >= 0 ? 'text-red-500' : 'text-blue-500'}`}>
@@ -76,14 +63,14 @@ export default function DashboardHome() {
 
           {/* 오늘의 주요 뉴스 */}
           <Card variant="bordered" padding="lg">
-            <h2 className="text-sm font-semibold text-gray-500">오늘의 주요 뉴스</h2>
+            <h2 className="text-sm font-semibold text-gray-500 dark:text-slate-400">오늘의 주요 뉴스</h2>
             <ul className="mt-3 space-y-2">
               {MOCK_NEWS.map((news) => (
                 <li key={news.id} className="flex items-start gap-2 text-sm">
                   <span className="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-blue-500" />
                   <div>
-                    <p className="text-gray-800 leading-snug">{news.title}</p>
-                    <p className="text-xs text-gray-400">{news.source}</p>
+                    <p className="text-gray-800 dark:text-slate-200 leading-snug">{news.title}</p>
+                    <p className="text-xs text-gray-400 dark:text-slate-500">{news.source}</p>
                   </div>
                 </li>
               ))}
@@ -100,7 +87,7 @@ export default function DashboardHome() {
             <Link key={item.href} href={item.href} className="group">
               <Card variant="bordered" padding="md" className="text-center transition-shadow group-hover:shadow-md">
                 <div className="text-2xl">{item.icon}</div>
-                <p className="mt-1 text-sm font-medium text-gray-700 group-hover:text-blue-600 transition-colors">
+                <p className="mt-1 text-sm font-medium text-gray-700 dark:text-slate-300 group-hover:text-blue-600 transition-colors">
                   {item.label}
                 </p>
               </Card>

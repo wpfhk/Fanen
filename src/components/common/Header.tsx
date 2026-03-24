@@ -9,6 +9,7 @@ import { unstable_noStore as noStore } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
 import { UserMenu } from './UserMenu';
 import PlanBadge from './PlanBadge';
+import DarkModeToggle from './DarkModeToggle';
 import type { PlanTier } from '@/lib/plans';
 
 /** 내비게이션 메뉴 항목 */
@@ -49,7 +50,7 @@ export async function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white">
+    <header className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4">
         {/* 로고 */}
         <Link href="/" className="text-xl font-bold text-blue-600 hover:text-blue-700">
@@ -62,7 +63,7 @@ export async function Header() {
             <Link
               key={item.href}
               href={item.href}
-              className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
+              className="text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               {item.label}
             </Link>
@@ -76,10 +77,13 @@ export async function Header() {
               {/* 플랜 뱃지 */}
               <PlanBadge plan={plan} size="sm" />
 
+              {/* 다크모드 토글 */}
+              <DarkModeToggle />
+
               {/* 알림 아이콘 + 미읽음 뱃지 */}
               <Link
                 href="/notifications"
-                className="relative rounded-lg p-2 text-gray-500 hover:bg-gray-100 transition-colors"
+                className="relative rounded-lg p-2 text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
                 aria-label="알림"
               >
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -96,9 +100,11 @@ export async function Header() {
             </>
           ) : (
             <div className="flex items-center gap-2">
+              {/* 비로그인 상태에서도 다크모드 토글 */}
+              <DarkModeToggle />
               <Link
                 href="/login"
-                className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+                className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
               >
                 로그인
               </Link>

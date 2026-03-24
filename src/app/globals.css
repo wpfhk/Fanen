@@ -24,5 +24,27 @@ body {
   background: var(--color-background);
 }
 
+/* ── CSS Variables (라이트/다크 모드) ── */
+:root {
+  --bg-primary: #F9FAFB;
+  --bg-card: #FFFFFF;
+  --bg-nav: #FFFFFF;
+  --text-primary: #111827;
+  --text-secondary: #6B7280;
+  --border-color: #E5E7EB;
+  --accent: #2563EB;
+}
+
+.dark {
+  --bg-primary: #0F172A;
+  --bg-card: #1E293B;
+  --bg-nav: #1E293B;
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --border-color: #334155;
+  --accent: #60A5FA;
+}
+
 /* 시니어 모드 — 별도 파일로 분리 */
 @import '../styles/senior.css';
+@import '../styles/zoom.css';

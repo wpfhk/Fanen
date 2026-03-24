@@ -2,6 +2,7 @@ import type { Config } from 'tailwindcss';
 
 /** TailwindCSS 설정 — 파낸 브랜드 컬러 및 Senior 모드 포함 */
 const config: Config = {
+  darkMode: 'class',
   content: [
     './src/**/*.{ts,tsx}',
     './src/app/**/*.{ts,tsx}',

@@ -14,19 +14,25 @@ const MODES = [
   {
     value: 'standard',
     label: '일반 모드',
-    desc: '기본 UI, 필요한 정보 중심',
-    icon: '📱',
+    desc: '기본 화면 크기',
+    icon: '💻',
   },
   {
     value: 'expert',
     label: '전문가 모드',
-    desc: '차트/지표 상세 정보 포함',
+    desc: '고급 지표와 상세 정보 표시',
     icon: '📊',
   },
   {
     value: 'senior',
     label: '시니어 모드',
-    desc: '큰 글자, 단순하고 명확한 UI',
+    desc: '글자가 120% 커집니다',
+    icon: '👴',
+  },
+  {
+    value: 'zoom',
+    label: '확대 모드',
+    desc: '글자가 150% 커집니다. 고령층에 추천',
     icon: '🔍',
   },
 ] as const;
@@ -42,12 +48,15 @@ export default function OnboardingStep3() {
     if (!selected) return;
     setSaving(true);
 
-    // 시니어 모드 선택 시 클래스 추가
-    if (selected === 'senior') {
-      document.documentElement.classList.add('senior');
-    } else {
-      document.documentElement.classList.remove('senior');
-    }
+    // UI 모드 클래스 적용
+    const root = document.documentElement;
+    root.classList.remove('senior', 'zoom', 'expert');
+
+    if (selected === 'senior') root.classList.add('senior');
+    if (selected === 'zoom')   root.classList.add('zoom');
+    if (selected === 'expert') root.classList.add('expert');
+
+    localStorage.setItem('fanen-ui-mode', selected);
 
     // localStorage에서 이전 단계 데이터 가져오기
     const level = localStorage.getItem('onboarding_level') ?? 'beginner';
@@ -97,10 +106,10 @@ export default function OnboardingStep3() {
           ))}
         </div>
 
-        <h1 className="text-2xl font-bold text-gray-900 text-center mb-2">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100 text-center mb-2">
           화면 모드를 선택하세요
         </h1>
-        <p className="text-sm text-gray-500 text-center mb-8">
+        <p className="text-sm text-gray-500 dark:text-slate-400 text-center mb-8">
           나중에 프로필에서 변경할 수 있어요
         </p>
 
@@ -112,15 +121,15 @@ export default function OnboardingStep3() {
               onClick={() => setSelected(mode.value)}
               className={`w-full rounded-xl border-2 p-5 text-left transition-colors ${
                 selected === mode.value
-                  ? 'border-primary bg-primary/5'
-                  : 'border-gray-200 bg-white hover:border-gray-300'
+                  ? 'border-primary bg-primary/5 dark:bg-blue-900/20'
+                  : 'border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 hover:border-gray-300 dark:hover:border-slate-500'
               }`}
             >
               <div className="flex items-center gap-3">
                 <span className="text-2xl">{mode.icon}</span>
                 <div>
-                  <div className="font-semibold text-gray-900">{mode.label}</div>
-                  <div className="text-sm text-gray-500 mt-0.5">{mode.desc}</div>
+                  <div className="font-semibold text-gray-900 dark:text-slate-100">{mode.label}</div>
+                  <div className="text-sm text-gray-500 dark:text-slate-400 mt-0.5">{mode.desc}</div>
                 </div>
               </div>
             </button>
@@ -131,7 +140,7 @@ export default function OnboardingStep3() {
         <div className="mt-8 flex gap-3">
           <button
             onClick={handleBack}
-            className="flex-1 py-3 rounded-xl font-medium border-2 border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors"
+            className="flex-1 py-3 rounded-xl font-medium border-2 border-gray-200 dark:border-slate-600 text-gray-700 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
           >
             이전
           </button>

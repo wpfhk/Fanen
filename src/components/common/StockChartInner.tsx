@@ -5,7 +5,7 @@
  * SSR에서 호출 불가 — StockChart.tsx에서 dynamic import로만 사용
  */
 import { useEffect, useRef } from 'react';
-import { createChart } from 'lightweight-charts';
+import { createChart, CandlestickSeries, LineSeries } from 'lightweight-charts';
 import type { OHLCVPoint } from '@/types/market.types';
 
 interface StockChartInnerProps {
@@ -51,9 +51,9 @@ export default function StockChartInner({
       },
     });
 
-    // 시리즈 추가 (v4 API: addCandlestickSeries / addLineSeries)
+    // 시리즈 추가 (v5 API: addSeries)
     if (type === 'candlestick') {
-      const series = chart.addCandlestickSeries({
+      const series = chart.addSeries(CandlestickSeries, {
         upColor: '#16a34a',
         downColor: '#dc2626',
         borderUpColor: '#16a34a',
@@ -71,7 +71,7 @@ export default function StockChartInner({
         }))
       );
     } else {
-      const series = chart.addLineSeries({
+      const series = chart.addSeries(LineSeries, {
         color: '#2563eb',
         lineWidth: 2,
       });

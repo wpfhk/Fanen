@@ -34,7 +34,7 @@ export default function AiCoachChat() {
       <div className="flex items-center justify-between border-b border-gray-200 bg-white px-4 py-3">
         <div className="flex items-center gap-3">
           {/* 핀이 SVG 아바타 */}
-          <FinniAvatar size={40} />
+          <FinniAvatar size={40} mood="happy" />
           <div>
             <p className="text-sm font-semibold text-gray-900">핀이 (FinAI)</p>
             <p className="text-xs text-gray-500">AI 투자 코치</p>

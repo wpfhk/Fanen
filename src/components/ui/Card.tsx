@@ -2,9 +2,9 @@ import React from 'react';
 
 /** Card variant별 스타일 매핑 */
 const VARIANT_STYLES = {
-  default: 'bg-white shadow-sm',
+  default: 'bg-white dark:bg-slate-800 shadow-sm',
   highlighted: 'bg-primary-50 shadow-sm border border-primary-200',
-  bordered: 'bg-white border border-gray-200',
+  bordered: 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700',
 } as const;
 
 /** Card padding별 스타일 매핑 */

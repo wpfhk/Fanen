@@ -35,7 +35,7 @@ export default function ChatMessage({ message, isLoading = false }: ChatMessageP
     <div className="flex items-start gap-2">
       {/* 핀이 SVG 아바타 */}
       <div className="shrink-0">
-        <FinniAvatar size={32} />
+        <FinniAvatar size={32} mood="thinking" />
       </div>
 
       {/* 말풍선 */}

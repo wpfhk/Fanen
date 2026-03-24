@@ -5,8 +5,8 @@ import React from 'react';
 /** 버튼 variant 스타일 매핑 */
 const VARIANT_STYLES = {
   primary: 'bg-primary text-white hover:bg-primary-600 focus:ring-primary/50',
-  secondary: 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:ring-gray-300/50',
-  ghost: 'text-primary hover:bg-primary/10 focus:ring-primary/30',
+  secondary: 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:ring-gray-300/50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600',
+  ghost: 'text-primary hover:bg-primary/10 focus:ring-primary/30 dark:text-blue-400 dark:hover:bg-blue-400/10',
   danger: 'bg-danger text-white hover:bg-danger-600 focus:ring-danger/50',
 } as const;
 

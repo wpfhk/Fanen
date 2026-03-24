@@ -14,9 +14,9 @@ interface ToastItem {
 
 /** Toast 타입별 스타일 매핑 */
 const TYPE_STYLES: Record<ToastType, string> = {
-  success: 'bg-green-600 text-white',
-  error: 'bg-danger text-white',
-  info: 'bg-primary text-white',
+  success: 'bg-green-600 dark:bg-green-700 text-white',
+  error: 'bg-danger dark:bg-red-700 text-white',
+  info: 'bg-primary dark:bg-blue-700 text-white',
 };
 
 /** Toast 타입별 아이콘 */

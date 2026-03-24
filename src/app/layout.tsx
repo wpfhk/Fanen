@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/common/Header';
 import BottomNav from '@/components/common/BottomNav';
+import DevModeBanner from '@/components/common/DevModeBanner';
 import { ToastProvider } from '@/components/ui/Toast';
 
 /** Inter 폰트 로드 — 라틴 + 한국어 지원 */
@@ -21,9 +22,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko">
-      <body className={`${inter.className} antialiased pb-16 md:pb-0`}>
+    <html lang="ko" suppressHydrationWarning>
+      <body className={`${inter.className} antialiased pb-16 md:pb-0 dark:bg-slate-900`}>
         <ToastProvider>
+          <DevModeBanner />
           <Header />
           <main>{children}</main>
           <BottomNav />
