@@ -1,274 +1,227 @@
 'use client';
 /**
- * HubMenu 컴포넌트
- * 340×340 SVG — 중앙 허브 + 4개 카드 위성 + Animated Beam
- * 십자형 배치, 틸 Bézier 연결선, 빛 입자 흐름 애니메이션
+ * HubMenu 컴포넌트 — 반디 키워드 슬라이더 애니메이션
+ *
+ * 반딧불이(반디)가 가로 레일을 따라 날아다니며
+ * 파낸의 핵심 기능 키워드 정류장을 소개하는 UI.
+ * 짝수 인덱스 카드는 레일 위, 홀수 인덱스 카드는 레일 아래 배치.
  */
-import { motion, useAnimationFrame } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useRef } from 'react';
 
-const SIZE = 340;
-const CENTER = { x: 170, y: 170 };
-
-// 4개 위성 카드 — 십자 배치 (위/오른쪽/아래/왼쪽)
-const SATELLITES = [
+/** 정류장 목록 */
+const STATIONS = [
   {
-    label: '비나 맵',
-    sub: '세계 정세',
+    emoji: '🌍',
+    label: '세계 정세',
+    sub: '글로벌 맵',
     href: '/binah-map',
-    cx: 170,
-    cy: 58,
-    icon: (
-      <>
-        <circle cx={12} cy={10} r={4} />
-        <path d="M12 20s-6-5.5-6-10a6 6 0 0 1 12 0c0 4.5-6 10-6 10z" strokeLinejoin="round" />
-      </>
-    ),
   },
   {
-    label: '모의투자',
-    sub: '투자 시뮬레이션',
-    href: '/mock-trading',
-    cx: 282,
-    cy: 170,
-    icon: (
-      <path d="M3 17l4-8 4 5 3-3 5 6M3 21h18" strokeLinejoin="round" />
-    ),
+    emoji: '📰',
+    label: '뉴스 분석',
+    sub: '글로벌 뉴스',
+    href: '/global-news',
   },
   {
+    emoji: '📊',
+    label: '섹터 분석',
+    sub: '섹터 지도',
+    href: '/sector',
+  },
+  {
+    emoji: '💰',
+    label: '수혜 기업',
+    sub: '수혜기업 연결망',
+    href: '/value-chain',
+  },
+  {
+    emoji: '💼',
+    label: '내 포트폴리오',
+    sub: '자산 관리',
+    href: '/portfolio',
+  },
+  {
+    emoji: '✨',
     label: '반디 코치',
-    sub: 'AI 투자 코치',
+    sub: 'AI 코치',
     href: '/coach',
-    cx: 170,
-    cy: 282,
-    icon: (
-      <>
-        <path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2z" />
-        <path d="M8 12h.01M12 12h.01M16 12h.01" strokeLinecap="round" strokeWidth={2.5} />
-      </>
-    ),
   },
-  {
-    label: '배당 허브',
-    sub: '배당·ETF',
-    href: '/dividend',
-    cx: 58,
-    cy: 170,
-    icon: (
-      <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" strokeLinejoin="round" />
-    ),
-  },
-];
+] as const;
 
-// S-커브 Bézier 연결선 (중앙 → 각 위성)
-const CURVES = [
-  `M ${CENTER.x} ${CENTER.y} C ${CENTER.x - 16} 132, ${CENTER.x + 16} 88, ${CENTER.x} 58`,  // 위
-  `M ${CENTER.x} ${CENTER.y} C 202 ${CENTER.y - 16}, 252 ${CENTER.y + 16}, 282 ${CENTER.y}`,  // 오른쪽
-  `M ${CENTER.x} ${CENTER.y} C ${CENTER.x + 16} 208, ${CENTER.x - 16} 252, ${CENTER.x} 282`, // 아래
-  `M ${CENTER.x} ${CENTER.y} C 138 ${CENTER.y + 16}, 88 ${CENTER.y - 16}, 58 ${CENTER.y}`,   // 왼쪽
-];
-
-/** 경로를 따라 흐르는 빔 입자 컴포넌트 */
-function AnimatedBeam({ pathD, delay }: { pathD: string; delay: number }) {
-  const pathRef = useRef<SVGPathElement>(null);
-  const circleRef = useRef<SVGCircleElement>(null);
-
-  useAnimationFrame((time) => {
-    const raw = (time / 1000 - delay) % 3.2;
-    const progress = raw < 0 ? 0 : Math.min(1, raw / 3.2);
-
-    if (circleRef.current && pathRef.current) {
-      try {
-        const len = pathRef.current.getTotalLength();
-        const pt = pathRef.current.getPointAtLength(progress * len);
-        circleRef.current.setAttribute('cx', String(pt.x));
-        circleRef.current.setAttribute('cy', String(pt.y));
-        circleRef.current.setAttribute('opacity', String(Math.sin(progress * Math.PI) * 0.9));
-      } catch {
-        // 렌더링 전 오류 무시
-      }
-    }
-  });
-
+/** 반디 SVG — 발광하는 반딧불이 */
+function FireflyIcon() {
   return (
-    <g>
-      {/* getTotalLength 계산용 참조 path (보이지 않음) */}
-      <path ref={pathRef} d={pathD} fill="none" stroke="none" />
-      {/* 보이는 연결선 */}
-      <motion.path
-        d={pathD}
-        fill="none"
-        stroke="#0D9488"
-        strokeWidth={1}
-        strokeOpacity={0.25}
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: 0.9, delay: delay * 0.3, ease: 'easeOut' }}
-      />
-      {/* 빔 입자 */}
-      <circle
-        ref={circleRef}
-        r={2.5}
-        fill="#2DD4BF"
-      />
-    </g>
+    <svg
+      width={28}
+      height={28}
+      viewBox="0 0 28 28"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      {/* 몸통 */}
+      <ellipse cx={14} cy={16} rx={5} ry={3} fill="#2DD4BF" opacity={0.95} />
+      {/* 머리 */}
+      <circle cx={14} cy={11.5} r={2.5} fill="#14B8A6" />
+      {/* 발광 꼬리 */}
+      <ellipse cx={14} cy={19} rx={2.5} ry={1.5} fill="#5EEAD4" opacity={0.8} />
+      {/* 더듬이 왼쪽 */}
+      <line x1={12} y1={10} x2={9.5} y2={7.5} stroke="#14B8A6" strokeWidth={1} strokeLinecap="round" />
+      {/* 더듬이 오른쪽 */}
+      <line x1={16} y1={10} x2={18.5} y2={7.5} stroke="#14B8A6" strokeWidth={1} strokeLinecap="round" />
+      {/* 날개 왼쪽 */}
+      <ellipse cx={9} cy={15} rx={3} ry={1.5} fill="#99F6E4" opacity={0.4} transform="rotate(-20 9 15)" />
+      {/* 날개 오른쪽 */}
+      <ellipse cx={19} cy={15} rx={3} ry={1.5} fill="#99F6E4" opacity={0.4} transform="rotate(20 19 15)" />
+    </svg>
+  );
+}
+
+/** 정류장 카드 (위/아래 배치 교대) */
+function StationCard({
+  station,
+  isAbove,
+}: {
+  station: (typeof STATIONS)[number];
+  isAbove: boolean;
+}) {
+  return (
+    <div className="relative flex flex-col items-center">
+      {/* 위쪽 배치: 카드 → 연결선 → dot */}
+      {isAbove && (
+        <>
+          <Link href={station.href}>
+            <motion.div
+              className="
+                flex flex-col items-center gap-1 rounded-xl border
+                border-zinc-200 dark:border-zinc-700
+                bg-white dark:bg-zinc-900
+                px-3 py-2 shadow-sm
+                cursor-pointer
+                transition-colors
+                hover:border-teal-400 dark:hover:border-teal-500
+              "
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+            >
+              <span className="text-xl leading-none">{station.emoji}</span>
+              <span className="text-[11px] font-bold text-zinc-800 dark:text-zinc-100 whitespace-nowrap">
+                {station.label}
+              </span>
+              <span className="text-[9px] text-zinc-400 dark:text-zinc-500 whitespace-nowrap">
+                {station.sub}
+              </span>
+            </motion.div>
+          </Link>
+          {/* 연결선 */}
+          <div className="w-px h-4 bg-zinc-300 dark:bg-zinc-600" />
+          {/* 레일 위 dot */}
+          <div className="w-2.5 h-2.5 rounded-full border-2 border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-900 -mb-1.5 z-10" />
+        </>
+      )}
+
+      {/* 아래쪽 배치: dot → 연결선 → 카드 */}
+      {!isAbove && (
+        <>
+          {/* 레일 아래 dot */}
+          <div className="w-2.5 h-2.5 rounded-full border-2 border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-900 -mt-1.5 z-10" />
+          {/* 연결선 */}
+          <div className="w-px h-4 bg-zinc-300 dark:bg-zinc-600" />
+          <Link href={station.href}>
+            <motion.div
+              className="
+                flex flex-col items-center gap-1 rounded-xl border
+                border-zinc-200 dark:border-zinc-700
+                bg-white dark:bg-zinc-900
+                px-3 py-2 shadow-sm
+                cursor-pointer
+                transition-colors
+                hover:border-teal-400 dark:hover:border-teal-500
+              "
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+            >
+              <span className="text-xl leading-none">{station.emoji}</span>
+              <span className="text-[11px] font-bold text-zinc-800 dark:text-zinc-100 whitespace-nowrap">
+                {station.label}
+              </span>
+              <span className="text-[9px] text-zinc-400 dark:text-zinc-500 whitespace-nowrap">
+                {station.sub}
+              </span>
+            </motion.div>
+          </Link>
+        </>
+      )}
+    </div>
   );
 }
 
 export function HubMenu() {
   return (
-    <svg
-      width={SIZE}
-      height={SIZE}
-      viewBox={`0 0 ${SIZE} ${SIZE}`}
-      className="overflow-visible"
+    <div
+      className="
+        w-full
+        bg-zinc-50 dark:bg-zinc-900/50
+        rounded-2xl
+        px-6 py-5
+        overflow-hidden
+      "
     >
-      {/* 연결선 + 빔 입자 */}
-      {CURVES.map((d, i) => (
-        <AnimatedBeam key={i} pathD={d} delay={i * 0.9} />
-      ))}
+      {/* 상단 타이틀 */}
+      <p className="text-[10px] font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-4 text-center">
+        반디와 함께 탐색하기
+      </p>
 
-      {/* 중앙 허브 노드 */}
-      <motion.g
-        initial={{ opacity: 0, scale: 0.6 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5, ease: 'backOut' }}
-        style={{ originX: `${CENTER.x}px`, originY: `${CENTER.y}px` }}
-      >
-        {/* 외부 pulse 링 */}
-        <motion.circle
-          cx={CENTER.x}
-          cy={CENTER.y}
-          r={38}
-          fill="none"
-          stroke="#0D9488"
-          strokeWidth={0.8}
-          strokeOpacity={0.4}
-          style={{ originX: `${CENTER.x}px`, originY: `${CENTER.y}px` }}
-          animate={{ scale: [1, 1.12, 1], opacity: [0.5, 0.15, 0.5] }}
-          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-        />
-        {/* 내부 원 */}
-        <circle
-          cx={CENTER.x}
-          cy={CENTER.y}
-          r={34}
-          fill="none"
-          stroke="#0D9488"
-          strokeWidth={1}
-          strokeOpacity={0.3}
-          className="fill-teal-50/40 dark:fill-teal-950/30"
-        />
-        {/* 중앙 채움 */}
-        <circle
-          cx={CENTER.x}
-          cy={CENTER.y}
-          r={28}
-          className="fill-white dark:fill-zinc-900"
-          strokeWidth={0}
-        />
-        {/* 텍스트 */}
-        <text
-          x={CENTER.x}
-          y={CENTER.y - 4}
-          textAnchor="middle"
-          fontSize={10}
-          fontWeight={800}
-          fill="#0D9488"
-        >
-          오늘의
-        </text>
-        <text
-          x={CENTER.x}
-          y={CENTER.y + 9}
-          textAnchor="middle"
-          fontSize={10}
-          fontWeight={800}
-          fill="#0D9488"
-        >
-          기회
-        </text>
-      </motion.g>
+      {/* 레일 + 정류장 컨테이너 */}
+      <div className="relative flex items-center" style={{ height: 168 }}>
 
-      {/* 4개 위성 카드 */}
-      {SATELLITES.map((sat, i) => (
-        <motion.g
-          key={sat.href}
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          style={{ originX: `${sat.cx}px`, originY: `${sat.cy}px` }}
-          transition={{ type: 'spring', stiffness: 320, damping: 22, delay: 0.4 + i * 0.1 }}
+        {/* 정류장 행 — 레일 위/아래 교대 배치 */}
+        <div className="relative z-10 w-full flex items-center justify-between px-2">
+          {STATIONS.map((station, i) => (
+            <StationCard key={station.href} station={station} isAbove={i % 2 === 0} />
+          ))}
+        </div>
+
+        {/* 가로 레일 — 절대 위치로 중앙에 배치 */}
+        <div
+          className="absolute left-0 right-0 border-t border-dashed border-zinc-300 dark:border-zinc-700 z-0 pointer-events-none"
+          style={{ top: '50%' }}
+        />
+
+        {/* 반디(반딧불이) — 레일을 따라 무한 이동 */}
+        <motion.div
+          className="absolute z-20 pointer-events-none"
+          style={{
+            top: 'calc(50% - 14px)', /* 반디 높이 절반 오프셋 */
+            filter: 'drop-shadow(0 0 6px rgba(45,212,191,0.7))',
+          }}
+          animate={{
+            x: ['-10%', '110%'],
+            y: [0, -6, 0, -4, 0, -7, 0],
+          }}
+          transition={{
+            x: {
+              duration: 8,
+              repeat: Infinity,
+              ease: 'linear',
+            },
+            y: {
+              duration: 2.4,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            },
+          }}
         >
-          <Link href={sat.href}>
-            <motion.g
-              whileHover="hover"
-              style={{ originX: `${sat.cx}px`, originY: `${sat.cy}px` }}
-              transition={{ type: 'spring', stiffness: 360, damping: 22 }}
-            >
-              {/* hover glow */}
-              <motion.rect
-                x={sat.cx - 40}
-                y={sat.cy - 33}
-                width={80}
-                height={66}
-                rx={13}
-                fill="#0D9488"
-                initial={{ opacity: 0 }}
-                variants={{ hover: { opacity: 0.06 } }}
-              />
-              {/* 카드 배경 */}
-              <motion.rect
-                x={sat.cx - 40}
-                y={sat.cy - 33}
-                width={80}
-                height={66}
-                rx={13}
-                className="fill-white dark:fill-zinc-900/90"
-                stroke="#0D9488"
-                strokeWidth={1}
-                strokeOpacity={0.25}
-                variants={{ hover: { strokeOpacity: 0.7 } }}
-              />
-              {/* 아이콘 */}
-              <g transform={`translate(${sat.cx - 10}, ${sat.cy - 25})`}>
-                <svg
-                  width={20}
-                  height={20}
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#0D9488"
-                  strokeWidth={1.5}
-                  strokeLinecap="round"
-                >
-                  {sat.icon}
-                </svg>
-              </g>
-              {/* 레이블 */}
-              <text
-                x={sat.cx}
-                y={sat.cy + 8}
-                textAnchor="middle"
-                fontSize={11}
-                fontWeight={700}
-                className="fill-zinc-800 dark:fill-zinc-100"
-              >
-                {sat.label}
-              </text>
-              {/* 서브레이블 */}
-              <text
-                x={sat.cx}
-                y={sat.cy + 22}
-                textAnchor="middle"
-                fontSize={8.5}
-                className="fill-zinc-400 dark:fill-zinc-500"
-              >
-                {sat.sub}
-              </text>
-            </motion.g>
-          </Link>
-        </motion.g>
-      ))}
-    </svg>
+          <FireflyIcon />
+        </motion.div>
+
+      </div>
+
+      {/* 하단 힌트 */}
+      <p className="text-[9px] text-zinc-400 dark:text-zinc-600 text-center mt-2">
+        카드를 클릭해 기능으로 이동하세요
+      </p>
+    </div>
   );
 }

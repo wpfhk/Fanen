@@ -21,7 +21,7 @@ export function NewsCard({ className }: { className?: string }) {
       className
     )}>
       <div className="flex items-center justify-between mb-4">
-        <p className="text-xs font-medium uppercase tracking-widest text-slate-500 dark:text-slate-300">
+        <p className="text-xs font-medium uppercase tracking-widest text-slate-500 dark:text-zinc-300">
           오늘의 주요 뉴스
         </p>
         <Link href="/news" className="text-xs text-primary hover:underline transition-colors">
@@ -33,10 +33,10 @@ export function NewsCard({ className }: { className?: string }) {
           <div key={news.id} className="flex gap-2 items-start">
             <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary" />
             <div>
-              <p className="text-sm font-medium leading-snug text-slate-800 dark:text-slate-200">
+              <p className="text-sm font-medium leading-snug text-slate-800 dark:text-zinc-200">
                 {news.title}
               </p>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{news.source}</p>
+              <p className="text-xs text-slate-500 dark:text-zinc-400 mt-0.5">{news.source}</p>
             </div>
           </div>
         ))}

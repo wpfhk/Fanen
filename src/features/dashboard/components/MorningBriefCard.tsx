@@ -18,7 +18,7 @@ const DIRECTION_ICON: Record<string, string> = {
 const DIRECTION_CLASS: Record<string, string> = {
   up:      'text-red-500 border-red-200 dark:text-red-400 dark:border-red-800',
   down:    'text-blue-500 border-blue-200 dark:text-blue-400 dark:border-blue-800',
-  neutral: 'text-slate-500 border-slate-200 dark:text-slate-400 dark:border-slate-600',
+  neutral: 'text-zinc-600 border-zinc-300 dark:text-zinc-400 dark:border-zinc-600',
 };
 
 export function MorningBriefCard({ className }: { className?: string }) {
@@ -40,14 +40,14 @@ export function MorningBriefCard({ className }: { className?: string }) {
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-xs font-semibold text-teal-400">반디의 오늘 브리핑 ☀️</p>
-          <p className="mt-1 text-lg font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-snug">
+          <p className="mt-1 text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-snug">
             {brief.headline}
           </p>
         </div>
       </div>
 
       {/* 요약 */}
-      <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">{brief.summary}</p>
+      <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">{brief.summary}</p>
 
       {/* 섹터 신호: shadcn Badge 사용 */}
       <div className="flex flex-wrap gap-2">
@@ -68,7 +68,7 @@ export function MorningBriefCard({ className }: { className?: string }) {
           href="/binah-map"
           className="text-xs text-primary hover:underline transition-colors"
         >
-          비나 맵에서 전체 보기 →
+          세계 정세 맵에서 전체 보기 →
         </Link>
       </div>
     </div>

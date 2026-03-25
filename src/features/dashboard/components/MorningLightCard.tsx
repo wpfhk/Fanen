@@ -53,8 +53,8 @@ export function MorningLightCard({ className }: { className?: string }) {
   return (
     <motion.div
       className={cn(
-        'rounded-2xl border border-white/10 dark:border-white/5',
-        'bg-white/60 dark:bg-zinc-900/60 backdrop-blur-sm shadow-sm p-6',
+        'rounded-2xl border border-zinc-200 dark:border-zinc-800',
+        'bg-white dark:bg-zinc-900/60 backdrop-blur-sm shadow-sm p-6',
         className
       )}
       initial="hidden"
@@ -74,7 +74,7 @@ export function MorningLightCard({ className }: { className?: string }) {
             />
           </div>
           <div>
-            <p className="text-xs font-medium uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
+            <p className="text-xs font-medium uppercase tracking-widest text-zinc-600 dark:text-zinc-500">
               반디의 모닝 라이트
             </p>
             <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-100">
@@ -84,7 +84,7 @@ export function MorningLightCard({ className }: { className?: string }) {
         </div>
         <Link
           href="/news"
-          className="text-xs text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors"
+          className="text-xs text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors"
         >
           전체 보기 →
         </Link>

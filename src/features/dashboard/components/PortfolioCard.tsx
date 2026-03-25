@@ -14,14 +14,14 @@ export function PortfolioCard({ className }: { className?: string }) {
   const isPositive = totalReturn >= 0;
   return (
     <div className={cn(
-      'rounded-2xl border border-slate-100 dark:border-white/5',
-      'bg-white dark:bg-white/5 shadow-sm p-6',
+      'rounded-2xl border border-zinc-200 dark:border-zinc-800',
+      'bg-white dark:bg-zinc-900 shadow-sm p-6',
       className
     )}>
-      <p className="text-xs font-medium uppercase tracking-widest text-slate-500 dark:text-slate-300">
+      <p className="text-xs font-medium uppercase tracking-widest text-zinc-600 dark:text-zinc-400">
         내 포트폴리오
       </p>
-      <p className="mt-3 text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+      <p className="mt-3 text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
         {totalValue.toLocaleString('ko-KR')}원
       </p>
       <div className="mt-2">

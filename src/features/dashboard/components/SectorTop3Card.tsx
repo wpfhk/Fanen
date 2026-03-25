@@ -30,12 +30,12 @@ const TOP_SECTORS = deriveTopSectors();
 export function SectorTop3Card({ className }: { className?: string }) {
   return (
     <div className={cn(
-      'rounded-2xl border border-slate-100 dark:border-white/5',
-      'bg-white dark:bg-white/5 shadow-sm p-6 space-y-3',
+      'rounded-2xl border border-zinc-200 dark:border-zinc-800',
+      'bg-white dark:bg-zinc-900 shadow-sm p-6 space-y-3',
       className
     )}>
       <div className="flex items-center justify-between">
-        <p className="text-xs font-medium uppercase tracking-widest text-slate-500 dark:text-slate-300">
+        <p className="text-xs font-medium uppercase tracking-widest text-zinc-600 dark:text-zinc-400">
           오늘 반디 주목 섹터
         </p>
         <Link href="/binah-map" className="text-xs text-primary hover:underline transition-colors">
@@ -55,8 +55,8 @@ export function SectorTop3Card({ className }: { className?: string }) {
             </Badge>
             <div className="flex-1">
               <div className="flex items-center justify-between mb-1.5">
-                <span className="text-sm font-medium text-slate-800 dark:text-slate-200">{s.name}</span>
-                <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200">{s.name}</span>
+                <span className="text-xs font-semibold text-zinc-600 dark:text-zinc-400">
                   {s.score}
                 </span>
               </div>
