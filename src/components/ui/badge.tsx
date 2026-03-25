@@ -16,7 +16,7 @@ const badgeVariants = cva(
         tier2:
           'border-purple-500 bg-purple-50 text-purple-700 dark:border-purple-500 dark:bg-purple-950 dark:text-purple-300',
         tier3:
-          'border-slate-400 bg-slate-100 text-slate-600 dark:border-slate-500 dark:bg-slate-800 dark:text-slate-400',
+          'border-slate-400 bg-slate-100 text-slate-600 dark:border-slate-500 dark:bg-zinc-900 dark:text-zinc-400',
         success:
           'border-transparent bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400',
         warning:
@@ -24,7 +24,7 @@ const badgeVariants = cva(
         danger:
           'border-transparent bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-400',
         outline:
-          'border-slate-300 text-slate-700 dark:border-slate-600 dark:text-slate-300',
+          'border-slate-300 text-slate-700 dark:border-zinc-600 dark:text-zinc-300',
       },
       size: {
         sm: 'px-1.5 py-0 text-[10px]',
