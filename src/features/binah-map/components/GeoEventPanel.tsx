@@ -3,6 +3,7 @@
 /**
  * GeoEventPanel — 선택된 지정학 이벤트 상세 패널
  */
+import Link from 'next/link';
 import type { GeoEvent } from '../types';
 
 interface Props {
@@ -22,6 +23,26 @@ function riskLevel(score: number) {
   return RISK_LABEL.low;
 }
 
+/** affectedSectors 한글명 → value-chain sectorKey 매핑 */
+const SECTOR_KEY_MAP: Record<string, string> = {
+  방산: 'defense',
+  반도체: 'semiconductor',
+  '2차전지': 'battery',
+  배터리: 'battery',
+};
+
+/**
+ * affectedSectors 배열에서 value-chain 섹터 키를 추출
+ * 매핑 가능한 섹터가 없으면 기본값 "defense" 반환
+ */
+function resolveSectorKey(affectedSectors: string[]): string {
+  for (const s of affectedSectors) {
+    const key = SECTOR_KEY_MAP[s];
+    if (key) return key;
+  }
+  return 'defense';
+}
+
 const EVENT_TYPE_LABEL: Record<GeoEvent['eventType'], string> = {
   trade:    '무역/기술',
   conflict: '지정학/갈등',
@@ -31,6 +52,7 @@ const EVENT_TYPE_LABEL: Record<GeoEvent['eventType'], string> = {
 
 export function GeoEventPanel({ event, onClose }: Props) {
   const risk = riskLevel(event.riskScore);
+  const sectorKey = resolveSectorKey(event.affectedSectors);
 
   return (
     <div className="rounded-xl border border-[#1E3448] bg-[#162032] p-4 space-y-3">
@@ -85,6 +107,19 @@ export function GeoEventPanel({ event, onClose }: Props) {
             </span>
           ))}
         </div>
+      </div>
+
+      {/* Value Chain 드릴다운 링크 */}
+      <div className="pt-1">
+        <Link
+          href={`/value-chain?sector=${sectorKey}`}
+          className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-teal-600/20 hover:bg-teal-600/30 border border-teal-600/40 px-3 py-2 text-xs font-semibold text-teal-300 transition-colors"
+        >
+          <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+          Value Chain 보기
+        </Link>
       </div>
     </div>
   );

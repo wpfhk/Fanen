@@ -16,6 +16,7 @@ const NAV_ITEMS = [
   { href: '/binah-map', label: '비나 맵' },
   { href: '/news', label: '뉴스 분석' },
   { href: '/sector', label: '섹터 맵' },
+  { href: '/value-chain', label: 'Value Chain' },
   { href: '/portfolio', label: '포트폴리오' },
   { href: '/dividend', label: '배당 허브' },
   { href: '/mock-trading', label: '모의투자' },
