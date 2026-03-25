@@ -2,7 +2,8 @@
 
 > PM Agent Team 종합 분석 결과
 > 생성일: 2026-03-25
-> 버전: 1.0
+> 버전: 1.1
+> 업데이트: 2026-03-26 (CTO 팀 구현 현황 조사 반영)
 > 이전 버전: fanen.prd.md (파낸 v1)
 
 ---
@@ -565,14 +566,14 @@
 
 ### 13.5 마일스톤 & 로드맵
 
-| Phase | 기간 | 핵심 산출물 | 목표 |
-|-------|------|-----------|------|
-| **Sprint 10** | 2주 | 브랜드 리브랜딩 (파낸→BINAH, 핀이→반디, 컬러/UI 교체) | 기존 기능 BINAH 브랜드로 전환 |
-| **Sprint 11** | 2주 | 비나 맵 MVP (D3 세계 지도 + 정세 이벤트 10개+) | 핵심 차별화 기능 1차 런칭 |
-| **Sprint 12** | 2주 | Value Chain MVP (Tier 1~3 발굴 + Sankey 시각화) | 핵심 차별화 기능 2차 런칭 |
-| **Sprint 13** | 2주 | 불로소득 허브 (계산기 + 배당 프로필 + 성향 분류) | 핵심 유입 기능 완성 |
-| **Sprint 14** | 2주 | 반디 차트 해설 + 모닝 라이트 + 알림 시스템 | 반디 캐릭터 핵심 경험 완성 |
-| **Sprint 15** | 2주 | 통합 테스트 + 성능 최적화 + 베타 출시 | 베타 MAU 1,000 |
+| Phase | 기간 | 핵심 산출물 | 목표 | 상태 |
+|-------|------|-----------|------|:----:|
+| **Sprint 10** | 2주 | 브랜드 리브랜딩 (파낸→BINAH, 핀이→반디, 컬러/UI 교체) | 기존 기능 BINAH 브랜드로 전환 | ✅ 완료 |
+| **Sprint 11** | 2주 | 비나 맵 MVP (D3 세계 지도 + 정세 이벤트) + Value Chain Sankey | 핵심 차별화 기능 1·2차 | ✅ 완료 |
+| **Sprint 12** | 2주 | 실 데이터 연동 (Supabase + Railway FastAPI) + 뉴스·섹터 완성 | Mock → 실 API 전환 | 🔄 진행 중 |
+| **Sprint 13** | 2주 | 불로소득 허브 고도화 + 포트폴리오 종목 구성 + 모의투자 포지션 관리 | 핵심 유입 기능 완성 | ⏳ 예정 |
+| **Sprint 14** | 2주 | 반디 코치 Railway 연동 + 차트 해설 + 모닝 라이트 알림 | 반디 캐릭터 핵심 경험 완성 | ⏳ 예정 |
+| **Sprint 15** | 2주 | 통합 테스트 + 성능 최적화 + 베타 출시 | 베타 MAU 1,000 | ⏳ 예정 |
 
 ### 13.6 성공 지표
 
@@ -707,6 +708,198 @@
 | TC-4.2 | 모닝 라이트 07:00 KST 생성 | 3문장 글로벌 브리핑 생성, 반디 캐릭터 UI로 표시 | US-4.3 |
 | TC-4.3 | 반디 응답에 "~했어요!", "~일 것 같아요!" 톤 | 반디 말투 가이드라인 준수 확인 | US-5.2 |
 | TC-4.4 | 차트 해설에 출처 없는 수치 | 표시되지 않아야 함 (AI 환각 방지 원칙) | - |
+
+---
+
+---
+
+## 17. 구현 현황 (Implementation Status)
+
+> 조사일: 2026-03-26 | 조사 방법: CTO 팀 2명 코드베이스 정적 분석
+> 기준: Sprint 11 완료 시점 (Value Chain Sankey 구현, UI 리디자인 완료)
+
+### 17.1 기능별 구현 완료도 요약
+
+| 기능 | 완료도 | 페이지 | 컴포넌트 | Railway API | 실 데이터 연동 | 상태 |
+|------|:------:|:------:|:--------:|:-----------:|:-------------:|:----:|
+| **비나 맵** | 95% | ✅ | ✅ (4개) | ❌ 미구현 | ❌ Mock만 | 🟡 Near Done |
+| **뉴스 분석** | 70% | ✅ | ✅ (3개+) | ✅ 코드 있음 | 🔄 부분 | 🟡 In Progress |
+| **섹터맵** | 60% | ✅ | ✅ (3개+) | ✅ 코드 있음 | ❌ Mock만 | 🟠 In Progress |
+| **Value Chain** | 85% | ✅ | ✅ (3개) | ❌ 미구현 | ❌ Mock만 | 🟡 Near Done |
+| **포트폴리오** | 70% | ✅ | ✅ (3개) | — | 🔄 Supabase CRUD | 🟡 In Progress |
+| **배당 허브** | 75% | ✅ | ✅ (5개+) | — | 🔄 부분 | 🟡 In Progress |
+| **모의투자** | 80% | ✅ | ✅ (4개) | — | ✅ Supabase 5테이블 | 🟡 Near Done |
+| **반디 코치** | 65% | ✅ | ✅ (4개) | ⚠️ 필수 미연동 | ❌ Mock 응답 | 🟠 In Progress |
+
+**전체 평균 완료도: 75%**
+
+---
+
+### 17.2 기능별 상세 현황
+
+#### 비나 맵 (BINAH Map) — 95%
+
+**완료 항목**
+- D3.js geoNaturalEarth1(평면) + geoOrthographic(3D 구체) 토글 구현
+- 드래그 회전(3D), 핑 클릭 시 스무스 애니메이션 이동
+- 평면 모드 핑 클릭 시 2.8× 줌인 / 배경 클릭으로 리셋
+- 반응형 ResizeObserver, 다크모드, GeoEventPanel 드릴다운
+- Value Chain 페이지 연결 (`/value-chain?sector=<key>`)
+- Framer Motion 알림 카드, 글래스모피즘 UI
+
+**미구현 항목**
+- Supabase `geo_events` 테이블 연동 (현재 4개 Mock 이벤트)
+- Railway FastAPI 정세 분석 엔진 (Gemini → 자동 이벤트 생성)
+- 실시간 이벤트 업데이트 파이프라인
+
+---
+
+#### 뉴스 분석 (News Impact) — 70%
+
+**완료 항목**
+- 17개 섹터 다중 선택 필터 + 영향도 필터
+- LanguageToggle (일반인/전문가 모드 UI)
+- Supabase `news_impacts` 쿼리 코드 작성
+- Railway `news_analyzer.py` 서비스 코드 존재
+- Mock 데이터 10건 (다양한 섹터/영향도)
+- 로딩 스켈레톤, 에러 처리, 빈 상태 UI
+
+**미구현 항목**
+- 뉴스 자동 수집 파이프라인 (네이버/다음/경제신문 RSS)
+- Railway Gemini API 실제 호출 테스트 미완
+- `ai_summary_general` vs `ai_summary_expert` 분리
+- Supabase 테이블 생성 + RLS 정책 적용 필요
+- 구독 플랜 게이트 미구현
+
+---
+
+#### 섹터맵 (Sector Map) — 60%
+
+**완료 항목**
+- SubscriptionGate (Pro 이상) 구현
+- SectorMapSection + 동적 import (SSR 비활성화)
+- Supabase `sector_causal_maps` 쿼리 로직
+- Mock 데이터: 8개 노드 + 10개 인과관계 링크
+- Railway `sector_analyzer.py` 서비스 코드 존재
+
+**미구현 항목**
+- SectorForceGraph D3.js 포스 시뮬레이션 상세 구현 확인 필요
+- SectorDrilldownPanel 드릴다운 기능
+- Supabase 테이블 생성 + RLS 정책 적용 필요
+- Railway AI 인과관계 자동 생성
+- Senior 모드 UI 차이점 구현
+
+---
+
+#### Value Chain — 85%
+
+**완료 항목**
+- D3 Sankey 다이어그램 (`d3-sankey@0.12.3`)
+- 티어별 색상 (T0 teal, T1 blue, T2 purple, T3 slate)
+- ResizeObserver 반응형 레이아웃
+- 모바일 < 768px 계층 리스트 폴백
+- Mock 데이터: 3개 섹터 × 8개 종목 = 24개 종목 (방산/반도체/2차전지)
+- 노드 클릭 → CompanyCard 표시
+
+**미구현 항목**
+- Railway FastAPI `/value-chain/<sector>` 엔드포인트
+- KRX API 실시간 시세 + 배당률 연동
+- DART 실적 데이터 자동 수집
+- AI 신호 생성 (buy/wait/watch) 실시간화
+
+---
+
+#### 포트폴리오 (Portfolio) — 70%
+
+**완료 항목**
+- Supabase `portfolios` 테이블 CRUD (Create/Read/Update/Delete)
+- 포트폴리오 생성/수정 모달 폼
+- 수익률·손익 계산 로직
+- Mock/실 데이터 분기 (USE_MOCK 플래그)
+- 에러/로딩/빈 상태 UI
+
+**미구현 항목**
+- 종목 구성 실 데이터 (현재 하드코딩 Mock: 삼성전자 40%, SK하이닉스 25% 등)
+- 개별 종목 보유 이력 및 수익률 상세 분석
+- 포트폴리오 상세 페이지 (현재 리스트만)
+- KRX 실시간 시세 기반 평가금액 계산
+
+---
+
+#### 배당 허브 (Dividend Hub) — 75%
+
+**완료 항목**
+- 불로소득 역산 계산기 (목표 월 불로소득 → 필요 투자금)
+- 투자 성향 5가지 필터 (dividend/value/growth/theme/etf)
+- 월배당 ETF 시뮬레이터 (배당 재투자 복리 그래프)
+- 배당 캘린더 (Supabase `dividend_calendar` 쿼리)
+- 반디 맞춤 멘트, AiBadge + 출처 URL
+- FREE_LIMIT=3 카운트 로직 (타입 정의됨)
+
+**미구현 항목**
+- 실제 배당 데이터 DB 적재 필요 (`dividend_calendar` 테이블 비어있을 가능성)
+- 배당 시뮬레이터 사용 횟수 제한 UI 미반영
+- 종목별 배당 프로필 상세 (배당금, 지급일 클릭 불가)
+- ETF 비교 분석 (단일 ETF 선택만 가능)
+
+---
+
+#### 모의투자 (Mock Trading) — 80%
+
+**완료 항목**
+- Supabase 5개 테이블 완전 연동 (seasons/accounts/trades/rankings)
+- 활성 시즌 자동 조회 + 계좌 자동 생성 (1,000만원 초기 시드)
+- 매수/매도 주문 + 잔고 실시간 업데이트
+- 거래 내역 테이블 (최근 20건)
+- 시즌 랭킹 보드 Top 20 + 내 순위 하이라이트
+
+**미구현 항목**
+- 보유 종목 포지션 조회 (거래 기록은 있지만 현재 보유 현황 집계 없음)
+- 코스피 수익률 하드코딩 (`"+2.10%"`) → 실 지수 API 연동 필요
+- 랭킹 변동값 Mock 수식 → 실 데이터 기반 계산
+- 실시간 주가 연동 (현재 사용자가 수동 입력)
+
+---
+
+#### 반디 코치 (AI Coach) — 65%
+
+**완료 항목**
+- 채팅 UI (메시지 목록, 입력창, 반디 SVG 아바타)
+- 빠른 질문 4개 버튼
+- localStorage 대화 저장/복원
+- Railway `askCoach` 함수 정의 (`/api/coach/ask` POST)
+- Mock 응답 (1.5초 지연 시뮬레이션)
+
+**미구현 항목**
+- Railway FastAPI 실제 배포 상태 미확인 (서버 미구동 시 Mock 응답 fallback)
+- 언어 레벨 선택 UI (`general`/`expert`) — 현재 하드코딩 `'general'`
+- AiBadge + 출처 URL 링크 렌더링 미확인
+- 차트 해설 연동 (US-4.1~4.2 미구현)
+- 모닝 라이트 Cron 미구현
+
+---
+
+### 17.3 공통 기술 부채
+
+| 항목 | 영향 범위 | 우선순위 |
+|------|---------|:-------:|
+| Supabase 테이블 생성 + RLS 정책 부재 | news_impacts, sector_causal_maps, geo_events, value_chain_maps | P0 |
+| Railway FastAPI 미배포 / 미연동 | 뉴스·섹터·Value Chain·반디 코치 | P0 |
+| KRX/DART 실 API 연동 없음 | 비나 맵·Value Chain·배당·모의투자 | P1 |
+| Mock 데이터 하드코딩 | 전 기능 | P1 |
+| AI 환각 방지 (출처 URL) | 뉴스·Value Chain·반디 코치 | P0 (CLAUDE.md 원칙 2) |
+| 구독 플랜 게이트 미설정 | 뉴스·Value Chain | P1 (CLAUDE.md 원칙 5) |
+
+### 17.4 Sprint 12 권장 작업 (2026-03-26 기준)
+
+| 우선순위 | 작업 | 예상 효과 |
+|:--------:|------|----------|
+| 1 | Railway FastAPI 배포 확인 + `/api/coach/ask` 실 테스트 | 반디 코치 65% → 90% |
+| 2 | Supabase `news_impacts` 테이블 생성 + RLS + 초기 데이터 적재 | 뉴스 분석 70% → 90% |
+| 3 | Supabase `sector_causal_maps` 테이블 생성 + SectorForceGraph 완성 | 섹터맵 60% → 80% |
+| 4 | Value Chain Railway 엔드포인트 구현 | Value Chain 85% → 100% |
+| 5 | 모의투자 보유 포지션 집계 + 코스피 지수 API 연동 | 모의투자 80% → 95% |
+| 6 | 비나 맵 `geo_events` Supabase 연동 | 비나 맵 95% → 100% |
 
 ---
 
