@@ -21,7 +21,7 @@ export function NewsCard({ className }: { className?: string }) {
       className
     )}>
       <div className="flex items-center justify-between mb-4">
-        <p className="text-xs font-medium uppercase tracking-widest text-slate-500 dark:text-slate-400">
+        <p className="text-xs font-medium uppercase tracking-widest text-slate-500 dark:text-slate-300">
           오늘의 주요 뉴스
         </p>
         <Link href="/news" className="text-xs text-primary hover:underline transition-colors">

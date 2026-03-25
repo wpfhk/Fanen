@@ -35,7 +35,7 @@ export function SectorTop3Card({ className }: { className?: string }) {
       className
     )}>
       <div className="flex items-center justify-between">
-        <p className="text-xs font-medium uppercase tracking-widest text-slate-500 dark:text-slate-400">
+        <p className="text-xs font-medium uppercase tracking-widest text-slate-500 dark:text-slate-300">
           오늘 반디 주목 섹터
         </p>
         <Link href="/binah-map" className="text-xs text-primary hover:underline transition-colors">

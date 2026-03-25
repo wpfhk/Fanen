@@ -18,7 +18,7 @@ export function PortfolioCard({ className }: { className?: string }) {
       'bg-white dark:bg-white/5 shadow-sm p-6',
       className
     )}>
-      <p className="text-xs font-medium uppercase tracking-widest text-slate-500 dark:text-slate-400">
+      <p className="text-xs font-medium uppercase tracking-widest text-slate-500 dark:text-slate-300">
         내 포트폴리오
       </p>
       <p className="mt-3 text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
