@@ -53,18 +53,9 @@ export function CompanyCard({ node, isSelected = false, onClick }: CompanyCardPr
       {/* 반디 설명 텍스트 */}
       <p className="text-xs text-slate-400 mb-3 leading-relaxed">{node.description}</p>
 
-      {/* AI 뱃지 + 출처 링크 */}
+      {/* AI 뱃지 (source prop으로 출처 링크 포함 — CLAUDE.md 원칙) */}
       <div className="flex items-center gap-2 flex-wrap">
-        <AiBadge label="AI 분석" variant="info" />
-        <a
-          href={node.sourceUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={(e) => e.stopPropagation()}
-          className="text-xs text-teal-400 hover:text-teal-300 underline underline-offset-2"
-        >
-          출처
-        </a>
+        <AiBadge label="AI 분석" variant="info" source={node.sourceUrl} />
       </div>
     </button>
   );

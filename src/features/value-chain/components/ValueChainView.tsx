@@ -118,7 +118,10 @@ function buildSankeyData(chain: ValueChain): {
   return { nodes, links };
 }
 
-/** D3 Sankey 다이어그램 컴포넌트 */
+/** D3 Sankey 다이어그램 컴포넌트
+ * 참고: 이 파일 전체가 'use client'이므로 SSR에서 실행되지 않아 D3 import 안전.
+ * ResizeObserver가 width 상태를 업데이트 → useEffect 재실행 → Sankey 레이아웃 재계산.
+ */
 function SankeyDiagram({
   chain,
   onNodeClick,
@@ -130,11 +133,25 @@ function SankeyDiagram({
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
+  const [containerWidth, setContainerWidth] = useState(0);
+
+  // ResizeObserver: 너비 변경 시 state 업데이트 → Sankey useEffect 재실행
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      if (entry) setContainerWidth(entry.contentRect.width);
+    });
+    observer.observe(containerRef.current);
+    // 초기 너비 설정
+    setContainerWidth(containerRef.current.clientWidth || 800);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!svgRef.current || !containerRef.current) return;
 
-    const width = containerRef.current.clientWidth || 800;
+    const width = containerWidth || containerRef.current.clientWidth || 800;
     const height = 400;
 
     const { nodes, links } = buildSankeyData(chain);
