@@ -31,10 +31,10 @@ function riskBg(score: number) {
 
 export function SectorTop3Card() {
   return (
-    <div className="rounded-xl border border-[#1E3448] bg-[#162032] p-4 space-y-3">
+    <div className="rounded-xl border border-slate-200 dark:border-[#1E3448] bg-white dark:bg-[#162032] p-4 space-y-3">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-slate-400">오늘 반디 주목 섹터</h2>
-        <Link href="/binah-map" className="text-xs text-teal-400 hover:underline">
+        <h2 className="text-sm font-semibold text-slate-600 dark:text-slate-400">오늘 반디 주목 섹터</h2>
+        <Link href="/binah-map" className="text-xs text-teal-600 dark:text-teal-400 hover:underline">
           지도 보기 →
         </Link>
       </div>
@@ -47,12 +47,12 @@ export function SectorTop3Card() {
             </span>
             <div className="flex-1">
               <div className="flex items-center justify-between mb-1">
-                <span className="text-sm font-medium text-slate-200">{s.name}</span>
+                <span className="text-sm font-medium text-slate-800 dark:text-slate-200">{s.name}</span>
                 <span className={`text-xs font-semibold rounded-full px-2 py-0.5 ${riskBg(s.score)}`}>
                   {s.score}
                 </span>
               </div>
-              <div className="h-1 rounded-full bg-[#0F1923] overflow-hidden">
+              <div className="h-1 rounded-full bg-slate-200 dark:bg-[#0F1923] overflow-hidden">
                 <div
                   className="h-full rounded-full transition-all"
                   style={{
