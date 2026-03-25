@@ -67,7 +67,7 @@ const LAT_TICKS = [
 export function BinahMapLite({ events, selectedId, hoveredId, onSelect, height = 200 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [size, setSize]         = useState({ w: 600, h: height });
-  const [viewMode, setViewMode] = useState<ViewMode>('3d');
+  const [viewMode, setViewMode] = useState<ViewMode>('flat');
   const [landFeatures, setLandFeatures] = useState<d3.GeoPermissibleObjects[]>([]);
   const [tooltip, setTooltip]   = useState<{ x: number; y: number; title: string } | null>(null);
 
@@ -217,7 +217,7 @@ export function BinahMapLite({ events, selectedId, hoveredId, onSelect, height =
 
   const proj = viewMode === '3d'
     ? d3.geoOrthographic().rotate(rotation).scale(radius).translate([cx, cy]).clipAngle(90)
-    : d3.geoNaturalEarth1().rotate([-127, 0]).scale(w / (2 * Math.PI) * 1.05).translate([cx, cy + h * 0.04]);
+    : d3.geoNaturalEarth1().rotate([0, 0]).scale(w / (2 * Math.PI) * 0.92).translate([cx, cy]);
 
   const pathGen = d3.geoPath().projection(proj);
 

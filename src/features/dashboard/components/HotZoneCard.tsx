@@ -9,8 +9,8 @@ export function HotZoneCard({ className }: { className?: string }) {
   return (
     <div className={cn(
       'relative rounded-2xl overflow-hidden',
-      'border border-slate-100 dark:border-white/5',
-      'bg-white dark:bg-white/5 shadow-sm',
+      'border border-zinc-200 dark:border-zinc-800',
+      'bg-white dark:bg-zinc-900 shadow-sm',
       className
     )}>
       {/* Dot pattern overlay */}
@@ -18,8 +18,8 @@ export function HotZoneCard({ className }: { className?: string }) {
 
       {/* Header */}
       <div className="relative z-10 flex items-center justify-between px-5 pt-4 pb-2">
-        <p className="text-xs font-medium uppercase tracking-widest text-slate-500 dark:text-slate-300">
-          비나 맵 — Hot Zone
+        <p className="text-xs font-medium uppercase tracking-widest text-zinc-600 dark:text-zinc-400">
+          세계 정세
         </p>
         <Link href="/binah-map" className="text-xs text-primary hover:underline transition-colors">
           자세히 보기 →
@@ -32,7 +32,7 @@ export function HotZoneCard({ className }: { className?: string }) {
           events={events}
           selectedId={selectedEvent?.id}
           onSelect={selectEvent}
-          height={220}
+          height={280}
         />
       </div>
     </div>
