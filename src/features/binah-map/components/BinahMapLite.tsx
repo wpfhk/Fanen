@@ -38,10 +38,10 @@ export function BinahMapLite({ events, selectedId, onSelect, height = 200 }: Pro
   const svgRef = useRef<SVGSVGElement>(null);
 
   const draw = useCallback(() => {
+    if (!svgRef.current) return;
     const svg = d3.select(svgRef.current);
-    if (!svg) return;
 
-    const w = svgRef.current!.clientWidth || 400;
+    const w = svgRef.current.clientWidth || 400;
     const h = height;
 
     svg.attr('viewBox', `0 0 ${w} ${h}`);
