@@ -106,10 +106,10 @@ export default function OnboardingStep3() {
           ))}
         </div>
 
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100 text-center mb-2">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-zinc-100 text-center mb-2">
           화면 모드를 선택하세요
         </h1>
-        <p className="text-sm text-gray-500 dark:text-slate-400 text-center mb-8">
+        <p className="text-sm text-gray-500 dark:text-zinc-400 text-center mb-8">
           나중에 프로필에서 변경할 수 있어요
         </p>
 
@@ -122,14 +122,14 @@ export default function OnboardingStep3() {
               className={`w-full rounded-xl border-2 p-5 text-left transition-colors ${
                 selected === mode.value
                   ? 'border-primary bg-primary/5 dark:bg-blue-900/20'
-                  : 'border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 hover:border-gray-300 dark:hover:border-slate-500'
+                  : 'border-gray-200 dark:border-zinc-600 bg-white dark:bg-zinc-900 hover:border-gray-300 dark:hover:border-slate-500'
               }`}
             >
               <div className="flex items-center gap-3">
                 <span className="text-2xl">{mode.icon}</span>
                 <div>
-                  <div className="font-semibold text-gray-900 dark:text-slate-100">{mode.label}</div>
-                  <div className="text-sm text-gray-500 dark:text-slate-400 mt-0.5">{mode.desc}</div>
+                  <div className="font-semibold text-gray-900 dark:text-zinc-100">{mode.label}</div>
+                  <div className="text-sm text-gray-500 dark:text-zinc-400 mt-0.5">{mode.desc}</div>
                 </div>
               </div>
             </button>
@@ -140,7 +140,7 @@ export default function OnboardingStep3() {
         <div className="mt-8 flex gap-3">
           <button
             onClick={handleBack}
-            className="flex-1 py-3 rounded-xl font-medium border-2 border-gray-200 dark:border-slate-600 text-gray-700 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
+            className="flex-1 py-3 rounded-xl font-medium border-2 border-gray-200 dark:border-zinc-600 text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors"
           >
             이전
           </button>
