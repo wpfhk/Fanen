@@ -20,18 +20,18 @@ export default function DividendPage() {
   const [activeTab, setActiveTab] = useState<Tab>('calculator');
 
   return (
-    <div className="min-h-screen bg-[#0A1628] text-slate-100 p-4 md:p-6 max-w-3xl mx-auto">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0A1628] p-4 md:p-6 max-w-3xl mx-auto">
       {/* 면책 고지 — 모든 분석 화면 필수 */}
       <DisclaimerBanner variant="default" />
 
       {/* 헤더 */}
       <div className="mb-6">
-        <h1 className="text-xl font-bold text-slate-100">불로소득 &amp; 배당 허브</h1>
-        <p className="text-sm text-slate-400 mt-1">월 목표 수입을 역산해 투자 경로를 설계하세요</p>
+        <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">불로소득 &amp; 배당 허브</h1>
+        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">월 목표 수입을 역산해 투자 경로를 설계하세요</p>
       </div>
 
       {/* 탭 네비게이션 */}
-      <div className="flex border-b border-slate-700 mb-6">
+      <div className="flex border-b border-slate-200 dark:border-slate-700 mb-6">
         {TABS.map(({ id, label }) => (
           <button
             key={id}
@@ -39,8 +39,8 @@ export default function DividendPage() {
             onClick={() => setActiveTab(id)}
             className={`px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px ${
               activeTab === id
-                ? 'border-teal-500 text-teal-400'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
+                ? 'border-teal-500 text-teal-600 dark:text-teal-400'
+                : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
             }`}
           >
             {label}

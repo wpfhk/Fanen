@@ -29,10 +29,10 @@ export default function PassiveIncomeCalculator() {
   return (
     <div className="space-y-6">
       {/* 입력 영역 */}
-      <div className="rounded-xl border border-slate-700 bg-slate-900 p-5 space-y-5">
+      <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-5 space-y-5">
         {/* 목표 월 불로소득 슬라이더 */}
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-2">
+          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
             목표 월 불로소득
           </label>
           <div className="flex items-center gap-3">
@@ -57,7 +57,7 @@ export default function PassiveIncomeCalculator() {
 
         {/* 연 수익률 선택 버튼 */}
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-2">
+          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
             예상 연 배당수익률
           </label>
           <div className="flex gap-2">
@@ -69,7 +69,7 @@ export default function PassiveIncomeCalculator() {
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   yieldPercent === y
                     ? 'bg-teal-600 text-white'
-                    : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                    : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
                 }`}
               >
                 {y}%
@@ -80,7 +80,7 @@ export default function PassiveIncomeCalculator() {
 
         {/* 투자 성향 필터 */}
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-2">
+          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
             투자 성향
           </label>
           <PortfolioTypeFilter selected={portfolioType} onSelect={setPortfolioType} />
@@ -88,11 +88,11 @@ export default function PassiveIncomeCalculator() {
       </div>
 
       {/* 결과 영역 */}
-      <div className="rounded-xl border border-teal-700/50 bg-teal-900/20 p-5 space-y-4">
+      <div className="rounded-xl border border-teal-300 dark:border-teal-700/50 bg-teal-50 dark:bg-teal-900/20 p-5 space-y-4">
         {/* 필요 투자금 */}
         <div className="text-center">
-          <p className="text-sm text-slate-400 mb-1">필요 투자금</p>
-          <p className="text-3xl font-bold text-teal-300">
+          <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">필요 투자금</p>
+          <p className="text-3xl font-bold text-teal-600 dark:text-teal-300">
             {requiredMan.toLocaleString('ko-KR')}만원
           </p>
           <p className="text-sm text-slate-500 mt-1">≈ {requiredEok}억원</p>
@@ -100,20 +100,20 @@ export default function PassiveIncomeCalculator() {
 
         {/* 추천 포트폴리오 구성 목록 */}
         <div>
-          <p className="text-sm font-medium text-slate-300 mb-2">추천 포트폴리오 구성</p>
+          <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">추천 포트폴리오 구성</p>
           <div className="space-y-2">
             {result.recommendedPortfolio.map((item) => (
               <div
                 key={item.ticker}
-                className="flex items-center justify-between bg-slate-800/50 rounded-lg px-3 py-2"
+                className="flex items-center justify-between bg-white dark:bg-slate-800/50 border border-slate-100 dark:border-transparent rounded-lg px-3 py-2"
               >
                 <div>
-                  <span className="text-sm font-medium text-slate-200">{item.name}</span>
+                  <span className="text-sm font-medium text-slate-800 dark:text-slate-200">{item.name}</span>
                   <span className="ml-2 text-xs text-slate-500 font-mono">{item.ticker}</span>
                 </div>
                 <div className="flex items-center gap-3 text-xs">
-                  <span className="text-amber-400">배당 {item.expectedYield}%</span>
-                  <span className="text-teal-400 font-bold">{item.weight}%</span>
+                  <span className="text-amber-600 dark:text-amber-400">배당 {item.expectedYield}%</span>
+                  <span className="text-teal-600 dark:text-teal-400 font-bold">{item.weight}%</span>
                 </div>
               </div>
             ))}
@@ -121,15 +121,15 @@ export default function PassiveIncomeCalculator() {
         </div>
 
         {/* 반디 멘트 말풍선 */}
-        <div className="rounded-lg bg-slate-800 border border-slate-700 p-3">
-          <p className="text-xs text-slate-400 mb-1">🦋 반디의 한마디</p>
-          <p className="text-sm text-slate-200">{result.bandiComment}</p>
+        <div className="rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-3">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">🦋 반디의 한마디</p>
+          <p className="text-sm text-slate-700 dark:text-slate-200">{result.bandiComment}</p>
         </div>
 
         {/* AI 뱃지 + 출처 */}
         <div className="flex items-center justify-between">
           <AiBadge label="AI 분석" variant="info" source={result.sourceUrl} />
-          <p className="text-xs text-slate-600">수치는 참고용 Mock 데이터입니다</p>
+          <p className="text-xs text-slate-500 dark:text-slate-600">수치는 참고용 Mock 데이터입니다</p>
         </div>
       </div>
     </div>
