@@ -14,9 +14,9 @@ interface ToastItem {
 
 /** Toast 타입별 스타일 매핑 */
 const TYPE_STYLES: Record<ToastType, string> = {
-  success: 'bg-green-600 dark:bg-green-700 text-white',
+  success: 'bg-emerald-600 text-white',
   error: 'bg-danger dark:bg-red-700 text-white',
-  info: 'bg-primary dark:bg-blue-700 text-white',
+  info: 'bg-zinc-700 dark:bg-zinc-600 text-white',
 };
 
 /** Toast 타입별 아이콘 */
@@ -73,10 +73,10 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
         {toasts.map((t) => (
           <div
             key={t.id}
-            className={`flex items-center gap-2 rounded-lg px-4 py-3 text-sm shadow-lg transition-all ${TYPE_STYLES[t.type]}`}
+            className={`flex items-center gap-2 rounded-lg px-5 py-4 text-base shadow-xl transition-all min-w-[280px] ${TYPE_STYLES[t.type]}`}
             role="alert"
           >
-            <span className="font-bold">{TYPE_ICONS[t.type]}</span>
+            <span className="font-bold text-lg">{TYPE_ICONS[t.type]}</span>
             <span>{t.message}</span>
             <button
               onClick={() => removeToast(t.id)}

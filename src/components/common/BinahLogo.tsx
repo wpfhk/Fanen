@@ -1,7 +1,7 @@
 'use client';
 /**
- * BinahLogo 컴포넌트
- * 틸 컬러 기하학적 허브 심볼 + "비나" 워드마크
+ * FanenLogo 컴포넌트
+ * 틸 컬러 기하학적 허브 심볼 + "파낸" 워드마크
  * framer-motion으로 pathLength, scale 애니메이션
  */
 import { motion } from 'framer-motion';
@@ -28,12 +28,13 @@ export function BinahLogo() {
         className="flex items-center gap-2 cursor-pointer"
         whileHover="hover"
       >
-        {/* 틸 허브 심볼 */}
+        {/* 무채색 허브 심볼 */}
         <motion.svg
           width="26"
           height="26"
           viewBox="0 0 24 24"
           fill="none"
+          className="text-zinc-700 dark:text-zinc-300"
           variants={{ hover: { scale: 1.08 } }}
           transition={{ type: 'spring', stiffness: 400, damping: 25 }}
           style={{ transformOrigin: 'center' }}
@@ -44,19 +45,19 @@ export function BinahLogo() {
             cy={12}
             r={10.5}
             fill="none"
-            stroke="#0D9488"
+            stroke="#71717a"
             strokeWidth={0.7}
-            animate={{ opacity: [0.18, 0.38, 0.18], scale: [1, 1.07, 1] }}
+            animate={{ opacity: [0.12, 0.28, 0.12], scale: [1, 1.07, 1] }}
             transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
             style={{ originX: '12px', originY: '12px' }}
           />
 
-          {/* 연결선 3개 — teal */}
+          {/* 연결선 3개 — zinc */}
           {LINES.map((d, i) => (
             <motion.path
               key={i}
               d={d}
-              stroke="#0D9488"
+              stroke="#52525b"
               strokeWidth={1.6}
               strokeLinecap="round"
               initial={{ pathLength: 0 }}
@@ -65,26 +66,26 @@ export function BinahLogo() {
             />
           ))}
 
-          {/* 중앙 점 — 진한 teal */}
+          {/* 중앙 점 — zinc-800 */}
           <motion.circle
             cx={12}
             cy={12}
             r={2.8}
-            fill="#0D9488"
+            fill="#27272a"
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.4, delay: 0.1, ease: 'backOut' }}
             style={{ originX: '12px', originY: '12px' }}
           />
 
-          {/* 위성 점 3개 — 밝은 teal */}
+          {/* 위성 점 3개 — zinc-500 */}
           {SATELLITES.map((s, i) => (
             <motion.circle
               key={i}
               cx={s.cx}
               cy={s.cy}
               r={2}
-              fill="#2DD4BF"
+              fill="#71717a"
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.35, delay: 0.5 + i * 0.1, ease: 'backOut' }}
@@ -93,15 +94,20 @@ export function BinahLogo() {
           ))}
         </motion.svg>
 
-        {/* 비나 워드마크 */}
-        <motion.span
-          className="text-xl font-black tracking-tight text-zinc-900 dark:text-zinc-100"
-          variants={{ hover: { scale: 1.05 } }}
-          transition={{ type: 'spring', stiffness: 400, damping: 28 }}
-          style={{ display: 'inline-block', transformOrigin: 'left center' }}
-        >
-          비나
-        </motion.span>
+        {/* 파낸 워드마크 */}
+        <div style={{ display: 'inline-block' }}>
+          <motion.span
+            className="text-xl font-black tracking-tight text-zinc-900 dark:text-zinc-100 block leading-tight"
+            variants={{ hover: { scale: 1.05 } }}
+            transition={{ type: 'spring', stiffness: 400, damping: 28 }}
+            style={{ transformOrigin: 'left center' }}
+          >
+            파낸
+          </motion.span>
+          <span className="text-[9px] font-medium text-zinc-400 dark:text-zinc-500 block leading-tight whitespace-nowrap">
+            반디가 찾아주는 투자 기회
+          </span>
+        </div>
       </motion.div>
     </Link>
   );
