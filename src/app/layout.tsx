@@ -24,7 +24,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko" suppressHydrationWarning>
-      <body className={`${inter.className} antialiased pb-16 md:pb-0 dark:bg-slate-900`}>
+      <head>
+        {/* 다크모드 플래시 방지 — 하이드레이션 전 localStorage 읽어 class 설정 */}
+        <script dangerouslySetInnerHTML={{ __html: `
+(function(){try{var s=localStorage.getItem('fanen-theme');var p=window.matchMedia('(prefers-color-scheme:dark)').matches;if(s==='dark'||(s===null&&p)){document.documentElement.classList.add('dark');}else{document.documentElement.classList.remove('dark');}}catch(e){}})();
+        `}} />
+      </head>
+      <body className={`${inter.className} antialiased pb-16 md:pb-0 bg-white dark:bg-slate-900`}>
         <ToastProvider>
           <DevModeBanner />
           <Header />
