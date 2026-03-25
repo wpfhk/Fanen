@@ -73,8 +73,8 @@ export function ValueChainPageClient({ sector }: ValueChainPageClientProps) {
           {/* 로딩 스켈레톤 */}
           {isLoading && (
             <div className="animate-pulse space-y-4">
-              <div className="h-12 rounded-lg bg-slate-200 dark:bg-zinc-900" />
-              <div className="h-[520px] rounded-xl bg-slate-200 dark:bg-zinc-900" />
+              <div className="h-12 rounded-lg bg-zinc-200 dark:bg-zinc-900" />
+              <div className="h-[520px] rounded-xl bg-zinc-200 dark:bg-zinc-900" />
             </div>
           )}
 
@@ -90,7 +90,7 @@ export function ValueChainPageClient({ sector }: ValueChainPageClientProps) {
 
           {/* 데이터 없음 */}
           {!isLoading && !error && !chain && (
-            <div className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-8 text-center text-sm text-slate-500 dark:border-zinc-700 dark:bg-zinc-900/50 dark:text-zinc-500">
+            <div className="rounded-lg border border-zinc-200 bg-zinc-50 px-4 py-8 text-center text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-900/50 dark:text-zinc-500">
               해당 섹터의 수혜 기업 연결망 데이터가 없습니다.
             </div>
           )}

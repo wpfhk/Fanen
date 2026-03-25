@@ -4,9 +4,7 @@
  * 투자 일지 카드 컴포넌트
  * 개별 일지 항목을 카드 형태로 표시
  */
-import { AiBadge, SubscriptionGate } from '@/components/common';
-import { useSubscription } from '@/hooks/useSubscription';
-import { useRouter } from 'next/navigation';
+import { AiBadge } from '@/components/common';
 import { getEmotionConfig } from '../types';
 import type { TradeJournalRow } from '../types';
 
@@ -30,8 +28,6 @@ function formatDate(dateString: string): string {
 /** 투자 일지 카드 */
 export default function JournalCard({ journal, onEdit, onDelete }: JournalCardProps) {
   const emotionConfig = getEmotionConfig(journal.emotion);
-  const { plan } = useSubscription();
-  const router = useRouter();
 
   const handleDelete = () => {
     if (window.confirm('이 일지를 삭제하시겠습니까?')) {
@@ -40,14 +36,14 @@ export default function JournalCard({ journal, onEdit, onDelete }: JournalCardPr
   };
 
   return (
-    <article className="rounded-lg border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-4 shadow-sm">
+    <article className="rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-4 shadow-sm">
       {/* 상단 헤더: 날짜 + 감정 + 버튼 */}
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-3 flex-wrap">
           {/* 날짜 */}
           <time
             dateTime={journal.created_at}
-            className="text-sm text-gray-500 dark:text-zinc-500"
+            className="text-sm text-zinc-500 dark:text-zinc-400"
           >
             {formatDate(journal.created_at)}
           </time>
@@ -60,10 +56,10 @@ export default function JournalCard({ journal, onEdit, onDelete }: JournalCardPr
 
           {/* 종목명 */}
           {journal.stock_name && (
-            <span className="inline-flex items-center rounded-md bg-gray-100 dark:bg-zinc-800 px-2.5 py-0.5 text-xs font-medium text-gray-700 dark:text-zinc-300">
+            <span className="inline-flex items-center rounded-md bg-zinc-100 dark:bg-zinc-800 px-2.5 py-0.5 text-xs font-medium text-zinc-700 dark:text-zinc-300">
               {journal.stock_name}
               {journal.stock_code && (
-                <span className="ml-1 text-gray-400 dark:text-zinc-500">({journal.stock_code})</span>
+                <span className="ml-1 text-zinc-400 dark:text-zinc-500">({journal.stock_code})</span>
               )}
             </span>
           )}
@@ -74,7 +70,7 @@ export default function JournalCard({ journal, onEdit, onDelete }: JournalCardPr
           <button
             type="button"
             onClick={() => onEdit(journal)}
-            className="rounded-md px-2.5 py-1.5 text-xs font-medium text-gray-600 dark:text-zinc-400 hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors"
+            className="rounded-md px-2.5 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors"
             aria-label="일지 수정"
           >
             수정
@@ -82,7 +78,7 @@ export default function JournalCard({ journal, onEdit, onDelete }: JournalCardPr
           <button
             type="button"
             onClick={handleDelete}
-            className="rounded-md px-2.5 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 transition-colors"
+            className="rounded-md px-2.5 py-1.5 text-xs font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
             aria-label="일지 삭제"
           >
             삭제
@@ -92,25 +88,19 @@ export default function JournalCard({ journal, onEdit, onDelete }: JournalCardPr
 
       {/* 노트 내용 */}
       {journal.note && (
-        <p className="mt-3 text-sm text-gray-700 dark:text-zinc-300 line-clamp-3 whitespace-pre-wrap">
+        <p className="mt-3 text-sm text-zinc-700 dark:text-zinc-300 line-clamp-3 whitespace-pre-wrap">
           {journal.note}
         </p>
       )}
 
-      {/* AI 피드백 — Pro 플랜 이상 필요 */}
+      {/* AI 피드백 — 완전 무료 */}
       {journal.ai_feedback && (
-        <SubscriptionGate
-          requiredPlan="pro"
-          currentPlan={plan}
-          onUpgradeClick={() => router.push('/pricing')}
-        >
-          <div className="mt-3 rounded-md border border-blue-100 bg-blue-50 p-3">
-            <div className="mb-1.5">
-              <AiBadge label="반디 분석" />
-            </div>
-            <p className="text-sm text-blue-800">{journal.ai_feedback}</p>
+        <div className="mt-3 rounded-md border border-teal-100 dark:border-teal-900/50 bg-teal-50 dark:bg-teal-950/20 p-3">
+          <div className="mb-1.5">
+            <AiBadge label="반디 분석" />
           </div>
-        </SubscriptionGate>
+          <p className="text-sm text-teal-800 dark:text-teal-300">{journal.ai_feedback}</p>
+        </div>
       )}
     </article>
   );
