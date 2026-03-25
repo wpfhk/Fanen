@@ -3,7 +3,7 @@
 import { DisclaimerBanner, AiBadge } from '@/components/common';
 import { BinahMapFull } from '@/features/binah-map';
 
-/** 비나 맵 — 세계 정세 지정학 이벤트 */
+/** 세계 정세 맵 — 지정학 이벤트 + 수혜 기업 분석 */
 export default function BinahMapPage() {
   return (
     <main className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
@@ -13,7 +13,7 @@ export default function BinahMapPage() {
         <header className="space-y-1">
           <div className="flex items-center justify-between gap-4">
             <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
-              비나 맵
+              세계 정세
             </h1>
             <AiBadge label="반디 분석" variant="live" />
           </div>
