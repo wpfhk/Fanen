@@ -13,3 +13,7 @@ export type { StockChartProps } from './StockChart';
 export { default as BottomNav } from './BottomNav';
 export { default as DarkModeToggle } from './DarkModeToggle';
 export { default as DevModeBanner } from './DevModeBanner';
+export { LogoutButton } from './LogoutButton';
+export { default as SideNav } from './SideNav';
+export { default as TutorialPopup } from './TutorialPopup';
+export type { TutorialStep, TutorialPopupProps } from './TutorialPopup';

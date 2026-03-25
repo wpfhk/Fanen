@@ -1,36 +1,28 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
-import { DisclaimerBanner } from '@/components/common';
+import { DisclaimerBanner, TutorialPopup } from '@/components/common';
 import { NewsImpactList } from '@/features/news-impact';
 
 export const metadata: Metadata = {
-  title: '뉴스 임팩트 — BINAH',
-  description: 'AI 기반 뉴스 임팩트 분석으로 시장 움직임을 먼저 파악하세요.',
+  title: '뉴스 분석 — 파낸',
+  description: '반디 AI가 분석한 실시간 뉴스 임팩트 시그널',
 };
 
 /**
- * 뉴스 임팩트 전용 페이지
- * 서버 컴포넌트
+ * 뉴스 분析 페이지 (서버 컴포넌트)
+ * - 탭 제거: 단일 뷰로 통합
+ * - 배경: zinc-950 (다크 무채색)
  */
 export default function NewsPage() {
   return (
-    <main className="min-h-screen bg-gray-50 dark:bg-slate-900">
+    <main className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* 페이지 제목 */}
         <header className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-slate-100">뉴스 임팩트</h1>
-          <p className="mt-2 text-gray-600 dark:text-slate-400">AI 반디가 분석한 실시간 뉴스 임팩트 시그널</p>
+          <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">뉴스 분석</h1>
+          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+            반디 AI가 파악한 실시간 시장 임팩트 시그널
+          </p>
         </header>
-
-        {/* 탭 네비게이션 */}
-        <div className="flex gap-1 mb-4 border-b border-gray-200 dark:border-slate-700">
-          <span className="px-4 py-2 text-sm font-semibold text-blue-600 border-b-2 border-blue-600">
-            AI 뉴스 분석
-          </span>
-          <Link href="/global-news" className="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-slate-400">
-            글로벌 수혜 분석
-          </Link>
-        </div>
 
         {/* 면책 고지 */}
         <div className="mb-6">
@@ -40,6 +32,17 @@ export default function NewsPage() {
         {/* 뉴스 임팩트 목록 */}
         <NewsImpactList />
       </div>
+
+      {/* AI 뉴스 분석 튜토리얼 팝업 */}
+      <TutorialPopup
+        pageKey="news"
+        tutorialTitle="AI 뉴스 분석 활용법"
+        steps={[
+          { emoji: '📰', title: 'AI가 뉴스를 분석해요', description: 'AI가 글로벌 뉴스를 읽고 투자에 미치는 영향을 자동으로 분석합니다.' },
+          { emoji: '📈', title: '수혜 기업 발굴', description: '뉴스 이벤트로 직접적인 혜택을 받는 기업을 자동으로 찾아드립니다.' },
+          { emoji: '🚦', title: '신호등 분석', description: '매수(초록)/관망(노랑)/매도(빨강) 신호로 직관적인 투자 참고 정보를 제공합니다.' },
+        ]}
+      />
     </main>
   );
 }
