@@ -28,7 +28,7 @@ export default function PortfolioTypeFilter({ selected, onSelect }: PortfolioTyp
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
             selected === type
               ? 'bg-teal-600 text-white'
-              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+              : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'
           }`}
         >
           <span>{icon}</span>

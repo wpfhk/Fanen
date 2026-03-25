@@ -46,17 +46,17 @@ export default function MonthlyETFSimulator() {
   return (
     <div className="space-y-5">
       {/* 입력 영역 */}
-      <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-5 space-y-4">
+      <div className="rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-950 p-5 space-y-4">
         {/* ETF 선택 드롭다운 */}
         <div>
-          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">ETF 선택</label>
+          <label className="block text-sm font-medium text-slate-700 dark:text-zinc-300 mb-2">ETF 선택</label>
           <select
             value={selectedETF.ticker}
             onChange={(e) => {
               const etf = MOCK_ETF_LIST.find((x) => x.ticker === e.target.value);
               if (etf) setSelectedETF(etf);
             }}
-            className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full bg-white dark:bg-zinc-900 border border-slate-300 dark:border-zinc-600 rounded-lg px-3 py-2 text-sm text-slate-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-teal-500"
           >
             {MOCK_ETF_LIST.map((etf) => (
               <option key={etf.ticker} value={etf.ticker}>
@@ -68,7 +68,7 @@ export default function MonthlyETFSimulator() {
 
         {/* 투자 원금 슬라이더 */}
         <div>
-          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+          <label className="block text-sm font-medium text-slate-700 dark:text-zinc-300 mb-2">
             투자 원금:{' '}
             <span className="text-teal-400">{principal.toLocaleString('ko-KR')}만원</span>
           </label>
@@ -85,7 +85,7 @@ export default function MonthlyETFSimulator() {
 
         {/* 투자 기간 슬라이더 */}
         <div>
-          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+          <label className="block text-sm font-medium text-slate-700 dark:text-zinc-300 mb-2">
             투자 기간: <span className="text-teal-400">{years}년</span>
           </label>
           <input
@@ -101,7 +101,7 @@ export default function MonthlyETFSimulator() {
 
         {/* 배당 재투자 토글 */}
         <div className="flex items-center justify-between">
-          <span className="text-sm text-slate-700 dark:text-slate-300">배당 재투자</span>
+          <span className="text-sm text-slate-700 dark:text-zinc-300">배당 재투자</span>
           <button
             type="button"
             onClick={() => setReinvest((prev) => !prev)}
@@ -119,17 +119,17 @@ export default function MonthlyETFSimulator() {
       </div>
 
       {/* 결과 영역 */}
-      <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-5 space-y-4">
+      <div className="rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-950 p-5 space-y-4">
         {/* 요약 카드 2개 */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-3 text-center">
-            <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">{years}년 후 자산</p>
+          <div className="bg-slate-100 dark:bg-zinc-900 rounded-lg p-3 text-center">
+            <p className="text-xs text-slate-600 dark:text-zinc-400 mb-1">{years}년 후 자산</p>
             <p className="text-lg font-bold text-teal-600 dark:text-teal-300">
               {formatKRW(activeResult.projections[years - 1]!.portfolioValue)}
             </p>
           </div>
-          <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-3 text-center">
-            <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">누적 배당금</p>
+          <div className="bg-slate-100 dark:bg-zinc-900 rounded-lg p-3 text-center">
+            <p className="text-xs text-slate-600 dark:text-zinc-400 mb-1">누적 배당금</p>
             <p className="text-lg font-bold text-amber-600 dark:text-amber-400">
               {formatKRW(activeResult.projections[years - 1]!.cumulativeDividend)}
             </p>
@@ -138,7 +138,7 @@ export default function MonthlyETFSimulator() {
 
         {/* 재투자 효과 배너 */}
         <div className="rounded-lg bg-teal-50 dark:bg-teal-900/20 border border-teal-300 dark:border-teal-700/30 p-3">
-          <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">재투자 효과</p>
+          <p className="text-xs text-slate-600 dark:text-zinc-400 mb-1">재투자 효과</p>
           <p className="text-sm text-teal-700 dark:text-teal-300 font-medium">
             재투자 시 {years}년 후{' '}
             <span className="font-bold">{formatKRW(diff)}</span> 더 많아요
@@ -147,9 +147,9 @@ export default function MonthlyETFSimulator() {
 
         {/* 연도별 성장 테이블 */}
         <div className="overflow-x-auto">
-          <table className="w-full text-xs text-slate-600 dark:text-slate-400">
+          <table className="w-full text-xs text-slate-600 dark:text-zinc-400">
             <thead>
-              <tr className="border-b border-slate-200 dark:border-slate-700">
+              <tr className="border-b border-slate-200 dark:border-zinc-700">
                 <th className="text-left py-2">연도</th>
                 <th className="text-right py-2">자산가치</th>
                 <th className="text-right py-2">연간배당</th>
@@ -157,9 +157,9 @@ export default function MonthlyETFSimulator() {
             </thead>
             <tbody>
               {tableRows.map((p) => (
-                <tr key={p.year} className="border-b border-slate-100 dark:border-slate-800">
+                <tr key={p.year} className="border-b border-slate-100 dark:border-zinc-800">
                   <td className="py-1.5">{p.year}년</td>
-                  <td className="text-right text-slate-800 dark:text-slate-300">
+                  <td className="text-right text-slate-800 dark:text-zinc-300">
                     {Math.round(p.portfolioValue / 10000).toLocaleString('ko-KR')}만
                   </td>
                   <td className="text-right text-amber-600 dark:text-amber-400">
