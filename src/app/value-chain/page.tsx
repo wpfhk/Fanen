@@ -9,7 +9,7 @@ export default function ValueChainPage({
   searchParams: { sector?: string };
 }) {
   return (
-    <main className="min-h-screen bg-[#0F1923]">
+    <main className="min-h-screen bg-slate-50 dark:bg-[#0F1923]">
       <div className="container mx-auto px-4 py-6 max-w-5xl space-y-6">
         {/* 페이지 헤더 */}
         <header>

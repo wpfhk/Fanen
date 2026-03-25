@@ -34,13 +34,12 @@ interface SankeyLinkData {
 type SNode = D3SankeyNode<SankeyNodeData, SankeyLinkData>;
 type SLink = D3SankeyLink<SankeyNodeData, SankeyLinkData>;
 
-/** 티어별 색상 */
-const TIER_COLORS: Record<number, string> = {
-  [-1]: '#0D9488', // 이벤트/섹터 가상 노드 — teal
-  0: '#0D9488',   // 메이저 — teal
-  1: '#3B82F6',   // T1 — blue
-  2: '#8B5CF6',   // T2 — purple
-  3: '#64748B',   // T3 — slate
+/** 티어별 색상 — 다크/라이트 모드 각각 정의 */
+const TIER_COLORS_DARK: Record<number, string> = {
+  [-1]: '#0D9488', 0: '#0D9488', 1: '#3B82F6', 2: '#8B5CF6', 3: '#64748B',
+};
+const TIER_COLORS_LIGHT: Record<number, string> = {
+  [-1]: '#0F766E', 0: '#0F766E', 1: '#2563EB', 2: '#7C3AED', 3: '#475569',
 };
 
 /** 티어 레이블 */
@@ -52,10 +51,10 @@ const TIER_LABELS: Record<TierLevel, string> = {
 };
 
 const TIER_HEADER_CLASS: Record<TierLevel, string> = {
-  0: 'bg-teal-900/30 border-teal-800',
-  1: 'bg-blue-900/30 border-blue-800',
-  2: 'bg-purple-900/30 border-purple-800',
-  3: 'bg-slate-800/60 border-slate-700',
+  0: 'bg-teal-50 border-teal-200 dark:bg-teal-900/30 dark:border-teal-800',
+  1: 'bg-blue-50 border-blue-200 dark:bg-blue-900/30 dark:border-blue-800',
+  2: 'bg-purple-50 border-purple-200 dark:bg-purple-900/30 dark:border-purple-800',
+  3: 'bg-slate-100 border-slate-200 dark:bg-slate-800/60 dark:border-slate-700',
 };
 
 interface ValueChainViewProps {
@@ -154,6 +153,11 @@ function SankeyDiagram({
     const width = containerWidth || containerRef.current.clientWidth || 800;
     const height = 400;
 
+    // 다크모드 감지
+    const isDark = document.documentElement.classList.contains('dark');
+    const TIER_COLORS = isDark ? TIER_COLORS_DARK : TIER_COLORS_LIGHT;
+    const labelColor = isDark ? '#CBD5E1' : '#334155';
+
     const { nodes, links } = buildSankeyData(chain);
 
     // SVG 초기화
@@ -220,7 +224,9 @@ function SankeyDiagram({
       )
       .attr('rx', 3)
       .attr('stroke', (d) =>
-        selectedTicker && d.originalNode?.ticker === selectedTicker ? '#fff' : 'none'
+        selectedTicker && d.originalNode?.ticker === selectedTicker
+          ? (isDark ? '#fff' : '#0F172A')
+          : 'none'
       )
       .attr('stroke-width', 1.5);
 
@@ -230,30 +236,15 @@ function SankeyDiagram({
       .attr('x', (d) => ((d.x0 ?? 0) + (d.x1 ?? 0)) / 2)
       .attr('y', (d) => (d.y0 ?? 0) - 5)
       .attr('text-anchor', 'middle')
-      .attr('fill', '#CBD5E1')
+      .attr('fill', labelColor)
       .attr('font-size', '10px')
       .attr('font-weight', '500')
-      .text((d) => (d.originalNode ? d.originalNode.ticker : d.name))
       .each(function (d) {
-        // 텍스트가 길면 잘라냄
         const text = d3.select(this);
         const label = d.originalNode ? d.originalNode.name : d.name;
-        if (label.length > 8) text.text(label.slice(0, 7) + '…');
-        else text.text(label);
+        text.text(label.length > 8 ? label.slice(0, 7) + '…' : label);
       });
-  }, [chain, selectedTicker, onNodeClick]);
-
-  // ResizeObserver
-  useEffect(() => {
-    if (!containerRef.current || !svgRef.current) return;
-    const observer = new ResizeObserver(() => {
-      if (!containerRef.current || !svgRef.current) return;
-      const width = containerRef.current.clientWidth;
-      d3.select(svgRef.current).attr('width', width);
-    });
-    observer.observe(containerRef.current);
-    return () => observer.disconnect();
-  }, []);
+  }, [chain, selectedTicker, onNodeClick, containerWidth]);
 
   return (
     <div ref={containerRef} className="w-full overflow-x-auto">
@@ -282,28 +273,31 @@ function TierList({
       {tiers.map(({ tier, nodes }, idx) => (
         <div key={tier}>
           {idx > 0 && (
-            <div className="flex justify-center py-1 text-slate-600 text-lg">↓</div>
+            <div className="flex justify-center py-1 text-slate-400 dark:text-slate-600 text-lg">↓</div>
           )}
           <div className={`rounded-t-lg border-x border-t px-3 py-2 ${TIER_HEADER_CLASS[tier]}`}>
-            <span className="text-xs font-semibold text-slate-300">{TIER_LABELS[tier]}</span>
+            <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+              {TIER_LABELS[tier]}
+            </span>
             <span className="ml-2 text-xs text-slate-500">({nodes.length}개)</span>
           </div>
-          <div className="border-x border-b border-slate-700 rounded-b-lg space-y-1 p-2">
+          <div className="border-x border-b border-slate-200 dark:border-slate-700 rounded-b-lg space-y-1 p-2">
             {nodes.map((node) => (
               <button
                 key={node.ticker}
                 type="button"
                 onClick={() => onNodeClick(node)}
-                className={`w-full text-left rounded-lg px-3 py-2 text-xs transition-colors hover:bg-slate-700 ${
-                  selectedNode?.ticker === node.ticker
-                    ? 'bg-slate-700 ring-1 ring-teal-500'
-                    : 'bg-slate-800/50'
-                }`}
+                className={`w-full text-left rounded-lg px-3 py-2 text-xs transition-colors
+                  hover:bg-slate-100 dark:hover:bg-slate-700 ${
+                    selectedNode?.ticker === node.ticker
+                      ? 'bg-slate-100 dark:bg-slate-700 ring-1 ring-teal-500'
+                      : 'bg-white/50 dark:bg-slate-800/50'
+                  }`}
               >
                 <div className="flex items-center gap-2">
                   <TierBadge tier={node.tier} />
-                  <span className="font-semibold text-slate-100">{node.name}</span>
-                  <span className="text-slate-400 font-mono">{node.ticker}</span>
+                  <span className="font-semibold text-slate-800 dark:text-slate-100">{node.name}</span>
+                  <span className="text-slate-500 dark:text-slate-400 font-mono">{node.ticker}</span>
                 </div>
               </button>
             ))}
@@ -333,8 +327,8 @@ export function ValueChainView({ chain }: ValueChainViewProps) {
   return (
     <div className="space-y-4">
       {/* 이벤트 트리거 */}
-      <div className="rounded-lg border border-teal-700/50 bg-teal-900/20 px-4 py-3">
-        <p className="text-sm text-teal-300">
+      <div className="rounded-lg border border-teal-200 bg-teal-50 px-4 py-3 dark:border-teal-700/50 dark:bg-teal-900/20">
+        <p className="text-sm text-teal-700 dark:text-teal-300">
           <span className="font-semibold mr-2">트리거:</span>
           {chain.eventTrigger}
         </p>
@@ -344,13 +338,13 @@ export function ValueChainView({ chain }: ValueChainViewProps) {
       {isMobile ? (
         <TierList chain={chain} selectedNode={selectedNode} onNodeClick={handleNodeClick} />
       ) : (
-        <div className="rounded-xl border border-slate-700 bg-[#0F1923] p-4">
+        <div className="rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-900">
           <SankeyDiagram
             chain={chain}
             onNodeClick={handleNodeClick}
             selectedTicker={selectedNode?.ticker ?? null}
           />
-          <p className="text-xs text-slate-600 mt-2 text-center">
+          <p className="text-xs text-slate-400 dark:text-slate-600 mt-2 text-center">
             노드를 클릭하면 종목 상세 정보를 볼 수 있습니다
           </p>
         </div>
@@ -360,11 +354,11 @@ export function ValueChainView({ chain }: ValueChainViewProps) {
       {selectedNode && (
         <div className="mt-2">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-sm font-semibold text-slate-200">종목 상세</h3>
+            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200">종목 상세</h3>
             <button
               type="button"
               onClick={() => setSelectedNode(null)}
-              className="text-xs text-slate-500 hover:text-slate-300"
+              className="text-xs text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
             >
               닫기 ✕
             </button>
@@ -373,7 +367,7 @@ export function ValueChainView({ chain }: ValueChainViewProps) {
         </div>
       )}
 
-      <p className="text-xs text-slate-600 text-right">
+      <p className="text-xs text-slate-400 dark:text-slate-600 text-right">
         마지막 업데이트: {new Date(chain.updatedAt).toLocaleString('ko-KR')}
       </p>
     </div>
