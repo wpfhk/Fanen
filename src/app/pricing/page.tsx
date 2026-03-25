@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { BandiAvatar } from '@/features/ai-coach/components/BandiAvatar';
 
 /** BINAH 완전 무료 안내 페이지 */
 export default function PricingPage() {
@@ -18,6 +19,11 @@ export default function PricingPage() {
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-[#0F1923]">
       <div className="max-w-2xl mx-auto px-4 py-16 text-center">
+        {/* 반디 캐릭터 (glowing mood) */}
+        <div className="flex justify-center mb-6">
+          <BandiAvatar mood="glowing" size={80} animate />
+        </div>
+
         {/* BINAH 로고 */}
         <div className="mb-8">
           <span className="text-4xl font-black tracking-tight text-teal-600 dark:text-teal-400">
