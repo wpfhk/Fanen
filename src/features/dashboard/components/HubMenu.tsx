@@ -16,7 +16,7 @@ const RADIUS = 110;
 const SATELLITES = [
   {
     label: '비나 맵',
-    sub: 'Binah Map',
+    sub: '글로벌 정세 시각화',
     href: '/binah-map',
     cx: 170,
     cy: 60,   // -90°
@@ -29,7 +29,7 @@ const SATELLITES = [
   },
   {
     label: 'Value Chain',
-    sub: '가치 사슬',
+    sub: '산업 가치 사슬 분석',
     href: '/value-chain',
     cx: 265,
     cy: 225,  // 30°
@@ -46,7 +46,7 @@ const SATELLITES = [
   },
   {
     label: '배당 허브',
-    sub: 'Dividend Hub',
+    sub: '배당·ETF 시뮬레이터',
     href: '/dividend',
     cx: 75,
     cy: 225,  // 150°
@@ -197,37 +197,49 @@ export function HubMenu() {
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
           style={{ originX: `${sat.cx}px`, originY: `${sat.cy}px` }}
-          whileHover={{ scale: 1.15 }}
+          whileHover={{ scale: 1.06 }}
           transition={{ type: 'spring', stiffness: 350, damping: 22, delay: 0.5 + i * 0.15 }}
         >
           <Link href={sat.href}>
-            {/* 배경 원 */}
-            <circle
-              cx={sat.cx}
-              cy={sat.cy}
-              r={28}
-              className="fill-zinc-900/5 dark:fill-zinc-100/5 stroke-zinc-300 dark:stroke-zinc-600 cursor-pointer"
+            {/* 카드 배경 */}
+            <rect
+              x={sat.cx - 36}
+              y={sat.cy - 30}
+              width={72}
+              height={60}
+              rx={10}
+              className="fill-zinc-900/5 dark:fill-zinc-100/5 stroke-zinc-300 dark:stroke-zinc-600 cursor-pointer hover:stroke-zinc-500 dark:hover:stroke-zinc-400"
               strokeWidth={1.5}
             />
-            {/* 아이콘 (20×20 뷰박스를 위성 중심으로 이동) */}
+            {/* 아이콘 */}
             <g
-              transform={`translate(${sat.cx - 10}, ${sat.cy - 14})`}
+              transform={`translate(${sat.cx - 10}, ${sat.cy - 22})`}
               className="text-zinc-600 dark:text-zinc-300"
             >
               <svg width={20} height={20} viewBox="0 0 24 24">
                 {sat.icon}
               </svg>
             </g>
-            {/* 레이블 */}
+            {/* 한글 제목 */}
             <text
               x={sat.cx}
-              y={sat.cy + 16}
+              y={sat.cy + 4}
               textAnchor="middle"
               className="fill-zinc-700 dark:fill-zinc-300 cursor-pointer"
               fontSize={10}
-              fontWeight={600}
+              fontWeight={700}
             >
               {sat.label}
+            </text>
+            {/* 영문/설명 */}
+            <text
+              x={sat.cx}
+              y={sat.cy + 17}
+              textAnchor="middle"
+              className="fill-zinc-400 dark:fill-zinc-500 cursor-pointer"
+              fontSize={8}
+            >
+              {sat.sub}
             </text>
           </Link>
         </motion.g>
