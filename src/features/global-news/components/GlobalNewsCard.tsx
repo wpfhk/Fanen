@@ -23,7 +23,7 @@ export default function GlobalNewsCard({ item, isSelected, onClick }: Props) {
       className={`w-full text-left rounded-xl border-2 p-4 transition-all ${
         isSelected
           ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-          : 'border-gray-200 bg-white hover:border-blue-300 dark:bg-slate-800 dark:border-slate-700'
+          : 'border-gray-200 bg-white hover:border-blue-300 dark:bg-zinc-900 dark:border-zinc-700'
       }`}
     >
       <div className="flex items-center gap-2 mb-2">
@@ -33,8 +33,8 @@ export default function GlobalNewsCard({ item, isSelected, onClick }: Props) {
         <span className="text-xs text-gray-400">{item.source}</span>
         <span className="text-xs text-gray-400 ml-auto">{item.date}</span>
       </div>
-      <p className="text-sm font-semibold text-gray-900 dark:text-slate-100 mb-1 line-clamp-2">{item.title}</p>
-      <p className="text-xs text-gray-500 dark:text-slate-400 line-clamp-2">{item.summary}</p>
+      <p className="text-sm font-semibold text-gray-900 dark:text-zinc-100 mb-1 line-clamp-2">{item.title}</p>
+      <p className="text-xs text-gray-500 dark:text-zinc-400 line-clamp-2">{item.summary}</p>
     </button>
   );
 }

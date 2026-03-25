@@ -10,8 +10,8 @@ export default function GlobalNewsPage() {
   return (
     <main className="max-w-4xl mx-auto px-4 py-8">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100">글로벌 뉴스 수혜 분석</h1>
-        <p className="mt-1 text-sm text-gray-500 dark:text-slate-400">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-zinc-100">글로벌 뉴스 수혜 분석</h1>
+        <p className="mt-1 text-sm text-gray-500 dark:text-zinc-400">
           세계 정세 뉴스를 선택하면 AI가 한국 수혜 섹터와 종목을 분석합니다
         </p>
       </div>
@@ -34,7 +34,7 @@ export default function GlobalNewsPage() {
           {/* 분석 버튼 */}
           {selectedNews && !analyzed && (
             <div className="text-center mb-6">
-              <p className="text-sm text-gray-600 dark:text-slate-300 mb-3">
+              <p className="text-sm text-gray-600 dark:text-zinc-300 mb-3">
                 선택된 뉴스: <strong>{selectedNews.title}</strong>
               </p>
               <button
@@ -51,7 +51,7 @@ export default function GlobalNewsPage() {
           {selectedNews && analyzed && (
             <>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-bold text-gray-900 dark:text-slate-100">분석 결과</h2>
+                <h2 className="text-lg font-bold text-gray-900 dark:text-zinc-100">분석 결과</h2>
                 <button
                   onClick={() => selectNews(selectedId!)}
                   className="text-sm text-teal-600 hover:underline"
