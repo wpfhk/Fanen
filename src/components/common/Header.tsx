@@ -5,11 +5,12 @@
  * - 로그인: [알림] [UserMenu 드롭다운]
  * BINAH: 완전 무료화 — PlanBadge 제거
  */
-import Link from 'next/link';
 import { unstable_noStore as noStore } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
 import { UserMenu } from './UserMenu';
 import DarkModeToggle from './DarkModeToggle';
+import { BinahLogo } from './BinahLogo';
+import Link from 'next/link';
 
 /** 내비게이션 메뉴 항목 */
 const NAV_ITEMS = [
@@ -41,12 +42,7 @@ export async function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-[#1E3448] bg-white dark:bg-[#162032]">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4">
         {/* 로고 */}
-        <Link href="/" className="flex items-center gap-2">
-          <span className="text-xl font-black tracking-tight text-teal-600 dark:text-teal-400">
-            BINAH
-          </span>
-          <span className="text-xs text-gray-400 dark:text-slate-500 hidden sm:block">비나</span>
-        </Link>
+        <BinahLogo />
 
         {/* 데스크톱 내비게이션 */}
         <nav className="hidden md:flex items-center gap-6">
