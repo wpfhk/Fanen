@@ -9,16 +9,16 @@ import { useSectorAnalysis } from '@/features/sector-analysis/hooks/useSectorAna
 import { SectorDetailPanel } from '@/features/sector-analysis/components/SectorDetailPanel';
 import type { ValueChainNode } from '@/features/sector-analysis/types';
 
-/** R3F 기반 3D 셀 유니버스는 SSR에서 제외 */
-const SectorCellUniverse = dynamic(
+/** Canvas 기반 2D 네트워크 그래프 (SSR 제외) */
+const SectorNetworkGraph = dynamic(
   () =>
-    import('@/features/sector-analysis/components/SectorCellUniverse').then(
-      (m) => m.SectorCellUniverse
+    import('@/features/sector-analysis/components/SectorNetworkGraph').then(
+      (m) => m.SectorNetworkGraph
     ),
   {
     ssr: false,
     loading: () => (
-      <div className="animate-pulse rounded-xl bg-zinc-200 dark:bg-zinc-900" style={{ aspectRatio: '1/1' }} />
+      <div className="animate-pulse rounded-xl bg-zinc-200 dark:bg-zinc-900" style={{ aspectRatio: '4/3' }} />
     ),
   }
 );
@@ -140,7 +140,7 @@ export function SectorAnalysisPageClient({ sector }: SectorAnalysisPageClientPro
                         }`}
                     >
                       {miniChain ? (
-                        <SectorCellUniverse
+                        <SectorNetworkGraph
                           chain={miniChain}
                           compact
                         />
@@ -271,7 +271,7 @@ export function SectorAnalysisPageClient({ sector }: SectorAnalysisPageClientPro
                           exit={{ opacity: 0, scale: 0.97 }}
                           transition={{ duration: 0.25, ease: 'easeOut' }}
                         >
-                          <SectorCellUniverse
+                          <SectorNetworkGraph
                             chain={chain}
                             onNodeClick={handleNodeClick}
                             selectedTicker={selectedNode?.ticker ?? null}
