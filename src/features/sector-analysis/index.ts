@@ -7,8 +7,12 @@ export { useSectorAnalysis } from './hooks/useSectorAnalysis';
 
 // 컴포넌트
 export { SectorMindmapView } from './components/SectorMindmapView';
+export { SectorCellUniverse } from './components/SectorCellUniverse';
 export { SectorDetailPanel } from './components/SectorDetailPanel';
 export { ValueChainDiagram } from './components/ValueChainDiagram';
+
+// 스토어
+export { useSectorStore } from './store/useSectorStore';
 
 // 타입
 export type { ValueChain, ValueChainNode, TierLevel, SignalType, SectorData, SectorNode } from './types';
