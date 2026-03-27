@@ -54,6 +54,29 @@ const config: Config = {
           lime: '#A3E635',
           aura: '#FEF3C7',
         },
+        /* ── Signal 색상 (CSS 변수 연동) ── */
+        signal: {
+          buy:   'var(--signal-buy)',
+          wait:  'var(--signal-wait)',
+          watch: 'var(--signal-watch)',
+          'buy-bg':       'var(--signal-buy-bg)',
+          'wait-bg':      'var(--signal-wait-bg)',
+          'watch-bg':     'var(--signal-watch-bg)',
+          'buy-border':   'var(--signal-buy-border)',
+          'wait-border':  'var(--signal-wait-border)',
+          'watch-border': 'var(--signal-watch-border)',
+        },
+        crowd: {
+          warning:        'var(--crowd-warning)',
+          'warning-bg':   'var(--crowd-warning-bg)',
+          'warning-border': 'var(--crowd-warning-border)',
+        },
+        tier: {
+          0: 'var(--tier-0)',
+          1: 'var(--tier-1)',
+          2: 'var(--tier-2)',
+          3: 'var(--tier-3)',
+        },
         danger: {
           DEFAULT: '#E02424',
           50: '#FDF2F2',
@@ -73,6 +96,12 @@ const config: Config = {
         'senior-base': '1.25rem',
         'senior-lg': '1.5rem',
         'senior-xl': '1.75rem',
+      },
+      borderRadius: {
+        card: 'var(--card-radius)',
+      },
+      boxShadow: {
+        card: 'var(--card-shadow)',
       },
     },
   },

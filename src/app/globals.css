@@ -77,6 +77,8 @@ body {
   --color-foreground: #fafafa;
 }
 
+/* 디자인 토큰 */
+@import '../styles/tokens.css';
 /* 시니어 모드 — 별도 파일로 분리 */
 @import '../styles/senior.css';
 @import '../styles/zoom.css';

@@ -6,7 +6,7 @@
  */
 import Link from 'next/link';
 import { Card } from '@/components/ui/Card';
-import { BandiAvatar } from '@/features/ai-coach/components/BandiAvatar';
+import { BandiAvatar } from '@/components/common/BandiAvatar';
 
 /* ── 기능 카드 데이터 ── */
 const FEATURE_CARDS = [

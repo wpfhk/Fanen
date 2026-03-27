@@ -7,3 +7,9 @@ export type {
   DisclosureItem,
   DisclosureResponse,
 } from './market.types';
+export type {
+  BeneficiarySector,
+  BriefSector,
+  SectorStock,
+  MorningBriefData,
+} from './sector.types';

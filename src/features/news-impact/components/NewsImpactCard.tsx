@@ -142,7 +142,7 @@ export default function NewsImpactCard({ item }: NewsImpactCardProps) {
 
   return (
     <>
-      <article className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+      <article className="rounded-card shadow-card border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:shadow-md transition-shadow overflow-hidden">
         {/* ── 외부 flex-row: 좌측 신호 바 + 메인 영역 + 우측 신호 패널 ── */}
         <div className="flex min-h-[7rem]">
           {/* 1. 좌측 신호 컬러 바 (4px) */}

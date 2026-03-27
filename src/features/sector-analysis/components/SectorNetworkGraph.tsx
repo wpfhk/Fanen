@@ -51,7 +51,11 @@ const SIGNAL_COLORS: Record<string, string> = {
   buy: 'text-green-500', wait: 'text-amber-500', watch: 'text-blue-500',
 };
 const SIGNAL_LABELS: Record<string, string> = {
-  buy: '매수', wait: '관망', watch: '주시',
+  buy: '매수', wait: '관망', watch: '매도',
+};
+/** Signal 닷 색상 (Canvas 직접 사용) */
+const SIGNAL_DOT_COLORS: Record<string, string> = {
+  buy: '#16A34A', wait: '#F59E0B', watch: '#EF4444',
 };
 
 /* ─────────────────────────────────────────────
@@ -385,6 +389,92 @@ function drawLabel(
   ctx.restore();
 }
 
+/**
+ * drawSignalDot — 노드 우하단에 시그널 컬러 닷 표시
+ * T0: 닷 크기 + 텍스트 레이블
+ */
+function drawSignalDot(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  nodeRadius: number,
+  signal: string,
+  tier: TierLevel,
+  alpha: number,
+  isDark: boolean,
+) {
+  const color = SIGNAL_DOT_COLORS[signal] ?? '#9CA3AF';
+  const dotR = tier === 0 ? 6 : 4;
+  const dx = x + nodeRadius * 0.68;
+  const dy = y + nodeRadius * 0.68;
+
+  ctx.save();
+  ctx.globalAlpha = alpha;
+
+  // 흰 테두리 링 (배경과 구분)
+  ctx.beginPath();
+  ctx.arc(dx, dy, dotR + 1.5, 0, Math.PI * 2);
+  ctx.fillStyle = isDark ? '#18181b' : '#ffffff';
+  ctx.fill();
+
+  // 시그널 닷
+  ctx.beginPath();
+  ctx.arc(dx, dy, dotR, 0, Math.PI * 2);
+  ctx.fillStyle = color;
+  ctx.shadowColor = color;
+  ctx.shadowBlur = 5;
+  ctx.fill();
+  ctx.shadowBlur = 0;
+
+  // T0 전용: 텍스트 레이블 ("매수"/"관망"/"매도")
+  if (tier === 0) {
+    const label = SIGNAL_LABELS[signal] ?? signal;
+    ctx.font = `700 10px -apple-system, sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    const tw = ctx.measureText(label).width + 8;
+    const th = 14;
+    const lx = dx - tw / 2;
+    const ly = dy + dotR + 3;
+    ctx.shadowBlur = 0;
+    ctx.globalAlpha = alpha * 0.95;
+    ctx.beginPath();
+    ctx.roundRect(lx, ly, tw, th, 3);
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText(label, dx, ly + 2);
+  }
+
+  ctx.restore();
+}
+
+/**
+ * drawCrowdWarningRing — 군중심리 경고 주황 링
+ * crowdSentimentLevel >= 2 일 때 표시
+ */
+function drawCrowdWarningRing(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  nodeRadius: number,
+  alpha: number,
+  t: number,
+  ticker: string,
+) {
+  const pulse = 0.7 + 0.3 * Math.sin(t * 2.0 + seededRandom(ticker + 'cw') * Math.PI * 2);
+  ctx.save();
+  ctx.globalAlpha = alpha * pulse * 0.7;
+  ctx.beginPath();
+  ctx.arc(x, y, nodeRadius + 11, 0, Math.PI * 2);
+  ctx.strokeStyle = '#F97316';
+  ctx.lineWidth = 2.5;
+  ctx.setLineDash([3, 3]);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.restore();
+}
+
 /* ─────────────────────────────────────────────
    메인 컴포넌트
 ───────────────────────────────────────────── */
@@ -522,7 +612,9 @@ export function SectorNetworkGraph({
 
         const baseColor = TIER_CONFIG[link.fromTier][dark ? 'colorDark' : 'colorLight'];
         const alpha = dimmed ? 0.06 : isHighlighted ? 0.85 : 0.25;
-        const lw = isHighlighted ? 2.2 : 1.0;
+        // Tier 계층 두께: T0-T1 두껍게, T2-T3 얇게
+        const tierLw = link.fromTier === 0 ? 2.0 : link.fromTier === 1 ? 1.2 : 0.7;
+        const lw = isHighlighted ? 2.8 : tierLw;
 
         drawLink(ctx, sn.x, sy, tn.x, ty2, baseColor, alpha, lw);
       }
@@ -548,6 +640,31 @@ export function SectorNetworkGraph({
         const glowColor = dark ? cfg.glowDark : cfg.glowLight;
 
         drawNode(ctx, d3n.x, fy, radius, color, glowColor, alpha, glowIntensity, dark);
+
+        // T0 노드: 황금 펄싱 링 (계층 시각적 강조)
+        if (n.tier === 0 && alpha > 0.1) {
+          const ringPulse = 1 + 0.06 * Math.sin(t * 1.2 + seededRandom(n.ticker + 'rp') * Math.PI * 2);
+          ctx.save();
+          ctx.globalAlpha = 0.55 * alpha;
+          ctx.beginPath();
+          ctx.arc(d3n.x, fy, radius * ringPulse + 7, 0, Math.PI * 2);
+          ctx.strokeStyle = dark ? '#F59E0B' : '#D97706';
+          ctx.lineWidth = 2;
+          ctx.setLineDash([5, 4]);
+          ctx.stroke();
+          ctx.setLineDash([]);
+          ctx.restore();
+        }
+
+        // 군중심리 경고 링 (crowdSentimentLevel >= 2)
+        if ((n.crowdSentimentLevel ?? 0) >= 2 && alpha > 0.1) {
+          drawCrowdWarningRing(ctx, d3n.x, fy, radius, alpha, t, n.ticker);
+        }
+
+        // Signal 닷 (모든 노드에 표시)
+        if (!compact) {
+          drawSignalDot(ctx, d3n.x, fy, radius, n.signal, n.tier, alpha, dark);
+        }
 
         // 라벨 가시성: T0 항상, hover/active 시 자신+이웃
         const showLabel = cfg.labelAlwaysVisible || isHovered || isActive || isNeighbor;
@@ -757,13 +874,50 @@ export function SectorNetworkGraph({
         </div>
       )}
 
-      {/* 조작 안내 (full 모드) */}
+      {/* Tier 범례 + T0 카운트 (full 모드) */}
       {!compact && (
-        <div className="absolute bottom-3 right-3 flex gap-1 pointer-events-none">
-          <span className="text-[9px] text-zinc-400 dark:text-zinc-600 bg-white/40 dark:bg-black/30 px-1.5 py-0.5 rounded">
-            휠: 줌 · 드래그: 이동
-          </span>
-        </div>
+        <>
+          {/* T0 종목 수 배지 */}
+          <div className="absolute top-3 left-3 pointer-events-none">
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold
+              bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm
+              border border-amber-300/60 dark:border-amber-600/40
+              text-amber-700 dark:text-amber-400
+              px-2 py-1 rounded-full shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-amber-500 inline-block" />
+              Tier 0 수혜주 {chain.nodes.filter((n) => n.tier === 0).length}개
+            </span>
+          </div>
+
+          {/* Tier 범례 */}
+          <div className="absolute bottom-8 left-3 pointer-events-none space-y-1">
+            {([0, 1, 2, 3] as TierLevel[]).map((tier) => (
+              <div key={tier} className="flex items-center gap-1.5">
+                <span
+                  className="rounded-full flex-shrink-0"
+                  style={{
+                    width: tier === 0 ? 10 : tier === 1 ? 8 : tier === 2 ? 6 : 5,
+                    height: tier === 0 ? 10 : tier === 1 ? 8 : tier === 2 ? 6 : 5,
+                    backgroundColor: isDark
+                      ? TIER_CONFIG[tier].colorDark
+                      : TIER_CONFIG[tier].colorLight,
+                    opacity: 0.85,
+                  }}
+                />
+                <span className="text-[9px] text-zinc-500 dark:text-zinc-400">
+                  T{tier} {TIER_LABELS[tier]}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* 조작 안내 */}
+          <div className="absolute bottom-3 right-3 flex gap-1 pointer-events-none">
+            <span className="text-[9px] text-zinc-400 dark:text-zinc-600 bg-white/40 dark:bg-black/30 px-1.5 py-0.5 rounded">
+              휠: 줌 · 드래그: 이동
+            </span>
+          </div>
+        </>
       )}
     </div>
   );

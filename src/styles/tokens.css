@@ -1,0 +1,57 @@
+/**
+ * Fanen Design Tokens — Toss-inspired
+ * 이 파일을 src/app/globals.css에서 import하여 사용합니다.
+ *
+ * Signal 타입 컨벤션: buy | wait | watch (NOT sell)
+ * watch → UI 레이블 "매도"
+ */
+
+:root {
+  /* ── Signal 색상 (traffic light) ── */
+  --signal-buy:          #16A34A;
+  --signal-wait:         #F59E0B;
+  --signal-watch:        #EF4444;
+  --signal-buy-bg:       #F0FDF4;
+  --signal-wait-bg:      #FFFBEB;
+  --signal-watch-bg:     #FEF2F2;
+  --signal-buy-border:   #BBF7D0;
+  --signal-wait-border:  #FDE68A;
+  --signal-watch-border: #FECACA;
+
+  /* ── 군중 심리 경고 ── */
+  --crowd-warning:       #F97316;
+  --crowd-warning-bg:    #FFF7ED;
+  --crowd-warning-border: #FED7AA;
+
+  /* ── 카드 ── */
+  --card-radius:    16px;
+  --card-padding:   20px;
+  --card-shadow:    0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+
+  /* ── Tier 색상 ── */
+  --tier-0: #D97706;   /* amber-600 — 메이저 골든 */
+  --tier-1: #2563EB;   /* blue-600 — 직접 납품 */
+  --tier-2: #7C3AED;   /* violet-600 — 부품/소재 */
+  --tier-3: #64748B;   /* slate-500 — 간접 수혜 */
+}
+
+.dark {
+  /* Signal 배경 (다크모드 톤 다운) */
+  --signal-buy-bg:       rgba(22, 163, 74, 0.12);
+  --signal-wait-bg:      rgba(245, 158, 11, 0.12);
+  --signal-watch-bg:     rgba(239, 68, 68, 0.12);
+  --signal-buy-border:   rgba(22, 163, 74, 0.3);
+  --signal-wait-border:  rgba(245, 158, 11, 0.3);
+  --signal-watch-border: rgba(239, 68, 68, 0.3);
+
+  --crowd-warning-bg:    rgba(249, 115, 22, 0.12);
+  --crowd-warning-border: rgba(249, 115, 22, 0.3);
+
+  --card-shadow:    0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Toss-style 숫자 폰트 강조 ── */
+.num-emphasis {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}

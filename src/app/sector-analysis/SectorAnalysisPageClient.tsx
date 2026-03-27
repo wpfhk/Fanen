@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { useSectorAnalysis } from '@/features/sector-analysis/hooks/useSectorAnalysis';
-import { SectorDetailPanel } from '@/features/sector-analysis/components/SectorDetailPanel';
+import { StockDetailPanel } from '@/features/sector-analysis/components/StockDetailPanel';
 import type { ValueChainNode } from '@/features/sector-analysis/types';
 
 /** Canvas 기반 2D 네트워크 그래프 (SSR 제외) */
@@ -253,7 +253,7 @@ export function SectorAnalysisPageClient({ sector }: SectorAnalysisPageClientPro
                         initial={{ opacity: 0, y: -8 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.3 }}
-                        className="rounded-xl border border-zinc-200/60 dark:border-zinc-700/30
+                        className="rounded-card shadow-card border border-zinc-200/60 dark:border-zinc-700/30
                           bg-white/60 dark:bg-zinc-800/40 backdrop-blur-sm px-4 py-3"
                       >
                         <p className="text-sm text-zinc-500 dark:text-zinc-400">
@@ -288,7 +288,7 @@ export function SectorAnalysisPageClient({ sector }: SectorAnalysisPageClientPro
                             exit={{ opacity: 0, y: 12 }}
                             transition={{ duration: 0.2 }}
                           >
-                            <SectorDetailPanel
+                            <StockDetailPanel
                               node={selectedNode}
                               onClose={() => setSelectedNode(null)}
                             />

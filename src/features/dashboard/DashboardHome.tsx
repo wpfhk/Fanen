@@ -1,7 +1,6 @@
 'use client';
 import DisclaimerBanner from '@/components/common/DisclaimerBanner';
 import { MorningBriefCard } from './components/MorningBriefCard';
-import { SectorTop3Card } from './components/SectorTop3Card';
 import { HotZoneCard } from './components/HotZoneCard';
 import { PortfolioCard } from './components/PortfolioCard';
 import { MorningLightCard } from './components/MorningLightCard';
@@ -23,11 +22,8 @@ export default function DashboardHome() {
           {/* 3. Hot Zone 지도 — 데스크탑: 좌측 2행 span */}
           <HotZoneCard className="order-3 md:row-span-2" />
 
-          {/* 4. 섹터 Top3 */}
-          <SectorTop3Card className="order-4" />
-
-          {/* 5. 포트폴리오 */}
-          <PortfolioCard className="order-5" />
+          {/* 4. 포트폴리오 */}
+          <PortfolioCard className="order-4" />
 
           {/* 6. 모닝 라이트 — full width */}
           <MorningLightCard className="order-6 md:col-span-2" />

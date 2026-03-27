@@ -8,7 +8,6 @@ export { useSectorAnalysis } from './hooks/useSectorAnalysis';
 // 컴포넌트
 export { SectorMindmapView } from './components/SectorMindmapView';
 export { SectorNetworkGraph } from './components/SectorNetworkGraph';
-export { SectorDetailPanel } from './components/SectorDetailPanel';
 export { ValueChainDiagram } from './components/ValueChainDiagram';
 
 // 스토어

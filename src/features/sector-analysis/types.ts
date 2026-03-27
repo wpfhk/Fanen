@@ -19,6 +19,20 @@ export interface ValueChainNode {
   signal: SignalType;
   /** KRX/DART 출처 URL — 필수, 빈 문자열 불가 */
   sourceUrl: string;
+  /**
+   * 군중 반응도: 0=낮음, 1=보통, 2=높음(경고)
+   * 개미 반응도가 높을수록 오히려 위험 신호로 표시
+   */
+  crowdSentimentLevel?: 0 | 1 | 2;
+  /** 근거 목록 (2~3개 bullet, Step 3에서 추가) */
+  evidence?: string[];
+  /* ── 재무 지표 (선택, StockDetailPanel에서 사용) ── */
+  per?: number;
+  pbr?: number;
+  roe?: number;
+  revenueTrend?: { year: number; value: number }[];
+  operatingProfitTrend?: { year: number; value: number }[];
+  businessSummary?: string;
 }
 
 /** 섹터 분석 전체 데이터 */
